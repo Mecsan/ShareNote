@@ -1,0 +1,249 @@
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { ListItem, ListItemText, ListItemButton, ListItemIcon, Divider, TextField } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import LogoutIcon from '@mui/icons-material/Logout';
+import User from './user';
+import { MainContex } from '../contex/mainContex';
+import { AuthContex } from '../contex/AuthContex';
+import { LinkContex } from '../contex/LinkContex';
+import { dirApi, notiApi, userApi } from '../config/apis';
+import toast from 'react-hot-toast';
+
+
+function Nav() {
+
+    const { setnotis, setuser, setactive, dispatch } = useContext(MainContex);
+
+    const { setauth } = useContext(AuthContex);
+
+    const { links, dispatchLink } = useContext(LinkContex);
+
+    let Navigate = useNavigate();
+
+    let navref = useRef(null);
+
+    let handleLogout = () => {
+        let ok = confirm("are u sure want to logout?");
+
+        if (ok) {
+            localStorage.removeItem('taskAuth');
+            toast.success('Logout successed', {
+                style: {
+                    borderRadius: '10px',
+                    background: '#333',
+                    color: '#fff',
+                },
+            })
+            dispatch({ type: "SET_TASK", payload: [] });
+            dispatchLink({ type: "SET_LINK", payload: [] })
+            setauth(false);
+            setnotis(null);
+            setuser(null);
+            setactive(null);
+            Navigate("/login");
+        }
+    }
+
+
+    let getfolders = async () => {
+
+        let res = await fetch(dirApi, {
+            headers: {
+                'Authorization': localStorage.getItem('taskAuth')
+            }
+        });
+        let data = await res.json();
+        if (data.success) {
+            dispatchLink({ type: "SET_LINK", payload: data.msg })
+        }
+    }
+
+    let fetchnotis = async () => {
+        let res = await fetch(notiApi, {
+            headers: {
+                'authorization': localStorage.getItem('taskAuth')
+            }
+        })
+        let data = await res.json();
+        if (data.success) {
+            setnotis(data.msg);
+        }
+    }
+
+    let fetchUserinfo = async () => {
+        // validating the token 
+        let res = await fetch(userApi, {
+            headers: {
+                'authorization': localStorage.getItem('taskAuth')
+            }
+        })
+        let data = await res.json();
+        if (data.success) {
+            setuser(data.msg);
+        } else {
+            localStorage.removeItem('taskAuth');
+            Navigate('/login');
+        }
+    }
+    const [load, setload] = useState(true);
+
+
+    const fetchAll = async () => {
+
+        setload(true);
+
+        await Promise.all([getfolders(),
+        fetchnotis(),
+        fetchUserinfo()])
+
+
+        setload(false);
+
+        // each 1 min it will send request for new noti
+        setInterval(() => {
+            fetchnotis();
+        }, 60 * 1000);
+    }
+
+
+    useEffect(() => {
+        fetchAll();
+    }, [])
+
+
+    let [isAdd, setIsAdd] = useState(false);
+    let [add, setadd] = useState("");
+
+    let opennav = () => {
+        navref?.current?.classList?.toggle('close');
+    }
+
+    let addFolder = async () => {
+        if (add == "") {
+            toast.error("can't be empty", {
+                style: {
+                    borderRadius: '10px',
+                    background: '#333',
+                    color: '#fff',
+                },
+            })
+            return;
+        }
+
+        let tid = toast.loading("adding folder");
+
+        let res = await fetch(dirApi, {
+            method: "POST",
+            headers: {
+                'Content-Type': "application/json",
+                'Authorization': localStorage.getItem('taskAuth')
+            },
+            body: JSON.stringify({ title: add })
+        })
+
+        let data = await res.json();
+        if (data.success) {
+            dispatchLink({ type: "ADD_LINK", payload: data.msg });
+            Navigate("/" + data.msg._id);
+
+            toast.success('folder added', {
+                id: tid,
+                style: {
+                    borderRadius: '10px',
+                    background: '#333',
+                    color: '#fff',
+                }
+            })
+
+        }
+        opennav();
+        setIsAdd(false);
+        setadd("");
+    }
+
+
+    return (
+        <>
+            {
+                load ? null :
+
+
+                    <div className="left" onClick={(e) => {
+                        if (e.target.className == 'overlay') {
+                            opennav();
+                        }
+                    }}>
+                        <div ref={navref} className='nav'>
+                            <div className="overlay"></div>
+                            <div className="opennav" onClick={opennav}>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                            <div className="navbar">
+                                <ul className="flex">
+                                    <User opennav={opennav} />
+                                    <ListItem disablePadding >
+                                        <ListItemButton onClick={() => setIsAdd(!isAdd)}>
+                                            <ListItemText primary="Add" style={{ color: "black" }} />
+                                            <ListItemIcon>
+                                                <AddBoxIcon />
+                                            </ListItemIcon>
+                                        </ListItemButton>
+                                    </ListItem>
+                                    {
+                                        isAdd &&
+                                        <ListItem disablePadding >
+                                            <ListItemButton >
+                                                <TextField
+                                                    placeholder='Name'
+                                                    size="small"
+                                                    variant="standard"
+                                                    value={add}
+                                                    onChange={(e) => setadd(e.target.value)}
+                                                />
+                                                <ListItemIcon onClick={addFolder}>
+                                                    <CheckBoxIcon />
+                                                </ListItemIcon>
+                                            </ListItemButton>
+                                        </ListItem>
+
+                                    }
+                                    <Divider />
+                                    {
+                                        links && links.map((link) => {
+                                            return (
+                                                <ListItem key={link._id} disablePadding onClick={() => {
+                                                    opennav();
+                                                    Navigate('/' + link._id)
+                                                }}>
+                                                    <ListItemButton>
+                                                        <ListItemText primary={link.title} style={link._id == location.pathname.substring(1) ? { color: "rgb(84, 105, 212)" } : { color: "black" }} />
+                                                    </ListItemButton>
+                                                </ListItem>
+                                            )
+                                        })
+                                    }
+
+                                    <ListItem disablePadding style={{ paddingTop: '30px' }}>
+                                        <ListItemButton onClick={handleLogout}>
+                                            <ListItemText primary="Logout" style={{ color: "black" }} />
+                                            <ListItemIcon>
+                                                < LogoutIcon />
+                                            </ListItemIcon>
+                                        </ListItemButton>
+                                    </ListItem>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+            }
+        </>
+    )
+
+}
+
+export default Nav
