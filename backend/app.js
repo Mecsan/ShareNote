@@ -31,7 +31,7 @@ if (process.env.NODE_ENV == "production") {
     app.use(express.static(mypath));
 
     app.use("*", (req, res) => {
-        res.sendFile(mypath+"/index.html");
+        res.sendFile(path.resolve(mypath,"index.html"));
     })
 }
 
