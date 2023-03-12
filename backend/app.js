@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 
 app.use(express.json());
 const cors = require('cors');
@@ -26,10 +27,11 @@ app.use("/task", authenticate, taskRoute);
 app.use("/dir", authenticate, dirRoute);
 
 if (process.env.NODE_ENV == "production") {
-    app.use(express.static(__dirname + "/../frontend/dist"));
+    const mypath = path.resolve(__dirname, '..', 'frontend', 'dist');
+    app.use(express.static(mypath));
 
     app.use("*", (req, res) => {
-        res.sendFile(__dirname + "/../frontend/dist/index.html");
+        res.sendFile(mypath+"/index.html");
     })
 }
 
