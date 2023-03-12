@@ -25,11 +25,11 @@ app.use("/noti", authenticate, notiRoute);
 app.use("/task", authenticate, taskRoute);
 app.use("/dir", authenticate, dirRoute);
 
-if(process.env.NODE_ENV=="production"){
-    app.use(express.static("../frontend/dist"));
+if (process.env.NODE_ENV == "production") {
+    app.use(express.static(__dirname + "/../frontend/dist"));
 
-    app.use("*",(req,res)=>{
-        res.sendFile("../frontend/dist/index.html");
+    app.use("*", (req, res) => {
+        res.sendFile(__dirname + "/../frontend/dist/index.html");
     })
 }
 

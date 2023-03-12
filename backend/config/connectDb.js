@@ -1,9 +1,12 @@
 const mongo = require("mongoose");
-
-mongo.connect(process.env.MONGO_CONNECT,(err,res)=>{
-    if(err){
-        console.log(err);
-        return;
+mongo.set('strictQuery', true)
+const connect = async () => {
+    try {
+        const data = await mongo.connect(process.env.MONGO_CONNECT);
+        console.log("database connected")
+    } catch (e) {
+        console.log("couldn't connect with db" + e.message)
     }
-    console.log("data base connected");
-})
+}
+
+connect();
