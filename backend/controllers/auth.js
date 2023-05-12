@@ -1,5 +1,5 @@
 const userModel = require('../models/user');
-const dirModel = require("../models/dir")
+const sectionModel = require("../models/section")
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -40,14 +40,14 @@ const Register = async (req, res) => {
             name, mail, password: hash
         });
 
-        // creating a default directory for storing tasks
-        let defaultDir = new dirModel({
+        // creating a default section for storing notes
+        let defaultsection = new sectionModel({
             title: "home",
-            desc: "Add your tasks here",
+            desc: "Add your notes here",
             user: newUser._id,
         })
 
-        await defaultDir.save();
+        await defaultsection.save();
 
         let resu = await newUser.save();
         const encode = jwt.sign(resu._id.valueOf(), process.env.JWT_SECRET);
@@ -62,7 +62,7 @@ const Register = async (req, res) => {
 
 let Info = async (req, res) => {
     try {
-        let user = await userModel.findOne({ _id: req.user });
+        let user = await userModel.findOne({ _id: req.user }).select("-password");
         if (!user) throw new Error("no user found");
         res.json({ success: true, msg: user })
     } catch (e) {

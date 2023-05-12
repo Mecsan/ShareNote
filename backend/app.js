@@ -8,23 +8,16 @@ require('dotenv').config();
 require("./config/connectDb");
 
 const userRoute = require("./routes/user");
-const taskRoute = require("./routes/task");
-const dirRoute = require("./routes/dir");
-const notiRoute = require("./routes/noti");
+const noteRoute = require("./routes/note");
+const sectionRoute = require("./routes/section");
 
-const { UpdateDb } = require("./controllers/noti");
-
-// every 1 minute update database for notification
-setInterval(UpdateDb, 60 * 1000);
-
-const authenticate = require("./middleware/authmiddleware");
+const authenticate = require("./middleware/auth");
 
 app.use(cors());
 
-app.use("/user", userRoute);
-app.use("/noti", authenticate, notiRoute);
-app.use("/task", authenticate, taskRoute);
-app.use("/dir", authenticate, dirRoute);
+app.use("/api/user", userRoute);
+app.use("/api/note", authenticate, noteRoute);
+app.use("/api/section", authenticate, sectionRoute);
 
 if (process.env.NODE_ENV == "production") {
     const mypath = path.resolve(__dirname, '..', 'frontend', 'dist');

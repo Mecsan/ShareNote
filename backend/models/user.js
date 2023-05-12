@@ -1,5 +1,4 @@
 const mongo = require('mongoose');
-const { notischema } = require("./subSchemas/noti");
 let userSchema = new mongo.Schema({
     name: {
         type: String,
@@ -13,15 +12,14 @@ let userSchema = new mongo.Schema({
         type: String,
         required: true
     },
-    isTitle: {
+    isDesc: {
         type: Boolean,
         default: true
     },
     isDate: {
         type: Boolean,
         default: true
-    },
-    notifications: [notischema]
+    } 
 })
 
 module.exports = new mongo.model('user', userSchema);

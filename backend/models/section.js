@@ -1,5 +1,5 @@
 const mongo = require('mongoose');
-let dirSchema = new mongo.Schema({
+let sectionSchema = new mongo.Schema({
     user: {
         type: mongo.Schema.Types.ObjectId,
         required: true,
@@ -9,14 +9,12 @@ let dirSchema = new mongo.Schema({
         type: String,
         required: true
     },
-    date: {
-        type: Date,
-        default: Date.now
-    },
     desc: {
         type: String,
-        default: "this is some desc"
-    } 
+        default: "add description"
+    }
+}, {
+    timestamps: true
 })
 
-module.exports = new mongo.model('dir', dirSchema);
+module.exports = new mongo.model('section', sectionSchema);
