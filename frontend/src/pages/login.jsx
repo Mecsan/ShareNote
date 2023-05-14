@@ -78,7 +78,7 @@ function Login() {
 
       if (data.success) {
         setauth(data.msg);
-        localStorage.setItem('taskAuth', data.msg);
+        localStorage.setItem('noteAuth', data.msg);
         toast.success("Login successfully", {
           id,
           style: {

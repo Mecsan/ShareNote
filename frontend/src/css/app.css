@@ -8,6 +8,7 @@
 body {
     overflow-x: hidden;
 }
+ 
 
 .user_back {
     height: 100vh;
@@ -242,7 +243,7 @@ a {
 }
 
 
-/* css for folders? */
+/* css for sections? */
 
 .main {
     display: flex;
@@ -256,7 +257,7 @@ a {
 }
 
 
-.folder {
+.section {
     max-width: 700px;
     /* margin-left:min(100px,10%);
     margin-top: 30px; */
@@ -292,20 +293,20 @@ a {
     outline: 0px;
 }
 
-/* add task */
-.open_task {
+/* add note */
+.open_note {
     padding: 20px;
     display: flex;
     align-items: center;
 }
 
 /* @media screen and (max-width:700px) {
-    .open_task h3 {
+    .open_note h3 {
         display: none;
     }
 
 
-    .open_task {
+    .open_note {
         position: absolute;
         bottom: 40px;
         z-index: 200;
@@ -314,14 +315,14 @@ a {
     }
 } */
 
-.tasks,
+.notes,
 .notis {
     padding: 20px;
     columns: 3;
     max-width: 1000px;
 }
 
-.task {
+.note {
     background-color: white;
     padding: 20px 20px;
     border-radius: 10px;
@@ -331,7 +332,7 @@ a {
     margin-bottom: 20px;
 }
 
-.add_any_folder {
+.add_any_section {
     display: flex;
     flex-direction: column;
     padding: 20px;
@@ -342,7 +343,7 @@ a {
 
 @media screen and (min-width:700px) {
 
-    .task:hover {
+    .note:hover {
         box-shadow: 0px 0px 10px black;
         transform: translateY(0px) scale(1.01);
     }
@@ -351,11 +352,11 @@ a {
 
 }
 
-.task_title {
+.note_title {
     margin-bottom: 2px;
 }
 
-.task_top {
+.note_top {
     display: flex;
     justify-content: space-between;
 }
@@ -363,7 +364,7 @@ a {
 
 @media screen and (max-width:950px) {
 
-    .tasks,
+    .notes,
     .notis {
         columns: 2;
         padding: 10px;
@@ -372,14 +373,14 @@ a {
 
 
 
-/* big task? */
+/* big note? */
 
 .big_title {
     display: flex;
     justify-content: space-between;
 }
 
-.bigTask {
+.bignote {
     position: relative;
     min-width: min(540px, 100%);
     background-color: rgb(255, 255, 255);
@@ -394,7 +395,7 @@ a {
         margin-left: 0px;
     }
 
-    .bigTask {
+    .bignote {
         padding: 20px;
         padding-top: 40px;
     }
@@ -411,7 +412,7 @@ textarea:focus {
     outline: none;
 }
 
-.bigTask textarea {
+.bignote textarea {
     overflow: auto;
     font-size: 1.1rem;
     padding-top: 20px;
@@ -470,8 +471,8 @@ textarea:focus {
     padding-top: 10px;
 }
 
-.task_title,
-.task_desc {
+.note_title,
+.note_desc {
     word-break: break-all;
 }
 
@@ -483,41 +484,41 @@ textarea:focus {
 
 @media screen and (max-width:450px) {
 
-    .tasks,
+    .notes,
     .notis {
         padding: 5px;
     }
 
-    .task {
+    .note {
         padding: 15px;
         margin-bottom: 15px;
     }
 
-    .task .date {
+    .note .date {
         margin-bottom: 0px;
         font-size: 0.8rem;
     }
 
-    .task_desc {
+    .note_desc {
         font-size: 16px;
     }
 
-    .bigTask {
+    .bignote {
         min-width: 100%;
         height: 100vh;
         max-height: 100vh;
         padding: 60px 20px;
     }
 
-    .bigTask textarea {
+    .bignote textarea {
         max-height: 70vh;
     }
 
-    .bigTask h2 {
+    .bignote h2 {
         font-size: 1.2rem;
     }
 
-    .bigTask span {
+    .bignote span {
         font-size: 0.8rem;
         padding-top: 5px;
     }
@@ -539,7 +540,7 @@ textarea:focus {
 }
 
 @media screen and (max-width:350px) {
-    .tasks {
+    .notes {
         padding: 5px;
         columns: 1;
     }
@@ -570,8 +571,7 @@ textarea:focus {
 .user {
     color: black;
     font-size: 1rem;
-    padding: 0px 15px;
-    padding-top: 20px;
+    padding: 20px 15px;
 
 }
 
@@ -652,15 +652,6 @@ textarea:focus {
 
 }
 
-.notification {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.notification>* {
-    cursor: pointer;
-}
 
 .section-conta {
     padding: 20px;
@@ -675,13 +666,13 @@ textarea:focus {
     gap: 30px;
 }
 
-.small-folder svg {
+.small-section svg {
     font-size: 4rem !important;
     fill: #5469d4;
 }
 
 
-.small-folder {
+.small-section {
     display: flex;
     flex-direction: column;
     padding: 10px;
@@ -692,38 +683,22 @@ textarea:focus {
     transition: all 0.4s;
 }
 
-.small-folder:hover {
+.small-section:hover {
     background: white;
 }
 
 @media screen and (max-width:350px) {
 
-    .tasks,
-    .notis {
+    .notes{
         padding: 5px;
     }
 
-    .reminder {
-        margin-top: 10px;
-    }
+     
 
-}
-
-@media screen and (max-width:450px) {
-
-    .reminder {
-        position: absolute;
-        bottom: 15px;
-    }
 }
 
 .btn_grp {
     display: flex;
-}
-
-.notis {
-    background-color: whitesmoke;
-
 }
 
 .loading {

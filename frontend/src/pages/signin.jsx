@@ -88,7 +88,7 @@ function Signin() {
   }
 
   useEffect(() => {
-    if (localStorage.getItem('taskAuth')) {
+    if (localStorage.getItem('noteAuth')) {
       navigate("/");
     }
   }, [])
@@ -119,7 +119,7 @@ function Signin() {
 
       let data = await res.json();
       if (data.success) {
-        localStorage.setItem('taskAuth', data.msg);
+        localStorage.setItem('noteAuth', data.msg);
         navigate("/");
         setauth(true);
         toast.success("Signin successfully", {

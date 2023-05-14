@@ -1,15 +1,14 @@
 
 let baseApi = "";
 if(import.meta.env.PROD){
-    baseApi="/";
+    baseApi="/api/";
 }else{
-    baseApi = "http://localhost:3000/";
+    baseApi = "http://localhost:3000/api/";
 }
 
 export const login = baseApi + "user/login/";
 export const signup = baseApi + "user/signup/";
 export const setting = baseApi + "user/setting/";
 export const userApi = baseApi + "user/"
-export const taskApi = baseApi + "task/";
-export const dirApi = baseApi + "dir/";
-export const notiApi = baseApi + "noti/";
+export const noteApi = baseApi + "note/";
+export const sectionApi = baseApi + "section/";

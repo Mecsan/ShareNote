@@ -1,14 +1,20 @@
 import React, { useContext } from 'react'
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import { AuthContex } from '../contex/AuthContex'
+import Nav from './nav';
 
 function Auth() {
     let { auth } = useContext(AuthContex);
     return (
         <>
-        {
-            !auth && <Navigate to="login"/>
-        }
+            {
+                auth ?
+                    <>
+                        <Nav />
+                        <Outlet />
+                    </>
+                    : <Navigate to="login" />
+            }
         </>
     )
 }
