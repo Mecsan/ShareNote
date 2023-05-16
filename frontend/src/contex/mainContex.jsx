@@ -40,7 +40,8 @@ function MainContexProvider(props) {
     let BignoteRef = useRef(null);
     // for transition
 
-    let deletenote = async (key) => {
+    let deletenote = async (key,permission) => {
+        if(!permission) return;
         let ok = confirm('are you sure want to delete note?');
         if (ok) {
             try {

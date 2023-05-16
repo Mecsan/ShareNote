@@ -8,12 +8,10 @@ function Auth() {
     return (
         <>
             {
-                auth ?
-                    <>
-                        <Nav />
-                        <Outlet />
-                    </>
-                    : <Navigate to="login" />
+                <>
+                    <Nav />
+                    <Outlet />
+                </>
             }
         </>
     )

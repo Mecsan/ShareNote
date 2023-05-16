@@ -11,20 +11,18 @@ const userRoute = require("./routes/user");
 const noteRoute = require("./routes/note");
 const sectionRoute = require("./routes/section");
 
-const authenticate = require("./middleware/auth");
-
 app.use(cors());
 
 app.use("/api/user", userRoute);
-app.use("/api/note", authenticate, noteRoute);
-app.use("/api/section", authenticate, sectionRoute);
+app.use("/api/note", noteRoute);
+app.use("/api/section", sectionRoute);
 
 if (process.env.NODE_ENV == "production") {
     const mypath = path.resolve(__dirname, '..', 'frontend', 'dist');
     app.use(express.static(mypath));
 
     app.use("*", (req, res) => {
-        res.sendFile(path.resolve(mypath,"index.html"));
+        res.sendFile(path.resolve(mypath, "index.html"));
     })
 }
 

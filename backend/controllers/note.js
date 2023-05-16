@@ -1,10 +1,25 @@
 const notemodel = require("../models/note");
+const sectionmodel = require("../models/section");
+const jwt = require('jsonwebtoken');
 
 const getnote = async (req, res) => {
     try {
         let { noteId } = req.params;
-        let data = await notemodel.findOne({ _id: noteId });
-        res.json({ success: true, msg: data });
+        let data = await notemodel.findOne({ _id: noteId }).populate({
+            path: "section",
+            select: "user",
+            populate: {
+                path: "user",
+                select: "name"
+            }
+        });
+        let permission = false;
+        let token = req.headers['authorization'];
+        if (token) {
+            let decoded = jwt.verify(token, process.env.JWT_SECRET);
+            if (data.section.user._id == decoded) permission = true;
+        }
+        res.json({ success: true, msg: { data, permission } });
     } catch (e) {
         res.json({ success: false, msg: e.message })
     }

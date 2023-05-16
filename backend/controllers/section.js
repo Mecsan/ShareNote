@@ -1,6 +1,6 @@
 const sectionmodel = require("../models/section");
 const noteModel = require("../models/note");
-
+const jwt = require('jsonwebtoken');
 
 const getsection = async (req, res) => {
     try {
@@ -15,12 +15,19 @@ const getOnesection = async (req, res) => {
     let { sectionId } = req.params;
 
     try {
-        let data = await sectionmodel.findOne({ _id: sectionId });
+        let data = await sectionmodel.findOne({ _id: sectionId }).populate({ path: 'user', select: "name" });
         if (!data) {
             throw new Error("no such section with id: " + sectionId + " exist in your account");
         }
+        let permission = false;
+        let token = req.headers['authorization'];
+        if (token) {
+            console.log("first",token)
+            let decoded = jwt.verify(token, process.env.JWT_SECRET);
+            if (data.user._id == decoded) permission = true;
+        }
         let notes = await noteModel.find({ section: sectionId }).sort({ createdAt: -1 });
-        res.json({ success: true, msg: { section: data, notes } });
+        res.json({ success: true, msg: { section: data, notes, permission } });
     } catch (e) {
         res.json({ success: false, msg: e.message })
     }
@@ -28,7 +35,7 @@ const getOnesection = async (req, res) => {
 }
 
 const addsection = async (req, res) => {
-    let newsection = new sectionmodel({  ...req.body,user: req.user });
+    let newsection = new sectionmodel({ ...req.body, user: req.user });
     try {
         let resu = await newsection.save();
         res.json({ success: true, msg: resu })

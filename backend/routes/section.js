@@ -7,16 +7,17 @@ const {
     updatesection,
     deletesection,
     getOnesection
-} = require('../controllers/section')
+} = require('../controllers/section');
+const authenticate = require("../middleware/auth");
 
-router.get("/", getsection);
+router.get("/", authenticate, getsection);
 
-router.get("/:sectionId", sectionvaliadte, getOnesection);
+router.get("/:sectionId", getOnesection);
 
-router.post("/", addsection);
+router.post("/", authenticate, addsection);
 
-router.delete("/:sectionId", sectionvaliadte, deletesection);
+router.delete("/:sectionId", authenticate, sectionvaliadte, deletesection);
 
-router.put("/:sectionId", sectionvaliadte, updatesection);
+router.put("/:sectionId", authenticate, sectionvaliadte, updatesection);
 
 module.exports = router;

@@ -24,7 +24,7 @@ import toast from 'react-hot-toast';
 
 // for adding new note, component should renderd with some default values
 
-function Bignote({ section, isadd }) {
+function Bignote({ section, isadd, permission }) {
   const navigate = useNavigate();
 
   const { dispatch, deletenote, BignoteRef, activenote } = useContext(MainContex);
@@ -32,7 +32,7 @@ function Bignote({ section, isadd }) {
   let [title, settitle] = useState("");
 
   let updatenote = async (key) => {
-
+    if(!permission) return ;
     let newnote = {
       title: title,
       desc: desc,
@@ -70,7 +70,7 @@ function Bignote({ section, isadd }) {
   }
 
   let addnote = async () => {
-
+    if(!permission) return
     let tid = toast.loading("adding note");
 
     let note = {
@@ -93,7 +93,6 @@ function Bignote({ section, isadd }) {
         type: "ADD_NOTE",
         payload: data.msg
       })
-      BignoteRef.current.classList.remove('back_active');
       toast.success('note added', {
         id: tid,
         style: {
@@ -102,7 +101,10 @@ function Bignote({ section, isadd }) {
           color: '#fff',
         },
       });
+    } else {
+      toast.error("some error occured", { id: tid })
     }
+    BignoteRef.current.classList.remove('back_active');
 
   }
 
@@ -133,25 +135,31 @@ function Bignote({ section, isadd }) {
           <div className="big_top">
             <div className="big_title">
 
-              <input disabled={false} placeholder='title' type="text" value={title} onChange={(e) => {
+              <input disabled={permission ? false : true} placeholder='title' type="text" value={title} onChange={(e) => {
                 settitle(e.target.value)
               }} className="t_title" />
 
+
               <div className="big_btn_grp">
-
-                <div className="add_big" onClick={() => { isadd ? addnote() : updatenote(activenote?._id) }}>
-                  <LibraryAddCheckIcon style={{ cursor: "pointer", color: "blue" }} />
-                </div>
                 {
-                  !isadd &&
+                  permission ?
+                    <>
 
-                  <div className="dlt_big" onClick={() => {
-                    deletenote(activenote?._id)
-                    navigate("/" + section);
-                  }
-                  }>
-                    <DeleteForeverIcon style={{ cursor: "pointer", color: "red" }} />
-                  </div>
+                      <div className="add_big" onClick={() => { isadd ? addnote() : updatenote(activenote?._id) }}>
+                        <LibraryAddCheckIcon style={{ cursor: "pointer", color: "blue" }} />
+                      </div>
+                      {
+                        !isadd ?
+
+                          <div className="dlt_big" onClick={() => {
+                            deletenote(activenote?._id,permission)
+                            navigate("/" + section);
+                          }
+                          }>
+                            <DeleteForeverIcon style={{ cursor: "pointer", color: "red" }} />
+                          </div> : null
+                      }
+                    </> : null
                 }
 
 
@@ -167,13 +175,13 @@ function Bignote({ section, isadd }) {
 
             </div>
 
-            {!isadd && <span>{activenote?.date?.toString()?.substr(0, 10)}</span>}
+            {!isadd && <span>{activenote?.updatedAt?.toString()?.substr(0, 10)}</span>}
 
           </div>
           <Divider />
 
 
-          <TextareaAutosize disabled={false} placeholder='your desc'
+          <TextareaAutosize disabled={permission ? false : true} placeholder='your desc'
             value={desc} onChange={(e) => setdesc(e.target.value)}
             minRows={3} />
 

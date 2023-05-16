@@ -7,16 +7,18 @@ const {
 
 } = require('../controllers/note')
 
+const authenticate = require("../middleware/auth");
+
 const sectionmiddleware = require("../middleware/section");
 
 const notemiddle = require("../middleware/note")
 
-router.get("/:noteId", notemiddle, getnote);
+router.get("/:noteId", getnote);
 
-router.post("/:sectionId", sectionmiddleware, addnote);
+router.post("/:sectionId", authenticate, sectionmiddleware, addnote);
 
-router.delete("/:noteId", notemiddle, deletenote);
+router.delete("/:noteId", authenticate, notemiddle, deletenote);
 
-router.put("/:noteId", notemiddle, updatenote);
+router.put("/:noteId", authenticate, notemiddle, updatenote);
 
 module.exports = router;

@@ -3,10 +3,10 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { MainContex } from '../contex/mainContex';
 import { AuthContex } from '../contex/AuthContex';
 
-function Note({ note, setisadd }) {
+function Note({ note, setisadd, permission }) {
 
     const { deletenote, BignoteRef, setactive } = useContext(MainContex);
-    const {user} = useContext(AuthContex)
+    const { user } = useContext(AuthContex)
 
     let OpenBignote = (e) => {
         setisadd(false);
@@ -21,19 +21,23 @@ function Note({ note, setisadd }) {
 
     }
 
+
     return (
         <div className='note' onClick={(e) => OpenBignote(e)}>
             <div className="note_top">
 
                 <h4 className='note_title'>{note.title}</h4>
 
-                <div className="btn_grp">
-                    {
-                        <div className="small_dlr" onClick={() => { deletenote(note._id) }}>
-                            <DeleteOutlineIcon style={{ color: "red" }} />
-                        </div>
-                    }
-                </div>
+                {
+                    permission ?
+                        <div className="btn_grp">
+                            {
+                                <div className="small_dlr" onClick={() => { deletenote(note._id, permission) }}>
+                                    <DeleteOutlineIcon style={{ color: "red" }} />
+                                </div>
+                            }
+                        </div> : null
+                }
 
             </div>
 

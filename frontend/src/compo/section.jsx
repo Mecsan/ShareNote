@@ -6,7 +6,7 @@ import { LinkContex } from '../contex/LinkContex';
 import { sectionApi } from '../config/apis';
 import toast from 'react-hot-toast';
 
-function Section({ section, sectionInfo }) {
+function Section({ section, sectionInfo, permission }) {
 
     let { dispatchLink } = useContext(LinkContex);
     let navigate = useNavigate();
@@ -16,7 +16,7 @@ function Section({ section, sectionInfo }) {
     let [tid, setid] = useState(null);
 
     let updateSectionDb = async (ddata) => {
-        console.log("database")
+
         let res = await fetch(sectionApi + section, {
             method: "PUT",
             headers: {
@@ -39,6 +39,7 @@ function Section({ section, sectionInfo }) {
         }
     }
     let updatesection = async () => {
+        if (!permission) return;
         let newsection = {
             title: title,
             desc: desc
@@ -60,6 +61,7 @@ function Section({ section, sectionInfo }) {
 
 
     let delelesection = async () => {
+        if (!permission) return;
         let ok = confirm("are u sure want to delete section?");
         if (ok) {
             let tid = toast.loading("deleting");
@@ -99,17 +101,20 @@ function Section({ section, sectionInfo }) {
                 sectionInfo ? <div className="section">
                     <div className="title" >
 
-                        <input value={title || ''} onChange={(e) => {
+                        <input disabled={permission ? false : true} value={title || ''} onChange={(e) => {
                             settitle(e.target.value)
                         }} className='f_title' type="text" />
-                        <div className="dlt_section" onClick={delelesection}>
-                            <DeleteForeverIcon style={{ cursor: "pointer", color: "red" }} />
-                        </div>
+                        {
+                            permission ?
+                                <div className="dlt_section" onClick={delelesection}>
+                                    <DeleteForeverIcon style={{ cursor: "pointer", color: "red" }} />
+                                </div> : null
+                        }
                     </div>
                     <div className="date">
                         {sectionInfo?.updatedAt?.toString()?.substr(0, 10)}
                     </div>
-                    <TextareaAutosize value={desc || ''} onChange={(e) => setdesc(e.target.value)}
+                    <TextareaAutosize disabled={permission ? false : true} value={desc || ''} onChange={(e) => setdesc(e.target.value)}
                         maxRows={6} style={{ fontSize: "1.1rem", background: "transparent", maxWidth: "600px" }} />
 
                 </div> : null
