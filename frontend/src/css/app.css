@@ -8,7 +8,7 @@
 body {
     overflow-x: hidden;
 }
- 
+
 
 .user_back {
     height: 100vh;
@@ -689,11 +689,11 @@ textarea:focus {
 
 @media screen and (max-width:350px) {
 
-    .notes{
+    .notes {
         padding: 5px;
     }
 
-     
+
 
 }
 
@@ -758,7 +758,7 @@ input:focus {
 .f_title,
 .t_title {
     font-size: 1.5rem;
-    font-weight: bolder;
+    font-weight: 500;
 }
 
 .f_desc,
@@ -784,4 +784,37 @@ input:focus {
 .notfound h1 {
     color: red;
     font-size: 3rem;
+}
+
+.fullmode {
+    margin: 0px;
+    padding: 20px;
+}
+
+.task-page {
+    padding: 35px;
+    margin: 0px 10px;
+    background: white;
+    border-radius: 5px;
+}
+
+.task-page .date{
+    margin-bottom: 25px;
+}
+
+.fw-400 {
+    font-weight: 400;
+}
+
+.task-page textarea::-webkit-scrollbar{
+    display: none;
+}
+
+.owner {
+    font-size: 20px;
+    font-weight: 300;
+    padding-bottom: 4px;
+    border-bottom: 10px #5469d4 solid;
+    width: fit-content;
+    margin-bottom: 15px;
 }

@@ -2,15 +2,18 @@ import React, { useContext } from 'react'
 import { LinkContex } from '../contex/LinkContex';
 import DescriptionIcon from '@mui/icons-material/Description';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { AuthContex } from '../contex/AuthContex';
 function Home() {
 
   const { links } = useContext(LinkContex);
+  const { auth } = useContext(AuthContex)
 
   const navigate = useNavigate();
 
   return (
     <div className="right">
+      {auth ? null : <Navigate to="/login" />}
       {
         links != null &&
         <>

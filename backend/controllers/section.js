@@ -22,7 +22,6 @@ const getOnesection = async (req, res) => {
         let permission = false;
         let token = req.headers['authorization'];
         if (token) {
-            console.log("first",token)
             let decoded = jwt.verify(token, process.env.JWT_SECRET);
             if (data.user._id == decoded) permission = true;
         }

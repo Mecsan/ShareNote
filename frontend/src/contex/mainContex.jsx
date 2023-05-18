@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react'
 import { createContext, useState, useRef } from 'react'
 import toast from 'react-hot-toast';
-import { noteApi } from '../config/apis'
+import { noteApi } from '../config/apis';
 export const MainContex = createContext();
 
 function MainContexProvider(props) {
@@ -34,47 +34,67 @@ function MainContexProvider(props) {
         notes: []
     })
 
-
     let [activenote, setactive] = useState(null);
-
     let BignoteRef = useRef(null);
-    // for transition
 
-    let deletenote = async (key,permission) => {
-        if(!permission) return;
+    async function updateNote(key, newnote) {
+
+        let tid = toast.loading("updating note");
+
+        let res = await fetch(`${noteApi}${key}`, {
+            method: "PUT",
+            headers: {
+                'authorization': localStorage.getItem('noteAuth'),
+                'Content-Type': "application/json"
+            },
+            body: JSON.stringify(newnote)
+        })
+        let data = await res.json();
+
+        if (data.success) {
+            dispatch({
+                type: "UP_NOTE",
+                key: key,
+                payload: data.msg
+            })
+            toast.success("note updated", {
+                id: tid,
+                style: {
+                    borderRadius: '10px',
+                    background: '#333',
+                    color: '#fff',
+                },
+            })
+        }
+        return data;
+    }
+
+    let deletenote = async (key) => {
         let ok = confirm('are you sure want to delete note?');
         if (ok) {
-            try {
-                let tid = toast.loading("deleting note");
-                let res = await fetch(`${noteApi}${key}`, {
-                    method: "DELETE",
-                    headers: {
-                        'authorization': localStorage.getItem('noteAuth')
-                    }
+            let tid = toast.loading("deleting note");
+            let res = await fetch(`${noteApi}${key}`, {
+                method: "DELETE",
+                headers: {
+                    'authorization': localStorage.getItem('noteAuth')
+                }
+            })
+            let data = await res.json();
+            if (data.success) {
+                dispatch({
+                    type: "DLT_NOTE",
+                    key: key
+                });
+                toast.success("deleted successed", {
+                    id: tid,
+                    style: {
+                        borderRadius: '10px',
+                        background: '#333',
+                        color: '#fff',
+                    },
                 })
-                let data = await res.json();
-                if (data.success) {
-                    dispatch({
-                        type: "DLT_NOTE",
-                        key: key
-                    });
-                    toast.success("deleted successed", {
-                        id: tid,
-                        style: {
-                            borderRadius: '10px',
-                            background: '#333',
-                            color: '#fff',
-                        },
-                    })
-
-                }
-                if (BignoteRef.current) {
-                    BignoteRef.current.classList.remove('back_active')
-                }
-            } catch (e) {
-                console.log(e);
             }
-
+            return data
         }
     }
 
@@ -82,7 +102,8 @@ function MainContexProvider(props) {
         <MainContex.Provider value={{
             ...notes, dispatch,
             activenote, setactive,
-            deletenote, BignoteRef,
+            deletenote,
+            updateNote, BignoteRef
         }}>
             {props.children}
         </MainContex.Provider>

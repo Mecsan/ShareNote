@@ -17,6 +17,7 @@ app.use("/api/user", userRoute);
 app.use("/api/note", noteRoute);
 app.use("/api/section", sectionRoute);
 
+
 if (process.env.NODE_ENV == "production") {
     const mypath = path.resolve(__dirname, '..', 'frontend', 'dist');
     app.use(express.static(mypath));

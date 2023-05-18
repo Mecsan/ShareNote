@@ -8,11 +8,10 @@ function Auth() {
     return (
         <>
             {
-                <>
-                    <Nav />
-                    <Outlet />
-                </>
+                auth ?
+                    <Nav /> : null
             }
+            <Outlet />
         </>
     )
 }

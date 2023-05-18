@@ -1,5 +1,4 @@
 const notemodel = require("../models/note");
-const sectionmodel = require("../models/section");
 const jwt = require('jsonwebtoken');
 
 const getnote = async (req, res) => {

@@ -66,7 +66,7 @@ function Section() {
 
   return (
 
-    <div className="right">
+    <div className={auth?"right":"right fullmode"}>
       <LoadingBar color='#5469d4' ref={load} />
       {
         sectionInfo &&

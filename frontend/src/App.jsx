@@ -4,12 +4,12 @@ import Login from './pages/login'
 import Section from './pages/Section'
 import './css/app.css'
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom'
-import Nav from './compo/nav'
 import Notfound from './pages/notfound'
 import Home from './pages/Home'
 import { Toaster } from 'react-hot-toast'
 import Auth from './compo/Auth'
 import { AuthContex } from './contex/AuthContex'
+import Note from './pages/note'
 
 function App() {
 
@@ -34,6 +34,7 @@ function App() {
                     }>
                       <Route path='/' element={<Home />} />
                       <Route path='/:section' element={<Section />} />
+                      <Route path='/note/:noteId' element={<Note />} />
                     </Route>
 
                     <Route path='/signup' element={<Signin />} />

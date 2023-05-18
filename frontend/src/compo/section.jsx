@@ -5,10 +5,18 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { LinkContex } from '../contex/LinkContex';
 import { sectionApi } from '../config/apis';
 import toast from 'react-hot-toast';
+import Owner from './Owner';
+import { AuthContex } from '../contex/AuthContex';
+import LinkIcon from '@mui/icons-material/Link';
+import {
+    Tooltip,
+} from '@mui/material'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 function Section({ section, sectionInfo, permission }) {
 
     let { dispatchLink } = useContext(LinkContex);
+    let { auth } = useContext(AuthContex)
     let navigate = useNavigate();
 
     let [desc, setdesc] = useState("");
@@ -87,7 +95,10 @@ function Section({ section, sectionInfo, permission }) {
             }
         }
     }
-
+    let copyLink = (link) => {
+        toast.success("copied")
+        navigator.clipboard.writeText(link);
+    }
     useEffect(() => {
         if (sectionInfo) {
             settitle(sectionInfo.title);
@@ -99,17 +110,35 @@ function Section({ section, sectionInfo, permission }) {
         <>
             {
                 sectionInfo ? <div className="section">
+
+                    {permission ? null : <Owner name={sectionInfo.user.name} />}
+
                     <div className="title" >
 
                         <input disabled={permission ? false : true} value={title || ''} onChange={(e) => {
                             settitle(e.target.value)
                         }} className='f_title' type="text" />
-                        {
-                            permission ?
-                                <div className="dlt_section" onClick={delelesection}>
-                                    <DeleteForeverIcon style={{ cursor: "pointer", color: "red" }} />
+
+                        <div className="big_btn_grp">
+                            {
+                                permission ?
+                                    <div className="dlt_section" onClick={delelesection}>
+                                        <DeleteForeverIcon style={{ cursor: "pointer", color: "red" }} />
+                                    </div> : null
+                            }
+                            {
+                                auth ? <div className="copy-btn">
+                                    <Tooltip title='copy note'>
+                                        <ContentCopyIcon style={{ cursor: "pointer" }} />
+                                    </Tooltip>
                                 </div> : null
-                        }
+                            }
+                            <div className="share-btn" onClick={() => copyLink(location.href)}>
+                                <Tooltip title='copy link'>
+                                    <LinkIcon style={{ cursor: "pointer" }} />
+                                </Tooltip>
+                            </div>
+                        </div>
                     </div>
                     <div className="date">
                         {sectionInfo?.updatedAt?.toString()?.substr(0, 10)}
