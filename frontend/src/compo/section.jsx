@@ -99,6 +99,25 @@ function Section({ section, sectionInfo, permission }) {
         toast.success("copied")
         navigator.clipboard.writeText(link);
     }
+
+    let copySection = async () => {
+        const tid = toast.loading("copying", {
+            duration: Infinity
+        })
+        const res = await fetch(sectionApi + "copy/" + sectionInfo._id, {
+            headers: {
+                "authorization": auth
+            }
+        });
+        const data = await res.json();
+        if (data.success) {
+            toast.success('copied successfully', { id: tid, duration: 2000 })
+            dispatchLink({ type: "ADD_LINK", payload: data.msg })
+        } else {
+            toast.error('something went wrong', { id: tid, duration: 2000 })
+        }
+
+    }
     useEffect(() => {
         if (sectionInfo) {
             settitle(sectionInfo.title);
@@ -127,14 +146,14 @@ function Section({ section, sectionInfo, permission }) {
                                     </div> : null
                             }
                             {
-                                auth ? <div className="copy-btn">
+                                auth ? <div className="copy-btn" onClick={copySection}>
                                     <Tooltip title='copy note'>
                                         <ContentCopyIcon style={{ cursor: "pointer" }} />
                                     </Tooltip>
                                 </div> : null
                             }
                             <div className="share-btn" onClick={() => copyLink(location.href)}>
-                                <Tooltip title='copy link'>
+                                <Tooltip title='copy section'>
                                     <LinkIcon style={{ cursor: "pointer" }} />
                                 </Tooltip>
                             </div>

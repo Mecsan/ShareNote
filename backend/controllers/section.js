@@ -67,10 +67,39 @@ const updatesection = async (req, res) => {
     }
 }
 
+
+const copySection = async (req, res) => {
+    try {
+        let { sectionId } = req.params;
+        let section = await sectionmodel.findOne({ _id: sectionId });
+        let newSection = await new sectionmodel({
+            title: section.title,
+            desc: section.desc,
+            user: req.user
+        });
+        let result = await newSection.save();
+
+        const notes = await noteModel.find({ section: sectionId });
+        let newNotes = notes.map((note) => {
+            let obj = note.toObject();
+            return {
+                title: obj.title,
+                desc: obj.desc,
+                section: newSection._id
+            }
+        })
+
+        const data = await noteModel.insertMany(newNotes);
+        res.json({ success: true, msg: result })
+    } catch (e) {
+        res.json({ success: false, msg: e.message })
+    }
+}
 module.exports = {
     getsection,
     getOnesection,
     addsection,
     updatesection,
-    deletesection
+    deletesection,
+    copySection
 }

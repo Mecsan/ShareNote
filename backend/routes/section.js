@@ -6,13 +6,16 @@ const {
     addsection,
     updatesection,
     deletesection,
-    getOnesection
+    getOnesection,
+    copySection
 } = require('../controllers/section');
 const authenticate = require("../middleware/auth");
 
 router.get("/", authenticate, getsection);
 
 router.get("/:sectionId", getOnesection);
+
+router.get("/copy/:sectionId", authenticate, copySection)
 
 router.post("/", authenticate, addsection);
 
