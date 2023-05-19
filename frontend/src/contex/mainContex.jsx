@@ -35,6 +35,11 @@ function MainContexProvider(props) {
     })
 
     let [activenote, setactive] = useState(null);
+    let [copynote, setcopy] = useState({
+        isCopy: false,
+        title: "",
+        desc: ""
+    })
     let BignoteRef = useRef(null);
 
     async function updateNote(key, newnote) {
@@ -103,7 +108,8 @@ function MainContexProvider(props) {
             ...notes, dispatch,
             activenote, setactive,
             deletenote,
-            updateNote, BignoteRef
+            updateNote, BignoteRef,
+            copynote, setcopy
         }}>
             {props.children}
         </MainContex.Provider>

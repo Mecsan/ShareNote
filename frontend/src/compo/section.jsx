@@ -24,6 +24,7 @@ function Section({ section, sectionInfo, permission }) {
     let [tid, setid] = useState(null);
 
     let updateSectionDb = async (ddata) => {
+        console.log("first")
 
         let res = await fetch(sectionApi + section, {
             method: "PUT",
@@ -46,24 +47,22 @@ function Section({ section, sectionInfo, permission }) {
             })
         }
     }
-    let updatesection = async () => {
-        if (!permission) return;
-        let newsection = {
-            title: title,
-            desc: desc
-        }
-
-        // debouncing
-        dispatchLink({ type: "UP_LINK", key: sectionInfo._id, payload: newsection });
-
-        clearTimeout(tid);
-        let some = setTimeout(() => updateSectionDb(newsection), 1500);
-        setid(some);
-    }
 
     useEffect(() => {
-        if (title && desc && ((title != sectionInfo?.title) || (desc != sectionInfo?.desc))) {
-            updatesection();
+        let some
+        if (permission && title && desc && ((title != sectionInfo?.title) || (desc != sectionInfo?.desc))) {
+            let newsection = {
+                title: title,
+                desc: desc
+            }
+
+            dispatchLink({ type: "UP_LINK", key: sectionInfo._id, payload: newsection });
+
+            some = setTimeout(() => updateSectionDb(newsection), 1500);
+        }
+
+        return () => {
+            clearTimeout(some);
         }
     }, [title, desc])
 
@@ -147,13 +146,13 @@ function Section({ section, sectionInfo, permission }) {
                             }
                             {
                                 auth ? <div className="copy-btn" onClick={copySection}>
-                                    <Tooltip title='copy note'>
+                                    <Tooltip title='copy section'>
                                         <ContentCopyIcon style={{ cursor: "pointer" }} />
                                     </Tooltip>
                                 </div> : null
                             }
                             <div className="share-btn" onClick={() => copyLink(location.href)}>
-                                <Tooltip title='copy section'>
+                                <Tooltip title='copy link'>
                                     <LinkIcon style={{ cursor: "pointer" }} />
                                 </Tooltip>
                             </div>

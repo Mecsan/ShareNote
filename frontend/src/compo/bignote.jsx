@@ -14,7 +14,6 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { MainContex } from '../contex/mainContex'
 import { useNavigate } from 'react-router-dom';
 import TextareaAutosize from 'react-textarea-autosize';
-import { noteApi } from '../config/apis';
 import toast from 'react-hot-toast';
 import { AuthContex } from '../contex/AuthContex';
 
@@ -24,52 +23,15 @@ import { AuthContex } from '../contex/AuthContex';
 
 // for adding new note, component should renderd with some default values
 
-function Bignote({ section, isadd, permission }) {
+function Bignote({ addnote, section, isadd, permission }) {
   const navigate = useNavigate();
 
-  const { dispatch, deletenote, BignoteRef, updateNote, activenote } = useContext(MainContex);
+  const { deletenote, BignoteRef, updateNote, activenote, setcopy } = useContext(MainContex);
 
   const { auth } = useContext(AuthContex)
   let [desc, setdesc] = useState("");
   let [title, settitle] = useState("");
 
-
-  let addnote = async () => {
-    let tid = toast.loading("adding note");
-
-    let note = {
-      title: title == "" ? "undefined" : title,
-      desc: desc == "" ? "undefined" : desc,
-    }
-
-    let res = await fetch(noteApi + section, {
-      method: 'POST',
-      headers: {
-        'Content-Type': "application/json",
-        'Authorization': localStorage.getItem('noteAuth')
-      },
-      body: JSON.stringify(note)
-    })
-
-    let data = await res.json();
-    if (data.success) {
-      dispatch({
-        type: "ADD_NOTE",
-        payload: data.msg
-      })
-      toast.success('note added', {
-        id: tid,
-        style: {
-          borderRadius: '10px',
-          background: '#333',
-          color: '#fff',
-        },
-      });
-    } else {
-      toast.error("some error occured", { id: tid })
-    }
-    BignoteRef.current.classList.remove('back_active');
-  }
 
   let closeBig = () => {
     BignoteRef.current.classList.remove('back_active');
@@ -89,7 +51,13 @@ function Bignote({ section, isadd, permission }) {
 
   const handleSubmit = async () => {
     if (!permission) return
-    if (isadd) addnote();
+    if (isadd) {
+      let note = {
+        title: title == "" ? "undefined" : title,
+        desc: desc == "" ? "undefined" : desc,
+      }
+      addnote(note);
+    }
     else {
       let newnote = {
         title: title,
@@ -111,6 +79,34 @@ function Bignote({ section, isadd, permission }) {
     }
   }
 
+
+  const copyNote = async (note) => {
+    setcopy({
+      isCopy: true,
+      title: note.title,
+      desc: note.desc
+    })
+    const tid = toast.success('Note has been copied', {
+      duration: Infinity,
+      position: "top-right"
+    });
+    setTimeout(() => {
+      toast.dismiss(tid);
+      toast((t) => (
+        <span>
+          Press <b> Paste </b>
+          button in section page, in which you want to add this note
+          <button className='close-toast' onClick={() => toast.dismiss(t.id)}>
+            ok
+          </button>
+        </span>
+      ), {
+        duration: 30000,
+        position: 'top-right'
+      });
+    }, 2000);
+  }
+  
   return (
 
     <div ref={BignoteRef} onClick={(e) => {
@@ -173,7 +169,9 @@ function Bignote({ section, isadd, permission }) {
                 {isadd ? null :
                   <>
                     {
-                      auth ? <div className="copy-btn">
+                      auth ? <div className="copy-btn" onClick={() => {
+                        copyNote(activenote)
+                      }}>
                         <Tooltip title='copy note'>
                           <ContentCopyIcon style={{ cursor: "pointer" }} />
                         </Tooltip>

@@ -21,7 +21,7 @@ function Note() {
     const debounceDelay = 2000;
 
     const { auth } = useContext(AuthContex)
-    const { deletenote, updateNote } = useContext(MainContex)
+    const { deletenote, updateNote, setcopy } = useContext(MainContex)
 
     const { noteId } = useParams();
 
@@ -42,6 +42,33 @@ function Note() {
         } else {
             navigate("/123/page");
         }
+    }
+
+    const copyNote = async (note) => {
+        setcopy({
+            isCopy: true,
+            title: note.title,
+            desc: note.desc
+        })
+        const tid = toast.success('Note has been copied', {
+            duration: Infinity,
+            position: "top-right"
+        });
+        setTimeout(() => {
+            toast.dismiss(tid);
+            toast((t) => (
+                <span>
+                    Press <b> Paste </b>
+                    button in section page, in which you want to add this note
+                    <button className='close-toast' onClick={() => toast.dismiss(t.id)}>
+                        ok
+                    </button>
+                </span>
+            ), {
+                duration: 30000,
+                position: 'top-right'
+            });
+        }, 2000);
     }
 
     let copyLink = (link) => {
@@ -96,7 +123,7 @@ function Note() {
                                         </div> : null
                                 }
                                 {
-                                    auth ? <div className="copy-btn">
+                                    auth ? <div className="copy-btn" onClick={() => copyNote(note)}>
                                         <Tooltip title='copy note'>
                                             <ContentCopyIcon style={{ cursor: "pointer" }} />
                                         </Tooltip>
