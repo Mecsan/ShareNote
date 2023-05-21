@@ -6,14 +6,14 @@ import { AuthContex } from '../contex/AuthContex';
 
 function User() {
 
-    let { user, setuser } = useContext(AuthContex)
+    let { user, setuser,auth } = useContext(AuthContex)
 
     let changeDate = async () => {
 
         let res = await fetch(setting, {
             method: "POST",
             headers: {
-                'authorization': localStorage.getItem('noteAuth'),
+                'authorization': auth,
                 'content-type': "application/json"
             },
             body: JSON.stringify({ isDate: !user.isDate })
@@ -28,7 +28,7 @@ function User() {
         let res = await fetch(setting, {
             method: "POST",
             headers: {
-                'authorization': localStorage.getItem('noteAuth'),
+                'authorization': auth,
                 'content-type': "application/json"
             },
             body: JSON.stringify({ isDesc: !user.isDesc })
@@ -39,7 +39,7 @@ function User() {
         }
     }
 
-    
+
     return (
         <>
             {user &&

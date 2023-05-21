@@ -14,6 +14,7 @@ import {
 } from '@mui/material'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import toast from 'react-hot-toast';
+ 
 function Note() {
 
     const navigate = useNavigate();
@@ -36,11 +37,12 @@ function Note() {
         }
         const res = await fetch(noteApi + key, option);
         const data = await res.json();
+        console.log(data)
         if (data.success) {
             setnote(data.msg.data);
             setpermission(data.msg.permission);
         } else {
-            navigate("/123/page");
+            navigate("/123/pagenotefound");
         }
     }
 
@@ -65,7 +67,7 @@ function Note() {
                     </button>
                 </span>
             ), {
-                duration: 30000,
+                duration: 10000,
                 position: 'top-right'
             });
         }, 2000);

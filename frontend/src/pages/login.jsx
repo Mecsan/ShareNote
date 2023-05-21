@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 
 function Login() {
   let navigate = useNavigate();
-  const {auth, setauth } = useContext(AuthContex)
+  const { auth, setauth } = useContext(AuthContex)
 
   let [mail, setmail] = useState({
     text: "",
@@ -104,43 +104,43 @@ function Login() {
 
   return (
     <div className="user_ex">
-      {auth && <Navigate to="/"/>}
-      <div className="user_back">
+      {auth ? <Navigate to="/" /> :
+        <div className="user_back">
 
+          <div className="formcontainer">
 
-        <div className="formcontainer">
+            <div className="loginform">
+              <h2>Log in to your  account</h2>
+              <form autoComplete='off' id="myform" onSubmit={handleLogin}>
+                <div className="form_item">
+                  <label htmlFor="mail">Email</label>
+                  <input type="text" name="mail" id="mail"
+                    onChange={(e) => validate_and_set_mail(e.target.value)}
+                    value={mail.text} className={mail.err && 'err'}
+                  />
+                  {mail.err ? <span className='err_msg'>{mail.err}</span> : null}
+                </div>
+                <div className="form_item">
+                  <label htmlFor="password">Password</label>
+                  <input type="password" name="password" id="password"
+                    onChange={(e) => validate_and_set_password(e.target.value)
+                    }
+                    className={password.err && 'err'}
+                    value={password.text} />
+                  {password.err ? <span className='err_msg'>{password.err}</span> : null}
+                </div>
+                <input type="submit" value="Login" />
+              </form>
+              <div className="link">
+                Don't have an account?
+                <Link to="/signup"> Sign up</Link>
 
-          <div className="loginform">
-            <h2>Log in to your  account</h2>
-            <form autoComplete='off' id="myform" onSubmit={handleLogin}>
-              <div className="form_item">
-                <label htmlFor="mail">Email</label>
-                <input type="text" name="mail" id="mail"
-                  onChange={(e) => validate_and_set_mail(e.target.value)}
-                  value={mail.text} className={mail.err && 'err'}
-                />
-                {mail.err ? <span className='err_msg'>{mail.err}</span> : null}
               </div>
-              <div className="form_item">
-                <label htmlFor="password">Password</label>
-                <input type="password" name="password" id="password"
-                  onChange={(e) => validate_and_set_password(e.target.value)
-                  }
-                  className={password.err && 'err'}
-                  value={password.text} />
-                {password.err ? <span className='err_msg'>{password.err}</span> : null}
-              </div>
-              <input type="submit" value="Login" />
-            </form>
-            <div className="link">
-              Don't have an account?
-              <Link to="/signup"> Sign up</Link>
-
             </div>
-          </div>
 
+          </div>
         </div>
-      </div>
+      }
     </div>
 
 

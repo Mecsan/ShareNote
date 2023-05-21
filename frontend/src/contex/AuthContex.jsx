@@ -11,12 +11,13 @@ export default function AuthProvider(props) {
     const [loading, setloading] = useState(false);
 
     let fetchUserinfo = async () => {
-        
-        if(!auth){
+
+        if (!auth) {
             setuser(null);
+            setauth(null);
             return;
         }
-        
+
         // validating the token 
         setloading(true)
 
@@ -30,15 +31,16 @@ export default function AuthProvider(props) {
             setuser(data.msg);
         } else {
             localStorage.removeItem('noteAuth');
+            setauth(null)
         }
-        setloading(false)
+        setloading(false);
     }
 
     useEffect(() => {
         fetchUserinfo();
     }, [auth])
     return (
-        <AuthContex.Provider value={{ auth, setauth, user, setuser,loading }}>
+        <AuthContex.Provider value={{ auth, setauth, user, setuser, loading }}>
             {props.children}
         </AuthContex.Provider>
     )

@@ -27,6 +27,9 @@ function App() {
               {
                 <Router>
                   <Routes>
+                    <Route path='/signup' element={<Signin />} />
+                    <Route path='/login' element={<Login />} />
+
                     <Route path="/" element={
                       <>
                         <Auth />
@@ -36,10 +39,7 @@ function App() {
                       <Route path='/:section' element={<Section />} />
                       <Route path='/note/:noteId' element={<Note />} />
                     </Route>
-
-                    <Route path='/signup' element={<Signin />} />
-                    <Route path='/login' element={<Login />} />
-
+                    
                     <Route path='*' element={<Notfound />} />
                   </Routes>
                 </Router>

@@ -57,10 +57,11 @@ function Section() {
         setsectionInfo(data.msg.section)
         setpermission(data.msg.permission)
       } else {
-        // navigate("/123/pagenotfound");
+        navigate("/123/pagenotfound");
       }
-      load.current.complete();
-
+      if (load.current) {
+        load.current.complete();
+      }
     }
 
     fetchsection();
@@ -74,7 +75,7 @@ function Section() {
       method: 'POST',
       headers: {
         'Content-Type': "application/json",
-        'Authorization': localStorage.getItem('noteAuth')
+        'Authorization': auth
       },
       body: JSON.stringify(note)
     })
@@ -85,7 +86,7 @@ function Section() {
         type: "ADD_NOTE",
         payload: data.msg
       })
-      toast.success('note pasted', {
+      toast.success('note added', {
         id: tid,
         style: {
           borderRadius: '10px',

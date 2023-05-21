@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 
 function Signin() {
 
-  let {auth, setauth } = useContext(AuthContex);
+  let { auth, setauth } = useContext(AuthContex);
 
   let navigate = useNavigate();
 
@@ -87,11 +87,6 @@ function Signin() {
     return true;
   }
 
-  useEffect(() => {
-    if (localStorage.getItem('noteAuth')) {
-      navigate("/");
-    }
-  }, [])
 
   let handleSignup = async (e) => {
     let three = validate_and_set_mail(e.target.mail.value)
@@ -145,45 +140,45 @@ function Signin() {
   }
   return (
     <div className="formcontainer">
-      {auth && <Navigate to="/"/>}
-      <div className="loginform">
-        <h2>Create an account</h2>
-        <form autoComplete='off' id="myform" onSubmit={handleSignup}>
-          <div className="form_item">
-            <label htmlFor="name">Name</label>
-            <input type="text" name="name" id="name" className={name.err && 'err'} value={name.text}
-              onChange={(e) => validate_and_set_name(e.target.value)} />
-            {name.err ? <span className='err_msg'>{name.err}</span> : null}
+      {auth ? <Navigate to="/" /> :
+        <div className="loginform">
+          <h2>Create an account</h2>
+          <form autoComplete='off' id="myform" onSubmit={handleSignup}>
+            <div className="form_item">
+              <label htmlFor="name">Name</label>
+              <input type="text" name="name" id="name" className={name.err && 'err'} value={name.text}
+                onChange={(e) => validate_and_set_name(e.target.value)} />
+              {name.err ? <span className='err_msg'>{name.err}</span> : null}
+
+            </div>
+            <div className="form_item">
+              <label htmlFor="mail">Email</label>
+              <input type="email" name="mail" id="mail" className={mail.err && 'err'} value={mail.text}
+                onChange={(e) => validate_and_set_mail(e.target.value)} />
+              {mail.err ? <span className='err_msg'>{mail.err}</span> : null}
+            </div>
+            <div className="form_item">
+              <label htmlFor="password">Password</label>
+              <input type="password" name="password" id="password" className={password.err && 'err'} value={password.text} onChange={(e) => validate_and_set_password(e.target.value)} />
+              {password.err ? <span className='err_msg'>{password.err}</span> : null}
+
+            </div>
+            <div className="form_item">
+              <label htmlFor="cpassword">confirm Password</label>
+              <input type="password" name="cpassword" id="cpassword" className={cpassword.err && 'err'} value={cpassword.text} onChange={(e) => validate_and_set_cpassword(e.target.value)} />
+              {cpassword.err ? <span className='err_msg'>{cpassword.err}</span> : null}
+
+            </div>
+            <input type="submit" value="Signup" />
+
+          </form>
+          <div className="link">
+            Have an account?
+            <Link to="/login"> Login</Link>
 
           </div>
-          <div className="form_item">
-            <label htmlFor="mail">Email</label>
-            <input type="email" name="mail" id="mail" className={mail.err && 'err'} value={mail.text}
-              onChange={(e) => validate_and_set_mail(e.target.value)} />
-            {mail.err ? <span className='err_msg'>{mail.err}</span> : null}
-          </div>
-          <div className="form_item">
-            <label htmlFor="password">Password</label>
-            <input type="password" name="password" id="password" className={password.err && 'err'} value={password.text} onChange={(e) => validate_and_set_password(e.target.value)} />
-            {password.err ? <span className='err_msg'>{password.err}</span> : null}
-
-          </div>
-          <div className="form_item">
-            <label htmlFor="cpassword">confirm Password</label>
-            <input type="password" name="cpassword" id="cpassword" className={cpassword.err && 'err'} value={cpassword.text} onChange={(e) => validate_and_set_cpassword(e.target.value)} />
-            {cpassword.err ? <span className='err_msg'>{cpassword.err}</span> : null}
-
-          </div>
-          <input type="submit" value="Signup" />
-
-        </form>
-        <div className="link">
-          Have an account?
-          <Link to="/login"> Login</Link>
-
         </div>
-      </div>
-
+      }
     </div>
   )
 }

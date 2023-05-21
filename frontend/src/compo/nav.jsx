@@ -18,7 +18,7 @@ function Nav() {
 
     const { setactive, dispatch } = useContext(MainContex);
 
-    const { setauth } = useContext(AuthContex);
+    const { setauth, auth } = useContext(AuthContex);
 
     const { links, dispatchLink } = useContext(LinkContex);
 
@@ -51,7 +51,7 @@ function Nav() {
 
         let res = await fetch(sectionApi, {
             headers: {
-                'Authorization': localStorage.getItem('noteAuth')
+                'Authorization': auth
             }
         });
         let data = await res.json();
@@ -90,7 +90,7 @@ function Nav() {
             method: "POST",
             headers: {
                 'Content-Type': "application/json",
-                'Authorization': localStorage.getItem('noteAuth')
+                'Authorization': auth
             },
             body: JSON.stringify({ title: add })
         })

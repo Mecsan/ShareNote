@@ -29,7 +29,7 @@ function Section({ section, sectionInfo, permission }) {
         let res = await fetch(sectionApi + section, {
             method: "PUT",
             headers: {
-                'authorization': localStorage.getItem('noteAuth'),
+                'authorization': auth,
                 'Content-Type': "application/json"
             },
             body: JSON.stringify(ddata)
@@ -75,7 +75,7 @@ function Section({ section, sectionInfo, permission }) {
             let res = await fetch(sectionApi + section, {
                 method: "DELETE",
                 headers: {
-                    'authorization': localStorage.getItem('noteAuth')
+                    'authorization': auth
                 }
             })
             let data = await res.json();

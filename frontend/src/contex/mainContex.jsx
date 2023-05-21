@@ -49,7 +49,7 @@ function MainContexProvider(props) {
         let res = await fetch(`${noteApi}${key}`, {
             method: "PUT",
             headers: {
-                'authorization': localStorage.getItem('noteAuth'),
+                'authorization': auth,
                 'Content-Type': "application/json"
             },
             body: JSON.stringify(newnote)
@@ -81,7 +81,7 @@ function MainContexProvider(props) {
             let res = await fetch(`${noteApi}${key}`, {
                 method: "DELETE",
                 headers: {
-                    'authorization': localStorage.getItem('noteAuth')
+                    'authorization': auth
                 }
             })
             let data = await res.json();
@@ -105,7 +105,7 @@ function MainContexProvider(props) {
 
     return (
         <MainContex.Provider value={{
-            ...notes, dispatch,
+            ...notes,dispatch,
             activenote, setactive,
             deletenote,
             updateNote, BignoteRef,

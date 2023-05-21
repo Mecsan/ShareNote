@@ -101,7 +101,7 @@ function Bignote({ addnote, section, isadd, permission }) {
           </button>
         </span>
       ), {
-        duration: 30000,
+        duration: 10000,
         position: 'top-right'
       });
     }, 2000);
