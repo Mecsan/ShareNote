@@ -1,7 +1,9 @@
 import React, { useReducer } from 'react'
+import { useContext } from 'react';
 import { createContext, useState, useRef } from 'react'
 import toast from 'react-hot-toast';
 import { noteApi } from '../config/apis';
+import { AuthContex } from './AuthContex';
 export const MainContex = createContext();
 
 function MainContexProvider(props) {
@@ -41,6 +43,8 @@ function MainContexProvider(props) {
         desc: ""
     })
     let BignoteRef = useRef(null);
+
+    const { auth } = useContext(AuthContex)
 
     async function updateNote(key, newnote) {
 
@@ -105,7 +109,7 @@ function MainContexProvider(props) {
 
     return (
         <MainContex.Provider value={{
-            ...notes,dispatch,
+            ...notes, dispatch,
             activenote, setactive,
             deletenote,
             updateNote, BignoteRef,
