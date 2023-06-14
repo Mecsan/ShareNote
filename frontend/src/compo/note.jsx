@@ -5,19 +5,13 @@ import { AuthContex } from '../contex/AuthContex';
 
 function Note({ note, setisadd, permission }) {
 
-    const { BignoteRef, setactive, deletenote } = useContext(MainContex);
+    const { setactive, deletenote, openBig } = useContext(MainContex);
     const { user } = useContext(AuthContex)
 
     let OpenBignote = (e) => {
         setisadd(false);
-        if (e.target.classList.contains('note_desc') ||
-            e.target.classList.contains('note_title') ||
-            e.target.classList.contains('note_top') ||
-            e.target.classList.contains('note') ||
-            e.target.classList.contains('date')) {
-            setactive(note);
-            BignoteRef.current.classList.add('back_active')
-        }
+        setactive(note);
+        openBig();
     }
 
 
@@ -31,8 +25,9 @@ function Note({ note, setisadd, permission }) {
                     permission ?
                         <div className="btn_grp">
                             {
-                                <div className="small_dlr" onClick={() => {
+                                <div className="small_dlr" onClick={(e) => {
                                     if (!permission) return
+                                    e.stopPropagation();
                                     deletenote(note._id)
                                 }}>
                                     <DeleteOutlineIcon style={{ color: "red" }} />

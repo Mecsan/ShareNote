@@ -37,12 +37,21 @@ function MainContexProvider(props) {
     })
 
     let [activenote, setactive] = useState(null);
+
+    // to copy a note
     let [copynote, setcopy] = useState({
         isCopy: false,
         title: "",
         desc: ""
     })
-    let BignoteRef = useRef(null);
+
+    const openBig = () => {
+        document.querySelector(".bigNoteRef").classList.add('back_active')
+    }
+
+    const closeBig = () => {
+        document.querySelector(".bigNoteRef").classList.remove('back_active')
+    }
 
     const { auth } = useContext(AuthContex)
 
@@ -112,8 +121,9 @@ function MainContexProvider(props) {
             ...notes, dispatch,
             activenote, setactive,
             deletenote,
-            updateNote, BignoteRef,
-            copynote, setcopy
+            updateNote,
+            copynote, setcopy,
+            openBig, closeBig
         }}>
             {props.children}
         </MainContex.Provider>

@@ -26,16 +26,12 @@ import { AuthContex } from '../contex/AuthContex';
 function Bignote({ addnote, section, isadd, permission }) {
   const navigate = useNavigate();
 
-  const { deletenote, BignoteRef, updateNote, activenote, setcopy } = useContext(MainContex);
+  const { deletenote, updateNote, activenote, setactive, setcopy, closeBig } = useContext(MainContex);
 
   const { auth } = useContext(AuthContex)
   let [desc, setdesc] = useState("");
   let [title, settitle] = useState("");
 
-
-  let closeBig = () => {
-    BignoteRef.current.classList.remove('back_active');
-  }
   let copyLink = (link) => {
     toast.success("copied")
     navigator.clipboard.writeText(link);
@@ -65,7 +61,7 @@ function Bignote({ addnote, section, isadd, permission }) {
       }
       const data = await updateNote(activenote?._id, newnote);
       if (data?.success) {
-        BignoteRef.current.classList.remove('back_active');
+        closeBig()
       }
     }
   }
@@ -74,7 +70,7 @@ function Bignote({ addnote, section, isadd, permission }) {
     if (!permission) return;
     const data = await deletenote(activenote?._id)
     if (data?.success) {
-      BignoteRef.current.classList.remove('back_active');
+      closeBig()
       navigate("/" + section);
     }
   }
@@ -106,14 +102,17 @@ function Bignote({ addnote, section, isadd, permission }) {
       });
     }, 2000);
   }
-  
+
+  const handleBlur = (e) => {
+    if (e.target.classList.contains("back")) {
+      closeBig();
+      setactive(null)
+    }
+
+  }
   return (
 
-    <div ref={BignoteRef} onClick={(e) => {
-      if (e.target.classList.contains("back")) {
-        closeBig();
-      }
-    }} className="back"
+    <div onClick={handleBlur} className="bigNoteRef back"
     >
 
       {activenote &&

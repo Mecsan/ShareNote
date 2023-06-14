@@ -15,7 +15,7 @@ import toast from 'react-hot-toast';
 
 function Section() {
 
-  const { notes, dispatch, BignoteRef, setactive, copynote, setcopy } = useContext(MainContex);
+  const { notes, dispatch,openBig, setactive, copynote, setcopy,closeBig } = useContext(MainContex);
   const { auth } = useContext(AuthContex)
 
   let { section } = useParams();
@@ -35,7 +35,7 @@ function Section() {
   let openAddnote = () => {
     setisadd(true);
     setactive({ title: "", desc: "" });
-    BignoteRef.current.classList.add('back_active');
+    openBig();
   }
 
   useEffect(() => {
@@ -98,8 +98,7 @@ function Section() {
       toast.error("some error occured", { id: tid })
     }
 
-    BignoteRef.current.classList.remove('back_active');
-
+    closeBig();
   }
 
   const handlePaste = () => {

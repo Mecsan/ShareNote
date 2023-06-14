@@ -24,8 +24,6 @@ function Nav() {
 
     let Navigate = useNavigate();
 
-    let navref = useRef(null);
-
     let handleLogout = () => {
         let ok = confirm("are u sure want to logout?");
 
@@ -69,7 +67,7 @@ function Nav() {
     let [add, setadd] = useState("");
 
     let opennav = () => {
-        navref?.current?.classList?.toggle('close');
+        document.querySelector(".nav").classList.toggle('close')
     }
 
     let addsection = async () => {
@@ -121,7 +119,7 @@ function Nav() {
                 opennav();
             }
         }}>
-            <div ref={navref} className='nav'>
+            <div   className='nav'>
                 <div className="overlay"></div>
                 <div className="opennav" onClick={opennav}>
                     <div></div>
