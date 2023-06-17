@@ -1,7 +1,15 @@
 import React, { useContext } from 'react'
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, NavLink, Outlet } from 'react-router-dom';
 import { AuthContex } from '../contex/AuthContex'
 import Nav from './nav';
+
+const SignUpButton = () => {
+    return (
+        <div className="sign-up-btn">
+            <NavLink to='signup'>Signup</NavLink>
+        </div>
+    )
+}
 
 function Auth() {
     let { auth } = useContext(AuthContex);
@@ -9,7 +17,7 @@ function Auth() {
         <>
             {
                 auth ?
-                    <Nav /> : null
+                    <Nav /> : <SignUpButton />
             }
             <Outlet />
         </>
