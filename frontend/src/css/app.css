@@ -6,27 +6,35 @@
 }
 
 :root {
-    --primary-color: rgb(84, 105, 212)
+    --primary-color: rgb(84, 105, 212);
+
 }
 
 body {
     overflow-x: hidden;
 }
 
-
-.user_back {
-    height: 100vh;
+.main {
+    display: flex;
     width: 100%;
+    max-height: 100vh;
 }
 
-.user_ex {
+.right {
+    /* margin-left: 220px; */
     height: 100vh;
     width: 100%;
+    background: whitesmoke;
+    overflow: auto;
 }
+
+
+/* ///////////////////////////////////////////////////////// */
+/*login & signup form styling  */
 
 .formcontainer {
     width: 100%;
-    height: 75vh;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -63,7 +71,7 @@ form input {
 }
 
 form input[type='submit'] {
-    background-color: rgb(84, 105, 212);
+    background-color: var(--primary-color);
     border: none;
     color: white;
     cursor: pointer;
@@ -75,7 +83,7 @@ input[type='submit']:hover {
 }
 
 form input:focus {
-    outline-color: rgb(84, 105, 212);
+    outline-color: var(--primary-color);
 }
 
 .form_item label {
@@ -83,13 +91,13 @@ form input:focus {
 }
 
 .loginform h2 {
-    color: rgb(84, 105, 212);
+    color: var(--primary-color);
     font-weight: 900;
 }
 
 .loginform a {
     text-decoration: none;
-    color: rgb(84, 105, 212);
+    color: var(--primary-color);
 }
 
 .loginform .link {
@@ -127,25 +135,18 @@ form input:focus {
 /* ///////////////////////////////////////////////////////////////// */
 /* css for navbar */
 
+
+
 .opennav {
+    cursor: pointer;
     z-index: 20;
     flex-direction: column;
     gap: 10px;
-    transform: scale(0.35);
     cursor: pointer;
     position: fixed;
-    top: 0px;
-    left: -5px;
+    top: 5px;
+    left: 10px;
     display: none;
-    transition: all 0.6s;
-}
-
-.opennav div {
-    width: 70px;
-    background-color: #5469d4;
-    height: 10px;
-    border-radius: 4px;
-    transition: all 0.6s;
 }
 
 a {
@@ -161,110 +162,62 @@ a {
     flex-direction: column;
     background-color: rgb(252, 252, 252);
     padding-top: 5px;
-    width: 220px;
     font-size: 1.4rem;
     margin: 0px;
     padding: 10px;
+    transition: all 0.5s;
 }
 
 .flex li {
     list-style: none;
 }
 
-.flex li a:hover,
-.closenav:hover {
+.flex li a:hover {
     color: rgb(4, 4, 4);
 }
 
-.opennav:hover div {
-    background-color: black;
+
+.nav .navbar {
+    transition: left 0.5s;
 }
 
-
-.nav {
-    color: white;
+.overlay {
+    display: none;
 }
 
 .nav .navbar {
-    transition: all 0.6s;
-    position: fixed;
-    left: 0px;
-    opacity: 1;
-}
-
-.close .opennav {
-    /* transform: translateX(150px) scale(0.35);
-    top: 10px; */
-    display: none !important;
-}
-
-.close .flex {
-    height: 100vh;
-}
-
-.close .opennav div:first-child {
-    transform: rotateZ(45deg) translateY(20px);
-}
-
-.close .opennav div:nth-child(3) {
-    transform: rotateZ(-45deg) translateY(-20px);
-}
-
-.opennav div:nth-child(2) {
-    transition: 0s all;
-}
-
-.close .opennav div:nth-child(2) {
-    height: 0px;
+    width: 220px;
 }
 
 @media screen and (max-width:700px) {
 
-
     .opennav {
-        display: flex;
-    }
-
-    .close .overlay {
-        width: 100vw;
-        position: fixed;
-        height: 100vh;
-        background-color: rgba(1, 0, 0, 0.367);
-        backdrop-filter: blur(1.5px);
-        transition: all 1s;
+        display: block;
     }
 
     .nav .navbar {
+        position: fixed;
         left: -220px;
-        opacity: 0;
     }
 
+    .open-nav-bar .overlay {
+        display: flex;
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(1, 0, 0, 0.367);
+        backdrop-filter: blur(1.5px);
+    }
+
+    .open-nav-bar .navbar {
+        left: 0px;
+    }
 }
 
-.close .navbar {
-    opacity: 1;
-    left: 0px;
-}
-
-
-/* css for sections? */
-
-.main {
-    display: flex;
-}
-
-.right {
-    margin-left: 220px;
-    flex: 1;
-    min-height: 100vh;
-    background: whitesmoke;
-}
-
+/* css for section page? */
 
 .section {
     max-width: 700px;
-    /* margin-left:min(100px,10%);
-    margin-top: 30px; */
     margin: 25px;
 }
 
@@ -275,9 +228,6 @@ a {
     display: flex;
     max-width: 600px;
 }
-
-
-
 
 .date {
     margin-bottom: 10px;
@@ -297,30 +247,40 @@ a {
     outline: 0px;
 }
 
-/* add note */
+.add_any_section {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
+
+.note-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 500px;
+}
+
+.owner {
+    font-size: 20px;
+    font-weight: 300;
+    padding-bottom: 4px;
+    border-bottom: 10px var(--primary-color) solid;
+    width: fit-content;
+    margin-bottom: 15px;
+}
+
+/* /////////////////////////////////////// */
+/* notes*/
 .open_note {
     padding: 20px;
     display: flex;
     align-items: center;
 }
 
-/* @media screen and (max-width:700px) {
-    .open_note h3 {
-        display: none;
-    }
-
-
-    .open_note {
-        position: absolute;
-        bottom: 40px;
-        z-index: 200;
-        right: 40px;
-        scale: 2;
-    }
-} */
-
-.notes,
-.notis {
+.notes {
     padding: 20px;
     columns: 3;
     max-width: 1000px;
@@ -334,28 +294,6 @@ a {
     overflow: hidden;
     transition: all 0.5s;
     margin-bottom: 20px;
-
-
-}
-
-.add_any_section {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    justify-content: center;
-    align-items: center;
-    height: 90vh;
-}
-
-@media screen and (min-width:700px) {
-
-    .note:hover {
-        box-shadow: 0px 0px 10px black;
-        transform: translateY(0px) scale(1.01);
-    }
-
-
-
 }
 
 .note_title {
@@ -367,18 +305,57 @@ a {
     justify-content: space-between;
 }
 
+.note_title,
+.note_desc {
+    word-break: break-all;
+}
+
+@media screen and (min-width:700px) {
+
+    .note:hover {
+        box-shadow: 0px 0px 10px black;
+        transform: translateY(0px) scale(1.01);
+    }
+}
 
 @media screen and (max-width:950px) {
 
-    .notes,
-    .notis {
+    .notes {
         columns: 2;
         padding: 10px;
     }
 }
 
+@media screen and (max-width:450px) {
+
+    .notes {
+        padding: 5px;
+    }
+
+    .note {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .note .date {
+        margin-bottom: 0px;
+        font-size: 0.8rem;
+    }
+
+    .note_desc {
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width:350px) {
+    .notes {
+        padding: 5px;
+        columns: 1;
+    }
+}
 
 
+/* //////////////////////////////////////////////////////// */
 /* big note? */
 
 .big_title {
@@ -395,18 +372,6 @@ a {
     overflow: hidden;
     padding: 60px 40px 20px 40px;
     min-height: 66vh;
-}
-
-@media screen and (max-width:700px) {
-    .right {
-        margin-left: 0px;
-    }
-
-    .bignote {
-        padding: 20px;
-        padding-top: 40px;
-    }
-
 }
 
 textarea {
@@ -454,7 +419,6 @@ textarea:focus {
     right: 10px;
 }
 
-
 .big_back {
     position: absolute;
     top: 20px;
@@ -478,37 +442,22 @@ textarea:focus {
     padding-top: 10px;
 }
 
-.note_title,
-.note_desc {
-    word-break: break-all;
-}
-
 .big_btn_grp {
     display: flex;
     gap: 10px;
 }
 
+@media screen and (max-width:700px) {
+
+    .bignote {
+        padding: 20px;
+        padding-top: 40px;
+    }
+
+}
+
 
 @media screen and (max-width:450px) {
-
-    .notes,
-    .notis {
-        padding: 5px;
-    }
-
-    .note {
-        padding: 15px;
-        margin-bottom: 15px;
-    }
-
-    .note .date {
-        margin-bottom: 0px;
-        font-size: 0.8rem;
-    }
-
-    .note_desc {
-        font-size: 16px;
-    }
 
     .bignote {
         min-width: 100%;
@@ -546,14 +495,6 @@ textarea:focus {
 
 }
 
-@media screen and (max-width:350px) {
-    .notes {
-        padding: 5px;
-        columns: 1;
-    }
-
-}
-
 .err {
     border-color: red;
     border-width: 1px;
@@ -575,11 +516,13 @@ textarea:focus {
     background-color: rgba(255, 0, 0, 0.08);
 }
 
+/* ///////////////////// */
+/* user styles */
+
 .user {
     color: black;
     font-size: 1rem;
     padding: 20px 15px;
-
 }
 
 .name {
@@ -605,45 +548,14 @@ textarea:focus {
 
 .small {
     display: flex;
-
     transform: scale(0.6) translateY(2px);
 }
 
-.noti_icon {
-    cursor: pointer;
-    border: 1px solid blue;
-    width: fit-content;
-    padding: 3px;
-    margin-top: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-}
-
-
-/* reminder */
-
-.reminder {
-    margin-top: 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.choice {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.set {
-    display: flex;
-    align-items: center;
-}
 
 .save {
     display: flex;
     align-items: center;
-    background-color: #5469d4;
+    background-color: var(--primary-color);
     color: white;
     transform: scale(0.9);
     cursor: pointer;
@@ -654,12 +566,11 @@ textarea:focus {
 }
 
 .save:hover {
-    background-color: #5469d4;
+    background-color: var(--primary-color);
     transform: scale(1);
-
 }
 
-
+/* home page section container */
 .section-conta {
     padding: 20px;
     display: flex;
@@ -675,9 +586,8 @@ textarea:focus {
 
 .small-section svg {
     font-size: 4rem !important;
-    fill: #5469d4;
+    fill: var(--primary-color);
 }
-
 
 .small-section {
     display: flex;
@@ -694,53 +604,8 @@ textarea:focus {
     background: white;
 }
 
-@media screen and (max-width:350px) {
-
-    .notes {
-        padding: 5px;
-    }
-
-
-
-}
-
 .btn_grp {
     display: flex;
-}
-
-.loading {
-    position: fixed;
-    top: 0px;
-    width: 100%;
-    height: 100vh;
-    background-color: rgba(198, 180, 223, 0.305);
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    font-size: 2rem;
-    font-weight: 300;
-    letter-spacing: 10px;
-    animation: loading infinite 0.5s alternate;
-    z-index: 99;
-    backdrop-filter: blur(5px);
-}
-
-@keyframes loading {
-    from {
-        background-color: rgba(77, 62, 62, 0.305);
-    }
-
-    to {
-        background-color: rgba(168, 101, 101, 0.275);
-    }
-}
-
-.msg {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    background-color: whitesmoke;
 }
 
 .right {
@@ -750,7 +615,6 @@ textarea:focus {
 .right>h2 {
     padding: 30px;
 }
-
 
 input {
     background: transparent;
@@ -774,8 +638,6 @@ input:focus {
 }
 
 
-
-
 /* not found page css  */
 .notfound {
     width: 100%;
@@ -793,19 +655,15 @@ input:focus {
     font-size: 3rem;
 }
 
-.fullmode {
-    margin: 0px;
-    padding: 20px;
-}
-
-.task-page {
+/* note page css */
+.note-page {
     padding: 35px;
     margin: 0px 10px;
     background: white;
     border-radius: 5px;
 }
 
-.task-page .date {
+.note-page .date {
     margin-bottom: 25px;
 }
 
@@ -815,22 +673,6 @@ input:focus {
 
 .task-page textarea::-webkit-scrollbar {
     display: none;
-}
-
-.owner {
-    font-size: 20px;
-    font-weight: 300;
-    padding-bottom: 4px;
-    border-bottom: 10px #5469d4 solid;
-    width: fit-content;
-    margin-bottom: 15px;
-}
-
-.note-option {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 500px;
 }
 
 .close-toast {
@@ -855,13 +697,12 @@ input:focus {
 
 .sign-up-btn a {
     color: var(--primary-color);
-
 }
 
-.sign-up-btn:hover{
+.sign-up-btn:hover {
     background: var(--primary-color);
 }
 
-.sign-up-btn:hover a{
+.sign-up-btn:hover a {
     color: whitesmoke;
 }

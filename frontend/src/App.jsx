@@ -12,7 +12,6 @@ import { AuthContex } from './contex/AuthContex'
 import Note from './pages/note'
 
 function App() {
-
   const { loading } = useContext(AuthContex)
   return (
     <>

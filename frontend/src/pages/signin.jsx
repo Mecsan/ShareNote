@@ -116,7 +116,7 @@ function Signin() {
       if (data.success) {
         localStorage.setItem('noteAuth', data.msg);
         navigate("/");
-        setauth(true);
+        setauth(data.msg);
         toast.success("Signin successfully", {
           id,
           style: {

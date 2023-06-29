@@ -15,7 +15,7 @@ import toast from 'react-hot-toast';
 
 function Section() {
 
-  const { notes, dispatch,openBig, setactive, copynote, setcopy,closeBig } = useContext(MainContex);
+  const { notes, dispatch, openBig, setactive, copynote, setcopy, closeBig } = useContext(MainContex);
   const { auth } = useContext(AuthContex)
 
   let { section } = useParams();
@@ -110,14 +110,17 @@ function Section() {
 
   return (
 
-    <div className={auth ? "right" : "right fullmode"}>
+    <div className="right">
       <LoadingBar color='#5469d4' ref={load} />
       {
         sectionInfo &&
         <>
           <Bignote addnote={addnote} permission={permission} section={section} isadd={isadd} />
 
-          <SectionIn permission={permission} section={section} sectionInfo={sectionInfo} />
+          <SectionIn
+            permission={permission}
+            section={section}
+            sectionInfo={sectionInfo} />
 
           <Divider />
 

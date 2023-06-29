@@ -9,6 +9,7 @@ import { MainContex } from '../contex/mainContex';
 import { AuthContex } from '../contex/AuthContex';
 import { LinkContex } from '../contex/LinkContex';
 import HouseIcon from '@mui/icons-material/House';
+import MenuIcon from '@mui/icons-material/Menu';
 
 import { sectionApi } from '../config/apis';
 import toast from 'react-hot-toast';
@@ -67,7 +68,7 @@ function Nav() {
     let [add, setadd] = useState("");
 
     let opennav = () => {
-        document.querySelector(".nav").classList.toggle('close')
+        document.querySelector(".nav").classList.toggle('open-nav-bar')
     }
 
     let addsection = async () => {
@@ -119,13 +120,12 @@ function Nav() {
                 opennav();
             }
         }}>
-            <div   className='nav'>
+            <div className="opennav" onClick={opennav}>
+                <MenuIcon style={{ color: "var(--primary-color)", fontSize: "2rem" }} />
+            </div>
+
+            <div className='nav'>
                 <div className="overlay"></div>
-                <div className="opennav" onClick={opennav}>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
                 <div className="navbar">
                     <ul className="flex">
                         <User opennav={opennav} />
@@ -192,7 +192,6 @@ function Nav() {
                             </ListItemButton>
                         </ListItem>
                     </ul>
-
                 </div>
             </div>
         </div>

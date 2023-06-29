@@ -14,7 +14,7 @@ import {
 } from '@mui/material'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import toast from 'react-hot-toast';
- 
+
 function Note() {
 
     const navigate = useNavigate();
@@ -108,10 +108,10 @@ function Note() {
     }, [noteId])
 
     return (
-        <div className={auth ? "right" : "right fullmode"}>
+        <div className="right" >
             {
                 note ?
-                    <div className="task-page">
+                    <div className="note-page">
                         {permission ? null : <Owner name={note.section.user.name} />}
                         <div className="title" >
                             <input name='title' disabled={permission ? false : true} value={note.title || ''} onChange={handleChange} className='f_title' type="text" />
