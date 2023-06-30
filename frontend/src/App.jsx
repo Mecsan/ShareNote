@@ -10,13 +10,14 @@ import { Toaster } from 'react-hot-toast'
 import Auth from './compo/Auth'
 import { AuthContex } from './contex/AuthContex'
 import Note from './pages/note'
+import Loading from './compo/loading'
 
 function App() {
   const { loading } = useContext(AuthContex)
   return (
     <>
       {
-        loading ? null :
+        loading ?  <Loading /> :
           <>
             <Toaster
               position="bottom-center"
@@ -38,7 +39,7 @@ function App() {
                       <Route path='/:section' element={<Section />} />
                       <Route path='/note/:noteId' element={<Note />} />
                     </Route>
-                    
+
                     <Route path='*' element={<Notfound />} />
                   </Routes>
                 </Router>

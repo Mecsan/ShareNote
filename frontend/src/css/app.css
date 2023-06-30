@@ -717,3 +717,11 @@ input:focus {
 .sign-up-btn:hover a {
     color: whitesmoke;
 }
+
+.loading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
