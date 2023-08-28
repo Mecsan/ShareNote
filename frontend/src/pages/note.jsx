@@ -32,12 +32,12 @@ function Note() {
     const [time, settime] = useState(null)
 
     const fetchNote = async (key) => {
-        let data = await getNote(key,auth);
-        if (data.success) {
+        let data = await getNote(key, auth);
+        if (data.err) {
+            navigate("/123/pagenotefound");
+        } else {
             setnote(data.msg.data);
             setpermission(data.msg.permission);
-        } else {
-            navigate("/123/pagenotefound");
         }
     }
 
@@ -76,10 +76,8 @@ function Note() {
     const handledelet = async () => {
         if (!permission) return
         const data = await deletenote(note?._id)
-        if (!data) return;
-        if (data.success) {
-            navigate("/");
-        }
+        if (!data || data.err) return;
+        navigate("/");
     }
 
     const handleChange = async (e) => {

@@ -104,11 +104,8 @@ function Signin() {
       let id = toast.loading("signing up.");
 
       let data = await signup(formData);
-      if (data.success) {
-        localStorage.setItem('noteAuth', data.msg);
-        navigate("/");
-        setauth(data.msg);
-        toast.success("Signin successfully", {
+      if (data.err) {
+        toast.error(data.err, {
           id,
           style: {
             borderRadius: '10px',
@@ -116,18 +113,20 @@ function Signin() {
             color: '#fff',
           },
         })
-      } else {
-        toast.error(data.msg, {
-          id,
-          style: {
-            borderRadius: '10px',
-            background: '#333',
-            color: '#fff',
-          },
-        })
+        return;
       }
+      localStorage.setItem('noteAuth', data.msg);
+      navigate("/");
+      setauth(data.msg);
+      toast.success("Signin successfully", {
+        id,
+        style: {
+          borderRadius: '10px',
+          background: '#333',
+          color: '#fff',
+        },
+      })
     }
-
   }
   return (
     <div className="formcontainer">

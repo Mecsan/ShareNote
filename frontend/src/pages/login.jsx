@@ -65,23 +65,9 @@ function Login() {
       }
 
       let id = toast.loading("logging in..");
-
       let data = await login(formData);
-
-      if (data.success) {
-        setauth(data.msg);
-        localStorage.setItem('noteAuth', data.msg);
-        toast.success("Login successfully", {
-          id,
-          style: {
-            borderRadius: '10px',
-            background: '#333',
-            color: '#fff',
-          }
-        })
-        navigate("/");
-      } else {
-        toast.error(data.msg, {
+      if (data.err) {
+        toast.error(data.err, {
           id,
           style: {
             borderRadius: '10px',
@@ -89,8 +75,20 @@ function Login() {
             color: '#fff',
           }
         });
+        return;
       }
 
+      setauth(data.msg);
+      localStorage.setItem('noteAuth', data.msg);
+      toast.success("Login successfully", {
+        id,
+        style: {
+          borderRadius: '10px',
+          background: '#333',
+          color: '#fff',
+        }
+      })
+      navigate("/");
     }
   }
 

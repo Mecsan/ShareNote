@@ -23,12 +23,13 @@ export default function AuthProvider(props) {
         setloading(true)
 
         let data = await verify(auth);
-        if (data.success) {
-            setuser(data.msg);
-        } else {
+        if (data.err) {
             localStorage.removeItem('noteAuth');
-            setauth(null)
+            setauth(null);
+        } else {
+            setuser(data.msg);
         }
+        
         setloading(false);
     }
 

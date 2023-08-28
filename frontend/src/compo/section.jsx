@@ -24,9 +24,8 @@ function Section({ section, sectionInfo, permission }) {
 
     let updateSectionDb = async (ddata) => {
 
-        let data = await updateSection(auth,section,ddata);
-
-        if (!data.success) {
+        let data = await updateSection(auth, section, ddata);
+        if (data.err) {
             toast.error("something went wrong", {
                 style: {
                     borderRadius: '10px',
@@ -61,19 +60,18 @@ function Section({ section, sectionInfo, permission }) {
         let ok = confirm("are u sure want to delete section?");
         if (ok) {
             let tid = toast.loading("deleting");
-            let data = await deleteSection(auth,section);
-            if (data.success) {
-                dispatchLink({ type: "DLT_LINK", key: data.msg });
-                navigate("/");
-                toast.success("section deleted", {
-                    id: tid,
-                    style: {
-                        borderRadius: '10px',
-                        background: '#333',
-                        color: '#fff',
-                    },
-                })
-            }
+            let data = await deleteSection(auth, section);
+            if (data.err) return;
+            dispatchLink({ type: "DLT_LINK", key: data.msg });
+            navigate("/");
+            toast.success("section deleted", {
+                id: tid,
+                style: {
+                    borderRadius: '10px',
+                    background: '#333',
+                    color: '#fff',
+                },
+            })
         }
     }
     let copyLink = (link) => {
@@ -85,12 +83,12 @@ function Section({ section, sectionInfo, permission }) {
         const tid = toast.loading("copying", {
             duration: Infinity
         })
-        let data = await copy(auth,sectionInfo._id);
-        if (data.success) {
+        let data = await copy(auth, sectionInfo._id);
+        if (data.err) {
+            toast.error('something went wrong', { id: tid, duration: 2000 });
+        } else {
             toast.success('copied successfully', { id: tid, duration: 2000 })
             dispatchLink({ type: "ADD_LINK", payload: data.msg })
-        } else {
-            toast.error('something went wrong', { id: tid, duration: 2000 })
         }
 
     }

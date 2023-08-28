@@ -45,15 +45,15 @@ function Section() {
     let fetchsection = async () => {
       load.current.staticStart();
       let data = await getSection(auth, section);
-      if (data.success) {
+      if (data.err) {
+        navigate("/123/pagenotfound");
+      } else {
         dispatch({
           type: "SET_NOTE",
           payload: data.msg.notes
         })
         setsectionInfo(data.msg.section)
         setpermission(data.msg.permission)
-      } else {
-        navigate("/123/pagenotfound");
       }
       if (load.current) {
         load.current.complete();
@@ -67,7 +67,9 @@ function Section() {
   let addnote = async (note) => {
     let tid = toast.loading("adding note");
     let data = await createNote(section, auth, note);
-    if (data.success) {
+    if (data.err) {
+      toast.error("some error occured", { id: tid });
+    } else {
       dispatch({
         type: "ADD_NOTE",
         payload: data.msg
@@ -80,8 +82,6 @@ function Section() {
           color: '#fff',
         },
       });
-    } else {
-      toast.error("some error occured", { id: tid })
     }
 
     closeBig();

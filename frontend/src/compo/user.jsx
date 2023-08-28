@@ -11,15 +11,13 @@ function User() {
 
     let changeDate = async () => {
         let data = await changeSetting(auth, { isDate: !user.isDate })
-        if (data.success) {
-            setuser(data.msg);
-        }
+        if (data.err) return;
+        setuser(data.msg);
     }
     let changeTitle = async () => {
-        let data = await changeSetting(auth, { isDesc: !user.isDesc })        
-        if (data.success) {
-            setuser(data.msg);
-        }
+        let data = await changeSetting(auth, { isDesc: !user.isDesc });
+        if (data.err) return;
+        setuser(data.msg);
     }
 
     return (

@@ -49,9 +49,8 @@ function Nav() {
 
     let getsections = async () => {
         let data = await getSections(auth);
-        if (data.success) {
-            dispatchLink({ type: "SET_LINK", payload: data.msg })
-        }
+        if (data.err) return;
+        dispatchLink({ type: "SET_LINK", payload: data.msg })
     }
 
     useEffect(() => {
@@ -80,8 +79,8 @@ function Nav() {
 
         let tid = toast.loading("adding section");
 
-        let data = await createSection(auth,{ title: add })
-        if (data.success) {
+        let data = await createSection(auth, { title: add });
+        if (data.msg) {
             dispatchLink({ type: "ADD_LINK", payload: data.msg });
             Navigate("/" + data.msg._id);
 

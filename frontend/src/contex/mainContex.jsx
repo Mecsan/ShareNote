@@ -60,21 +60,20 @@ function MainContexProvider(props) {
 
         let tid = toast.loading("updating note");
         let data = await updateNode(key, auth, newnote);
-        if (data.success) {
-            dispatch({
-                type: "UP_NOTE",
-                key: key,
-                payload: data.msg
-            })
-            toast.success("note updated", {
-                id: tid,
-                style: {
-                    borderRadius: '10px',
-                    background: '#333',
-                    color: '#fff',
-                },
-            })
-        }
+        if (data.err) return data;
+        dispatch({
+            type: "UP_NOTE",
+            key: key,
+            payload: data.msg
+        })
+        toast.success("note updated", {
+            id: tid,
+            style: {
+                borderRadius: '10px',
+                background: '#333',
+                color: '#fff',
+            },
+        })
         return data;
     }
 
@@ -82,22 +81,21 @@ function MainContexProvider(props) {
         let ok = confirm('are you sure want to delete note?');
         if (ok) {
             let tid = toast.loading("deleting note");
-            let data = await deleteNote(key,auth);
-            if (data.success) {
-                dispatch({
-                    type: "DLT_NOTE",
-                    key: key
-                });
-                toast.success("deleted successed", {
-                    id: tid,
-                    style: {
-                        borderRadius: '10px',
-                        background: '#333',
-                        color: '#fff',
-                    },
-                })
-            }
-            return data
+            let data = await deleteNote(key, auth);
+            if (data.err) return data;
+            dispatch({
+                type: "DLT_NOTE",
+                key: key
+            });
+            toast.success("deleted successed", {
+                id: tid,
+                style: {
+                    borderRadius: '10px',
+                    background: '#333',
+                    color: '#fff',
+                },
+            })
+            return data;
         }
     }
 
