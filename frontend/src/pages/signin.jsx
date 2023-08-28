@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
-import { signup } from '../config/apis'
 import { AuthContex } from '../contex/AuthContex';
 import toast from 'react-hot-toast';
-
+import { signup } from '../services/auth';
 
 function Signin() {
 
@@ -102,17 +101,9 @@ function Signin() {
         mail: mail.text,
         password: password.text
       }
-      let id = toast.loading("signing up.")
+      let id = toast.loading("signing up.");
 
-      let res = await fetch(signup, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json"
-        },
-        body: JSON.stringify(formData)
-      });
-
-      let data = await res.json();
+      let data = await signup(formData);
       if (data.success) {
         localStorage.setItem('noteAuth', data.msg);
         navigate("/");

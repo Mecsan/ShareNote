@@ -3,7 +3,6 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useNavigate } from 'react-router-dom';
 import TextareaAutosize from 'react-textarea-autosize';
 import { LinkContex } from '../contex/LinkContex';
-import { sectionApi } from '../config/apis';
 import toast from 'react-hot-toast';
 import Owner from './Owner';
 import { AuthContex } from '../contex/AuthContex';
@@ -12,6 +11,7 @@ import {
     Tooltip,
 } from '@mui/material'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { copySection as copy, deleteSection, updateSection } from '../services/section';
 
 function Section({ section, sectionInfo, permission }) {
 
@@ -21,21 +21,10 @@ function Section({ section, sectionInfo, permission }) {
 
     let [desc, setdesc] = useState("");
     let [title, settitle] = useState("");
-    let [tid, setid] = useState(null);
 
     let updateSectionDb = async (ddata) => {
-        console.log("first")
 
-        let res = await fetch(sectionApi + section, {
-            method: "PUT",
-            headers: {
-                'authorization': auth,
-                'Content-Type': "application/json"
-            },
-            body: JSON.stringify(ddata)
-        });
-
-        let data = await res.json();
+        let data = await updateSection(auth,section,ddata);
 
         if (!data.success) {
             toast.error("something went wrong", {
@@ -72,14 +61,7 @@ function Section({ section, sectionInfo, permission }) {
         let ok = confirm("are u sure want to delete section?");
         if (ok) {
             let tid = toast.loading("deleting");
-            let res = await fetch(sectionApi + section, {
-                method: "DELETE",
-                headers: {
-                    'authorization': auth
-                }
-            })
-            let data = await res.json();
-
+            let data = await deleteSection(auth,section);
             if (data.success) {
                 dispatchLink({ type: "DLT_LINK", key: data.msg });
                 navigate("/");
@@ -103,12 +85,7 @@ function Section({ section, sectionInfo, permission }) {
         const tid = toast.loading("copying", {
             duration: Infinity
         })
-        const res = await fetch(sectionApi + "copy/" + sectionInfo._id, {
-            headers: {
-                "authorization": auth
-            }
-        });
-        const data = await res.json();
+        let data = await copy(auth,sectionInfo._id);
         if (data.success) {
             toast.success('copied successfully', { id: tid, duration: 2000 })
             dispatchLink({ type: "ADD_LINK", payload: data.msg })

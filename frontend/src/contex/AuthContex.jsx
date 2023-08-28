@@ -1,6 +1,7 @@
 
 import React, { createContext, useEffect, useState } from 'react'
 import { userApi } from '../config/apis';
+import { verify } from '../services/auth';
 
 export const AuthContex = createContext();
 
@@ -21,12 +22,7 @@ export default function AuthProvider(props) {
         // validating the token 
         setloading(true)
 
-        let res = await fetch(userApi, {
-            headers: {
-                'authorization': auth
-            }
-        })
-        let data = await res.json();
+        let data = await verify(auth);
         if (data.success) {
             setuser(data.msg);
         } else {

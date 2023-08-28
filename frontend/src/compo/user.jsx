@@ -2,43 +2,25 @@ import React, { useContext, useEffect, useState } from 'react'
 import Switch from "react-switch";
 import { setting } from '../config/apis';
 import { AuthContex } from '../contex/AuthContex';
+import { changeSetting } from '../services/auth';
 
 
 function User() {
 
-    let { user, setuser,auth } = useContext(AuthContex)
+    let { user, setuser, auth } = useContext(AuthContex)
 
     let changeDate = async () => {
-
-        let res = await fetch(setting, {
-            method: "POST",
-            headers: {
-                'authorization': auth,
-                'content-type': "application/json"
-            },
-            body: JSON.stringify({ isDate: !user.isDate })
-        })
-        let data = await res.json();
+        let data = await changeSetting(auth, { isDate: !user.isDate })
         if (data.success) {
             setuser(data.msg);
         }
     }
     let changeTitle = async () => {
-
-        let res = await fetch(setting, {
-            method: "POST",
-            headers: {
-                'authorization': auth,
-                'content-type': "application/json"
-            },
-            body: JSON.stringify({ isDesc: !user.isDesc })
-        })
-        let data = await res.json();
+        let data = await changeSetting(auth, { isDesc: !user.isDesc })        
         if (data.success) {
             setuser(data.msg);
         }
     }
-
 
     return (
         <>

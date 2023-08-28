@@ -14,6 +14,7 @@ import {
 } from '@mui/material'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import toast from 'react-hot-toast';
+import { getNote } from '../services/note';
 
 function Note() {
 
@@ -31,13 +32,7 @@ function Note() {
     const [time, settime] = useState(null)
 
     const fetchNote = async (key) => {
-        const option = {}
-        if (auth) {
-            option["headers"] = { 'authorization': auth }
-        }
-        const res = await fetch(noteApi + key, option);
-        const data = await res.json();
-        console.log(data)
+        let data = await getNote(key,auth);
         if (data.success) {
             setnote(data.msg.data);
             setpermission(data.msg.permission);

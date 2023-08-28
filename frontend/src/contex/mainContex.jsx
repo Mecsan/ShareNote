@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { createContext, useState, useRef } from 'react'
 import toast from 'react-hot-toast';
 import { noteApi } from '../config/apis';
+import { deleteNote, updateNote as updateNode } from '../services/note';
 import { AuthContex } from './AuthContex';
 export const MainContex = createContext();
 
@@ -58,17 +59,7 @@ function MainContexProvider(props) {
     async function updateNote(key, newnote) {
 
         let tid = toast.loading("updating note");
-
-        let res = await fetch(`${noteApi}${key}`, {
-            method: "PUT",
-            headers: {
-                'authorization': auth,
-                'Content-Type': "application/json"
-            },
-            body: JSON.stringify(newnote)
-        })
-        let data = await res.json();
-
+        let data = await updateNode(key, auth, newnote);
         if (data.success) {
             dispatch({
                 type: "UP_NOTE",
@@ -91,13 +82,7 @@ function MainContexProvider(props) {
         let ok = confirm('are you sure want to delete note?');
         if (ok) {
             let tid = toast.loading("deleting note");
-            let res = await fetch(`${noteApi}${key}`, {
-                method: "DELETE",
-                headers: {
-                    'authorization': auth
-                }
-            })
-            let data = await res.json();
+            let data = await deleteNote(key,auth);
             if (data.success) {
                 dispatch({
                     type: "DLT_NOTE",

@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Link, Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { AuthContex } from '../contex/AuthContex';
-import { login } from '../config/apis';
 import toast from 'react-hot-toast';
+import { login } from '../services/auth';
 
 function Login() {
   let navigate = useNavigate();
@@ -66,15 +66,7 @@ function Login() {
 
       let id = toast.loading("logging in..");
 
-      let res = await fetch(login, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json"
-        },
-        body: JSON.stringify(formData)
-      });
-
-      let data = await res.json();
+      let data = await login(formData);
 
       if (data.success) {
         setauth(data.msg);

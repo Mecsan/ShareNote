@@ -13,6 +13,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 import { sectionApi } from '../config/apis';
 import toast from 'react-hot-toast';
+import { createSection, getSections } from '../services/section';
 
 
 function Nav() {
@@ -47,13 +48,7 @@ function Nav() {
 
 
     let getsections = async () => {
-
-        let res = await fetch(sectionApi, {
-            headers: {
-                'Authorization': auth
-            }
-        });
-        let data = await res.json();
+        let data = await getSections(auth);
         if (data.success) {
             dispatchLink({ type: "SET_LINK", payload: data.msg })
         }
@@ -85,16 +80,7 @@ function Nav() {
 
         let tid = toast.loading("adding section");
 
-        let res = await fetch(sectionApi, {
-            method: "POST",
-            headers: {
-                'Content-Type': "application/json",
-                'Authorization': auth
-            },
-            body: JSON.stringify({ title: add })
-        })
-
-        let data = await res.json();
+        let data = await createSection(auth,{ title: add })
         if (data.success) {
             dispatchLink({ type: "ADD_LINK", payload: data.msg });
             Navigate("/" + data.msg._id);

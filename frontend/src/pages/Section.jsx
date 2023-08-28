@@ -10,6 +10,8 @@ import { noteApi, sectionApi } from '../config/apis'
 import LoadingBar from 'react-top-loading-bar'
 import { AuthContex } from '../contex/AuthContex';
 import toast from 'react-hot-toast';
+import { createNote } from '../services/note';
+import { getSection } from '../services/section';
 
 
 
@@ -42,13 +44,7 @@ function Section() {
 
     let fetchsection = async () => {
       load.current.staticStart();
-
-      const option = {}
-      if (auth) {
-        option["headers"] = { 'authorization': auth }
-      }
-      let res = await fetch(sectionApi + section, option);
-      let data = await res.json();
+      let data = await getSection(auth, section);
       if (data.success) {
         dispatch({
           type: "SET_NOTE",
@@ -70,17 +66,7 @@ function Section() {
 
   let addnote = async (note) => {
     let tid = toast.loading("adding note");
-
-    let res = await fetch(noteApi + section, {
-      method: 'POST',
-      headers: {
-        'Content-Type': "application/json",
-        'Authorization': auth
-      },
-      body: JSON.stringify(note)
-    })
-
-    let data = await res.json();
+    let data = await createNote(section, auth, note);
     if (data.success) {
       dispatch({
         type: "ADD_NOTE",
