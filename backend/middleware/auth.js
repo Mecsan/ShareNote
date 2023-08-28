@@ -7,9 +7,9 @@ const authenticate = async (req, res, next) => {
         let decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
         next();
-
     } catch (e) {
-        res.json({ success: false, msg: e.message, Remove_auth: true })
+        res.status(401);
+        next(e);
     }
 }
 

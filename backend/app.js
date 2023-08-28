@@ -7,10 +7,10 @@ const cors = require('cors');
 require('dotenv').config();
 require("./config/connectDb");
 
-
 const userRoute = require("./routes/user");
 const noteRoute = require("./routes/note");
 const sectionRoute = require("./routes/section");
+const errHandler = require('./middleware/err');
 
 app.use(cors());
 
@@ -18,6 +18,7 @@ app.use("/api/user", userRoute);
 app.use("/api/note", noteRoute);
 app.use("/api/section", sectionRoute);
 
+app.use(errHandler);
 
 if (process.env.NODE_ENV == "production") {
     const mypath = path.resolve(__dirname, '..', 'frontend', 'dist');
