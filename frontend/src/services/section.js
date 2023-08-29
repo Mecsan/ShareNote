@@ -1,6 +1,7 @@
 import { sectionApi } from "../config/apis";
+import { handleError } from "./errorHandler";
 
-export const createSection = async (token, body) => {
+export const createSection = handleError(async (token, body) => {
     let res = await fetch(sectionApi, {
         method: "POST",
         headers: {
@@ -12,9 +13,9 @@ export const createSection = async (token, body) => {
 
     let data = await res.json();
     return data;
-}
+})
 
-export const getSections = async (token) => {
+export const getSections = handleError(async (token) => {
     let res = await fetch(sectionApi, {
         headers: {
             'Authorization': token
@@ -22,9 +23,9 @@ export const getSections = async (token) => {
     });
     let data = await res.json();
     return data;
-}
+})
 
-export const getSection = async (token, sid) => {
+export const getSection = handleError(async (token, sid) => {
     const option = {}
     if (token) {
         option["headers"] = { 'authorization': token }
@@ -32,9 +33,9 @@ export const getSection = async (token, sid) => {
     let res = await fetch(sectionApi + sid, option);
     let data = await res.json();
     return data;
-}
+})
 
-export const updateSection = async (token, sid, body) => {
+export const updateSection = handleError(async (token, sid, body) => {
     let res = await fetch(sectionApi + sid, {
         method: "PUT",
         headers: {
@@ -46,9 +47,9 @@ export const updateSection = async (token, sid, body) => {
 
     let data = await res.json();
     return data;
-}
+})
 
-export const deleteSection = async (token, sid) => {
+export const deleteSection = handleError(async (token, sid) => {
     let res = await fetch(sectionApi + sid, {
         method: "DELETE",
         headers: {
@@ -57,9 +58,9 @@ export const deleteSection = async (token, sid) => {
     })
     let data = await res.json();
     return data;
-}
+})
 
-export const copySection = async (token, sid) => {
+export const copySection = handleError(async (token, sid) => {
     let res = await fetch(sectionApi + "copy/" + sid, {
         headers: {
             "authorization": token
@@ -67,4 +68,4 @@ export const copySection = async (token, sid) => {
     });
     let data = await res.json();
     return data;
-}
+})

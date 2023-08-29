@@ -1,6 +1,7 @@
 import { noteApi } from "../config/apis";
+import { handleError } from "./errorHandler";
 
-export const createNote = async (sid, token, body) => {
+export const createNote = handleError(async (sid, token, body) => {
     let res = await fetch(noteApi + sid, {
         method: 'POST',
         headers: {
@@ -12,9 +13,9 @@ export const createNote = async (sid, token, body) => {
 
     let data = await res.json();
     return data;
-}
+})
 
-export const updateNote = async (key, token, body) => {
+export const updateNote = handleError(async (key, token, body) => {
     let res = await fetch(noteApi + key, {
         method: "PUT",
         headers: {
@@ -25,9 +26,9 @@ export const updateNote = async (key, token, body) => {
     })
     let data = await res.json();
     return data;
-}
+})
 
-export const deleteNote = async (key, token) => {
+export const deleteNote = handleError(async (key, token) => {
     let res = await fetch(noteApi + key, {
         method: "DELETE",
         headers: {
@@ -36,9 +37,9 @@ export const deleteNote = async (key, token) => {
     })
     let data = await res.json();
     return data;
-}
+})
 
-export const getNote = async (key, token) => {
+export const getNote = handleError(async (key, token) => {
     let option = {};
     if (token) {
         option["headers"] = { 'authorization': token }
@@ -46,4 +47,4 @@ export const getNote = async (key, token) => {
     const res = await fetch(noteApi + key, option);
     const data = await res.json();
     return data;
-}
+})

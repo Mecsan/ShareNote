@@ -3,7 +3,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast';
 import { signup } from '../services/auth';
 import { useDispatch, useSelector } from 'react-redux';
-import { status } from '../redux/slices/authSlice';
+import { login, status } from '../redux/slices/authSlice';
 
 function Signin() {
 
@@ -103,15 +103,16 @@ function Signin() {
         password: password.text
       }
       let id = toast.loading("signing up.");
-
       let data = await signup(formData);
+      console.log(data)
       if (data.err) {
         toast.error(data.err, {
           id
         })
         return;
       }
-      dispatch(loginAction(data.msg));
+
+      dispatch(login(data.msg));
       localStorage.setItem('noteAuth', data.msg);
       navigate("/");
       toast.success("Signin successfully", {

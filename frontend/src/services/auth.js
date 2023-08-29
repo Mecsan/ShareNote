@@ -4,9 +4,10 @@ import {
     signup as signupApi,
     userApi
 } from "../config/apis";
+import { handleError } from "./errorHandler";
 
 
-export const signup = async (body) => {
+export const signup = handleError( async (body) => {
     let res = await fetch(signupApi, {
         method: "POST",
         headers: {
@@ -16,9 +17,9 @@ export const signup = async (body) => {
     });
     let data = await res.json();
     return data;
-}
+})
 
-export const login = async (body) => {
+export const login = handleError( async (body) => {
     let res = await fetch(loginApi, {
         method: "POST",
         headers: {
@@ -28,9 +29,9 @@ export const login = async (body) => {
     });
     let data = await res.json();
     return data;
-}
+})
 
-export const verify = async (token) => {
+export const verify = handleError(async (token) => {
     let res = await fetch(userApi, {
         headers: {
             'authorization': token
@@ -38,9 +39,9 @@ export const verify = async (token) => {
     })
     let data = await res.json();
     return data;
-}
+})
 
-export const changeSetting = async (token,body) => {
+export const changeSetting = handleError( async (token, body) => {
     let res = await fetch(setting, {
         method: "POST",
         headers: {
@@ -51,4 +52,4 @@ export const changeSetting = async (token,body) => {
     })
     let data = await res.json();
     return data;
-}
+})
