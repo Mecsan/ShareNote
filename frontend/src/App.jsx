@@ -13,6 +13,7 @@ import Loading from './compo/loading'
 import { useDispatch, useSelector } from 'react-redux'
 import { verify } from './services/auth'
 import { logout, setStatus, setUser, status } from './redux/slices/authSlice'
+import { toastConfig } from './util/constant'
 
 function App() {
   const auth = useSelector((state) => state.auth);
@@ -40,11 +41,14 @@ function App() {
   return (
     <>
       {
-        auth.authStatus==status.UNVERIFIED ? <Loading /> :
+        auth.authStatus == status.UNVERIFIED ? <Loading /> :
           <>
             <Toaster
-              position="bottom-center"
+              position={toastConfig.position}
               reverseOrder={false}
+              toastOptions={
+                { style: toastConfig.lightToast }
+              }
             />
             <div className='main'>
               {

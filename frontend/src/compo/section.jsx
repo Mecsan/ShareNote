@@ -31,13 +31,7 @@ function Section({ section, sectionInfo, permission }) {
 
         let data = await updateSection(token, section, ddata);
         if (data.err) {
-            toast.error("something went wrong", {
-                style: {
-                    borderRadius: '10px',
-                    background: '#333',
-                    color: '#fff',
-                },
-            })
+            toast.error("something went wrong")
         }
     }
 
@@ -74,11 +68,6 @@ function Section({ section, sectionInfo, permission }) {
             navigate("/");
             toast.success("section deleted", {
                 id: tid,
-                style: {
-                    borderRadius: '10px',
-                    background: '#333',
-                    color: '#fff',
-                },
             })
         }
     }

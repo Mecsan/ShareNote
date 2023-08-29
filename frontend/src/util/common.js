@@ -11,12 +11,7 @@ export let updatenote = async (key, newnote, token, dispatch) => {
     if (data.err) return data;
     dispatch(updateNoteAction(data.msg))
     toast.success("note updated", {
-        id: tid,
-        style: {
-            borderRadius: '10px',
-            background: '#333',
-            color: '#fff',
-        },
+        id: tid
     })
     return data;
 }
@@ -29,12 +24,7 @@ export let deletenote = async (key, token, dispatch) => {
         if (data.err) return data;
         dispatch(deleteNoteAction(key));
         toast.success("deleted successed", {
-            id: tid,
-            style: {
-                borderRadius: '10px',
-                background: '#333',
-                color: '#fff',
-            },
+            id: tid
         })
         return data;
     }

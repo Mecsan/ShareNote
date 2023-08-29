@@ -29,13 +29,7 @@ function Nav() {
 
         if (ok) {
             localStorage.removeItem('noteAuth');
-            toast.success('Logout successed', {
-                style: {
-                    borderRadius: '10px',
-                    background: '#333',
-                    color: '#fff',
-                },
-            })
+            toast.success('Logout successed');
             dispatch(setNotes([]));
             dispatch(setSections([]));
             dispatch(logout());
@@ -63,13 +57,7 @@ function Nav() {
 
     let addsection = async () => {
         if (add == "") {
-            toast.error("can't be empty", {
-                style: {
-                    borderRadius: '10px',
-                    background: '#333',
-                    color: '#fff',
-                },
-            })
+            toast.error("can't be empty")
             return;
         }
 
@@ -81,12 +69,7 @@ function Nav() {
             Navigate("/" + data.msg._id);
 
             toast.success('section added', {
-                id: tid,
-                style: {
-                    borderRadius: '10px',
-                    background: '#333',
-                    color: '#fff',
-                }
+                id: tid
             })
         }
         opennav();

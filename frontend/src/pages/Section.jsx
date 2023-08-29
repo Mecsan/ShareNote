@@ -68,12 +68,7 @@ function Section() {
     } else {
       dispatch(addNote(data.msg));
       toast.success('note added', {
-        id: tid,
-        style: {
-          borderRadius: '10px',
-          background: '#333',
-          color: '#fff',
-        },
+        id: tid
       });
     }
 

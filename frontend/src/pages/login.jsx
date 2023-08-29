@@ -70,12 +70,7 @@ function Login() {
       let data = await login(formData);
       if (data.err) {
         toast.error(data.err, {
-          id,
-          style: {
-            borderRadius: '10px',
-            background: '#333',
-            color: '#fff',
-          }
+          id
         });
         return;
       }
@@ -84,12 +79,7 @@ function Login() {
       dispatch(loginAction(data.msg));
       localStorage.setItem('noteAuth', data.msg);
       toast.success("Login successfully", {
-        id,
-        style: {
-          borderRadius: '10px',
-          background: '#333',
-          color: '#fff',
-        }
+        id
       })
     }
   }
