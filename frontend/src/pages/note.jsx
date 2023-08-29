@@ -5,7 +5,6 @@ import { useEffect } from 'react'
 import { useContext } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Owner from '../compo/Owner';
-import { MainContex } from '../contex/mainContex';
 import LinkIcon from '@mui/icons-material/Link';
 import {
     Tooltip,
@@ -16,6 +15,7 @@ import { getNote } from '../services/note';
 import { useDispatch, useSelector } from 'react-redux';
 import { status } from '../redux/slices/authSlice';
 import { setCopy } from '../redux/slices/noteSlice';
+import { deletenote, updatenote } from '../util/common';
 
 function Note() {
 
@@ -24,15 +24,13 @@ function Note() {
     const debounceDelay = 2000;
 
     const { token, authStatus } = useSelector(state => state.auth);
-
-    const { deletenote, updateNote } = useContext(MainContex)
+    const dispatch = useDispatch();
 
     const { noteId } = useParams();
 
     const [note, setnote] = useState(null);
     const [permission, setpermission] = useState(false);
     const [time, settime] = useState(null);
-    const dispatch = useDispatch();
 
     const fetchNote = async (key) => {
         let data = await getNote(key, token);
@@ -74,7 +72,7 @@ function Note() {
 
     const handledelet = async () => {
         if (!permission) return
-        const data = await deletenote(note?._id)
+        const data = await deletenote(note?._id, token, dispatch)
         if (!data || data.err) return;
         navigate("/");
     }
@@ -90,7 +88,7 @@ function Note() {
 
         //debouncing
         clearTimeout(time);
-        const timeId = setTimeout(() => updateNote(note._id, newnote), debounceDelay);
+        const timeId = setTimeout(() => updatenote(note._id, newnote, token, dispatch), debounceDelay);
         settime(timeId)
     }
 

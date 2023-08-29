@@ -1,13 +1,13 @@
 import React, { useContext } from 'react'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { MainContex } from '../contex/mainContex';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActive } from '../redux/slices/noteSlice';
+import { openBig } from '../util/constant';
+import { deletenote } from '../util/common';
 
 function Note({ note, setisadd, permission }) {
 
-    const {  deletenote, openBig } = useContext(MainContex);
-    const { user } = useSelector(state => state.auth);
+    const { user, token } = useSelector(state => state.auth);
     const dispatch = useDispatch();
 
     let OpenBignote = (e) => {
@@ -29,7 +29,7 @@ function Note({ note, setisadd, permission }) {
                                 <div className="small_dlr" onClick={(e) => {
                                     if (!permission) return
                                     e.stopPropagation();
-                                    deletenote(note._id)
+                                    deletenote(note._id, token, dispatch)
                                 }}>
                                     <DeleteOutlineIcon style={{ color: "red" }} />
                                 </div>

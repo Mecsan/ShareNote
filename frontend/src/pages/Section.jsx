@@ -4,7 +4,6 @@ import { Button, Divider, Tooltip } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Note from '../compo/note';
 import SectionIn from '../compo/section';
-import { MainContex } from '../contex/mainContex'
 import Bignote from '../compo/bignote'
 import LoadingBar from 'react-top-loading-bar'
 import toast from 'react-hot-toast';
@@ -12,12 +11,10 @@ import { createNote } from '../services/note';
 import { getSection } from '../services/section';
 import { useDispatch, useSelector } from 'react-redux';
 import { addNote, removeCopy, setNotes } from '../redux/slices/noteSlice';
-
-
+import { closeBig, openBig } from '../util/constant';
 
 function Section() {
 
-  const { openBig, closeBig } = useContext(MainContex);
   const dispatch = useDispatch();
 
   let { token } = useSelector(state => state.auth);

@@ -5,7 +5,6 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import LogoutIcon from '@mui/icons-material/Logout';
 import User from './user';
-import { MainContex } from '../contex/mainContex';
 import HouseIcon from '@mui/icons-material/House';
 import MenuIcon from '@mui/icons-material/Menu';
 import toast from 'react-hot-toast';
@@ -43,7 +42,6 @@ function Nav() {
             Navigate("/login");
         }
     }
-
 
     let getsections = async () => {
         let data = await getSections(auth.token);

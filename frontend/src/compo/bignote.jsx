@@ -11,13 +11,14 @@ import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import ClearIcon from '@mui/icons-material/Clear';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { MainContex } from '../contex/mainContex'
 import { useNavigate } from 'react-router-dom';
 import TextareaAutosize from 'react-textarea-autosize';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { status } from '../redux/slices/authSlice';
 import { setActive, setCopy } from '../redux/slices/noteSlice';
+import { closeBig } from '../util/constant';
+import { deletenote, updatenote } from '../util/common';
 
 // same component for editing note(big note) and adding new note  
 
@@ -28,9 +29,7 @@ import { setActive, setCopy } from '../redux/slices/noteSlice';
 function Bignote({ addnote, section, isadd, permission }) {
   const navigate = useNavigate();
 
-  const { deletenote, updateNote, closeBig } = useContext(MainContex);
-
-  const { authStatus } = useSelector((state) => state.auth);
+  const { authStatus, token } = useSelector((state) => state.auth);
   const { activeNote } = useSelector(state => state.notes);
 
   const dispatch = useDispatch();
@@ -73,7 +72,7 @@ function Bignote({ addnote, section, isadd, permission }) {
         title: title,
         desc: desc,
       }
-      const data = await updateNote(activeNote?._id, newnote);
+      const data = await updatenote(activeNote?._id, newnote, token, dispatch);
       if (data.err) return;
       closeBig();
     }
@@ -81,7 +80,7 @@ function Bignote({ addnote, section, isadd, permission }) {
 
   const handleDelete = async () => {
     if (!permission) return;
-    const data = await deletenote(activeNote?._id);
+    const data = await deletenote(activeNote?._id, token, dispatch);
     if (data.err) return
     closeBig()
     navigate("/" + section);
