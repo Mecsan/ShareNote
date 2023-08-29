@@ -6,7 +6,7 @@ const handleError = (promise) => {
             return data;
         } catch (e) {
             console.log("Network error : ", e);
-            return { err: "" }
+            return { err: e.message || "something went wrong" }
         }
     }
 }
