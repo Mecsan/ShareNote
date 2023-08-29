@@ -15,8 +15,9 @@ import { MainContex } from '../contex/mainContex'
 import { useNavigate } from 'react-router-dom';
 import TextareaAutosize from 'react-textarea-autosize';
 import toast from 'react-hot-toast';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { status } from '../redux/slices/authSlice';
+import { setActive, setCopy } from '../redux/slices/noteSlice';
 
 // same component for editing note(big note) and adding new note  
 
@@ -27,9 +28,12 @@ import { status } from '../redux/slices/authSlice';
 function Bignote({ addnote, section, isadd, permission }) {
   const navigate = useNavigate();
 
-  const { deletenote, updateNote, activenote, setactive, setcopy, closeBig } = useContext(MainContex);
+  const { deletenote, updateNote, closeBig } = useContext(MainContex);
 
   const { authStatus } = useSelector((state) => state.auth);
+  const { activeNote } = useSelector(state => state.notes);
+
+  const dispatch = useDispatch();
 
   let [desc, setdesc] = useState("");
   let [title, settitle] = useState("");
@@ -39,13 +43,20 @@ function Bignote({ addnote, section, isadd, permission }) {
     navigator.clipboard.writeText(link);
   }
 
+  const resetState = () => {
+    settitle("");
+    setdesc("");
+  }
+
   useEffect(() => {
-    if (activenote) {
-      settitle(activenote.title);
-      setdesc(activenote.desc);
+    if (isadd) {
+      resetState();
+    } else {
+      settitle(activeNote?.title);
+      setdesc(activeNote?.desc);
     }
     // active note change each time when clicking on add button and and clicking on any note
-  }, [activenote])
+  }, [isadd, activeNote])
 
   const handleSubmit = async () => {
     if (!permission) return
@@ -55,35 +66,29 @@ function Bignote({ addnote, section, isadd, permission }) {
         desc: desc == "" ? "undefined" : desc,
       }
       addnote(note);
+      resetState();
     }
     else {
       let newnote = {
         title: title,
         desc: desc,
       }
-      const data = await updateNote(activenote?._id, newnote);
-      if (data?.success) {
-        closeBig()
-      }
+      const data = await updateNote(activeNote?._id, newnote);
+      if (data.err) return;
+      closeBig();
     }
   }
 
   const handleDelete = async () => {
     if (!permission) return;
-    const data = await deletenote(activenote?._id)
-    if (data?.success) {
-      closeBig()
-      navigate("/" + section);
-    }
+    const data = await deletenote(activeNote?._id);
+    if (data.err) return
+    closeBig()
+    navigate("/" + section);
   }
 
-
   const copyNote = async (note) => {
-    setcopy({
-      isCopy: true,
-      title: note.title,
-      desc: note.desc
-    })
+    dispatch(setCopy(note));
     const tid = toast.success('Note has been copied', {
       duration: Infinity,
       position: "top-right"
@@ -108,106 +113,100 @@ function Bignote({ addnote, section, isadd, permission }) {
   const handleBlur = (e) => {
     if (e.target.classList.contains("back")) {
       closeBig();
-      setactive(null)
+      dispatch(setActive(null))
     }
-
   }
   return (
 
     <div onClick={handleBlur} className="bigNoteRef back"
     >
+      <div className="bignote">
+        <div className="big_top">
+          <div className="big_title">
 
-      {activenote &&
-        <div className="bignote">
-          <div className="big_top">
-            <div className="big_title">
-
-              <input disabled={permission ? false : true} placeholder='title' type="text" value={title} onChange={(e) => {
-                settitle(e.target.value)
-              }} className="t_title" />
+            <input disabled={permission ? false : true} placeholder='title' type="text" value={title} onChange={(e) => {
+              settitle(e.target.value)
+            }} className="t_title" />
 
 
-              <div className="big_btn_grp">
-                {
-                  permission ?
-                    <>
-
-                      <div className="add_big" onClick={handleSubmit}>
-                        <Tooltip title='save'>
-                          <LibraryAddCheckIcon style={{ cursor: "pointer", color: "blue" }} />
-                        </Tooltip>
-
-                      </div>
-                      {
-                        !isadd ?
-                          <>
-                            <div className="dlt_big" onClick={handleDelete}>
-                              <Tooltip title='delete'>
-                                <DeleteForeverIcon style={{ cursor: "pointer", color: "red" }} />
-                              </Tooltip>
-                            </div>
-                          </>
-                          : null
-                      }
-
-                    </> : null
-                }
-
-
-                <div className="big_close" onClick={closeBig}>
-                  <Tooltip title='close'>
-                    <ClearIcon style={{ cursor: "pointer" }} />
-                  </Tooltip>
-
-                </div>
-
-                <div className="big_back" onClick={closeBig}>
-                  <Tooltip title='close'>
-                    <KeyboardBackspaceIcon style={{ cursor: "pointer" }} />
-                  </Tooltip>
-                </div>
-
-                {isadd ? null :
+            <div className="big_btn_grp">
+              {
+                permission ?
                   <>
+
+                    <div className="add_big" onClick={handleSubmit}>
+                      <Tooltip title='save'>
+                        <LibraryAddCheckIcon style={{ cursor: "pointer", color: "blue" }} />
+                      </Tooltip>
+
+                    </div>
                     {
-                      authStatus == status.AUTH ? <div className="copy-btn" onClick={() => {
-                        copyNote(activenote)
-                      }}>
-                        <Tooltip title='copy note'>
-                          <ContentCopyIcon style={{ cursor: "pointer" }} />
-                        </Tooltip>
-                      </div> : null
+                      !isadd ?
+                        <>
+                          <div className="dlt_big" onClick={handleDelete}>
+                            <Tooltip title='delete'>
+                              <DeleteForeverIcon style={{ cursor: "pointer", color: "red" }} />
+                            </Tooltip>
+                          </div>
+                        </>
+                        : null
                     }
-                    <div className="open-in-new" onClick={() => navigate("/note/" + activenote?._id)}>
-                      <Tooltip title='open in page'>
-                        <OpenInNewIcon style={{ cursor: "pointer" }} />
-                      </Tooltip>
-                    </div>
-                    <div className="share-btn" onClick={() => copyLink(location.origin + "/note/" + activenote._id)}>
-                      <Tooltip title='copy link'>
-                        <LinkIcon style={{ cursor: "pointer" }} />
-                      </Tooltip>
-                    </div>
-                  </>
-                }
+
+                  </> : null
+              }
+
+
+              <div className="big_close" onClick={closeBig}>
+                <Tooltip title='close'>
+                  <ClearIcon style={{ cursor: "pointer" }} />
+                </Tooltip>
 
               </div>
 
+              <div className="big_back" onClick={closeBig}>
+                <Tooltip title='close'>
+                  <KeyboardBackspaceIcon style={{ cursor: "pointer" }} />
+                </Tooltip>
+              </div>
+
+              {isadd ? null :
+                <>
+                  {
+                    authStatus == status.AUTH ? <div className="copy-btn" onClick={() => {
+                      copyNote(activeNote)
+                    }}>
+                      <Tooltip title='copy note'>
+                        <ContentCopyIcon style={{ cursor: "pointer" }} />
+                      </Tooltip>
+                    </div> : null
+                  }
+                  <div className="open-in-new" onClick={() => navigate("/note/" + activeNote?._id)}>
+                    <Tooltip title='open in page'>
+                      <OpenInNewIcon style={{ cursor: "pointer" }} />
+                    </Tooltip>
+                  </div>
+                  <div className="share-btn" onClick={() => copyLink(location.origin + "/note/" + activeNote._id)}>
+                    <Tooltip title='copy link'>
+                      <LinkIcon style={{ cursor: "pointer" }} />
+                    </Tooltip>
+                  </div>
+                </>
+              }
+
             </div>
 
-            {!isadd && <span>{activenote?.updatedAt?.toString()?.substr(0, 10)}</span>}
-
           </div>
-          <Divider />
 
-
-          <TextareaAutosize disabled={permission ? false : true} placeholder='your desc'
-            value={desc} onChange={(e) => setdesc(e.target.value)}
-            minRows={3} />
+          {!isadd && <span>{activeNote?.updatedAt?.toString()?.substr(0, 10)}</span>}
 
         </div>
-      }
+        <Divider />
 
+
+        <TextareaAutosize disabled={permission ? false : true} placeholder='your desc'
+          value={desc} onChange={(e) => setdesc(e.target.value)}
+          minRows={3} />
+      </div>
     </div >
 
   )

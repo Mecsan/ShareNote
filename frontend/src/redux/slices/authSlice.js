@@ -20,6 +20,7 @@ let authSlice = createSlice({
     reducers: {
         login: (state, action) => {
             state.token = action.payload
+            state.authStatus = status.AUTH
         },
         setUser: (state, action) => {
             state.user = action.payload

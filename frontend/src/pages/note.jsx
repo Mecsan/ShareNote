@@ -13,8 +13,9 @@ import {
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import toast from 'react-hot-toast';
 import { getNote } from '../services/note';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { status } from '../redux/slices/authSlice';
+import { setCopy } from '../redux/slices/noteSlice';
 
 function Note() {
 
@@ -24,13 +25,14 @@ function Note() {
 
     const { token, authStatus } = useSelector(state => state.auth);
 
-    const { deletenote, updateNote, setcopy } = useContext(MainContex)
+    const { deletenote, updateNote } = useContext(MainContex)
 
     const { noteId } = useParams();
 
     const [note, setnote] = useState(null);
     const [permission, setpermission] = useState(false);
-    const [time, settime] = useState(null)
+    const [time, settime] = useState(null);
+    const dispatch = useDispatch();
 
     const fetchNote = async (key) => {
         let data = await getNote(key, token);
@@ -43,11 +45,7 @@ function Note() {
     }
 
     const copyNote = async (note) => {
-        setcopy({
-            isCopy: true,
-            title: note.title,
-            desc: note.desc
-        })
+        dispatch(setCopy(note));
         const tid = toast.success('Note has been copied', {
             duration: Infinity,
             position: "top-right"

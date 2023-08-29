@@ -13,13 +13,12 @@ import { createSection, getSections } from '../services/section';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/slices/authSlice';
 import { addSection, setSections } from '../redux/slices/sectionSlice';
+import { setNotes } from '../redux/slices/noteSlice';
 
 
 function Nav() {
 
-    const { setactive, dispatch } = useContext(MainContex);
-
-    const reduxDispatch = useDispatch();
+    const dispatch = useDispatch();
     const auth = useSelector(state => state.auth);
     let links = useSelector(state => state.sections);
     links = links.sections;
@@ -38,10 +37,9 @@ function Nav() {
                     color: '#fff',
                 },
             })
-            dispatch({ type: "SET_NOTE", payload: [] });
-            reduxDispatch(setSections([]));
-            reduxDispatch(logout());
-            setactive(null);
+            dispatch(setNotes([]));
+            dispatch(setSections([]));
+            dispatch(logout());
             Navigate("/login");
         }
     }
@@ -50,7 +48,7 @@ function Nav() {
     let getsections = async () => {
         let data = await getSections(auth.token);
         if (data.err) return;
-        reduxDispatch(setSections(data.msg));
+        dispatch(setSections(data.msg));
     }
 
     useEffect(() => {
@@ -81,7 +79,7 @@ function Nav() {
 
         let data = await createSection(auth.token, { title: add });
         if (data.msg) {
-            reduxDispatch(addSection(data.msg));
+            dispatch(addSection(data.msg));
             Navigate("/" + data.msg._id);
 
             toast.success('section added', {

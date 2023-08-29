@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 let initialState = {
     notes: [],
+    activeNote: null,
+    copyNote: null
 }
 
 let noteSlice = createSlice({
@@ -23,6 +25,15 @@ let noteSlice = createSlice({
                     return action.payload
                 return note;
             })
+        },
+        setActive: (state, action) => {
+            state.activeNote = action.payload
+        },
+        setCopy: (state, action) => {
+            state.copyNote = action.payload
+        },
+        removeCopy: (state, action) => {
+            state.copyNote = null;
         }
     }
 })
@@ -31,7 +42,10 @@ export const {
     setNotes,
     addNote,
     deleteNote,
-    updateNote
+    updateNote,
+    setActive,
+    setCopy,
+    removeCopy
 } = noteSlice.actions
 
 export default noteSlice.reducer

@@ -1,16 +1,18 @@
 import React, { useContext } from 'react'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { MainContex } from '../contex/mainContex';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setActive } from '../redux/slices/noteSlice';
 
 function Note({ note, setisadd, permission }) {
 
-    const { setactive, deletenote, openBig } = useContext(MainContex);
-    const { user } = useSelector(state => state.auth)
+    const {  deletenote, openBig } = useContext(MainContex);
+    const { user } = useSelector(state => state.auth);
+    const dispatch = useDispatch();
 
     let OpenBignote = (e) => {
         setisadd(false);
-        setactive(note);
+        dispatch(setActive(note))
         openBig();
     }
 

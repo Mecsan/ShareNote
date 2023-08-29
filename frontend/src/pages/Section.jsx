@@ -10,15 +10,18 @@ import LoadingBar from 'react-top-loading-bar'
 import toast from 'react-hot-toast';
 import { createNote } from '../services/note';
 import { getSection } from '../services/section';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { addNote, removeCopy, setNotes } from '../redux/slices/noteSlice';
 
 
 
 function Section() {
 
-  const { notes, dispatch, openBig, setactive, copynote, setcopy, closeBig } = useContext(MainContex);
+  const { openBig, closeBig } = useContext(MainContex);
+  const dispatch = useDispatch();
 
   let { token } = useSelector(state => state.auth);
+  let { notes, copyNote } = useSelector(state => state.notes);
 
   let { section } = useParams();
 
@@ -36,7 +39,6 @@ function Section() {
 
   let openAddnote = () => {
     setisadd(true);
-    setactive({ title: "", desc: "" });
     openBig();
   }
 
@@ -48,10 +50,7 @@ function Section() {
       if (data.err) {
         navigate("/123/pagenotfound");
       } else {
-        dispatch({
-          type: "SET_NOTE",
-          payload: data.msg.notes
-        })
+        dispatch(setNotes(data.msg.notes));
         setsectionInfo(data.msg.section)
         setpermission(data.msg.permission)
       }
@@ -70,10 +69,7 @@ function Section() {
     if (data.err) {
       toast.error("some error occured", { id: tid });
     } else {
-      dispatch({
-        type: "ADD_NOTE",
-        payload: data.msg
-      })
+      dispatch(addNote(data.msg));
       toast.success('note added', {
         id: tid,
         style: {
@@ -88,11 +84,10 @@ function Section() {
   }
 
   const handlePaste = () => {
-    let newNote = { title: copynote.title, desc: copynote.desc }
+    let newNote = { title: copyNote.title, desc: copyNote.desc }
     addnote(newNote);
-    setcopy({ isCopy: false, title: "", desc: "" })
+    dispatch(removeCopy());
   }
-
 
   return (
 
@@ -101,7 +96,12 @@ function Section() {
       {
         sectionInfo &&
         <>
-          <Bignote addnote={addnote} permission={permission} section={section} isadd={isadd} />
+          <Bignote
+            addnote={addnote}
+            permission={permission}
+            section={section}
+            isadd={isadd}
+          />
 
           <SectionIn
             permission={permission}
@@ -122,7 +122,7 @@ function Section() {
                 </div>
               </div>
 
-              {copynote.isCopy ? <div className="paste-note" onClick={handlePaste}>
+              {copyNote ? <div className="paste-note" onClick={handlePaste}>
                 <Tooltip title='Paste note in this section'>
                   <Button color="primary">
                     paste
@@ -135,7 +135,7 @@ function Section() {
 
           <div className="notes">
             {
-              notes?.map((note) => {
+              notes.map((note) => {
                 return (
                   <Note
                     permission={permission}

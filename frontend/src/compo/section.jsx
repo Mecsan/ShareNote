@@ -14,7 +14,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { status } from '../redux/slices/authSlice';
 import {
     updateSection as updateSectionAction,
-    deleteSection as deleteSectionAction
+    deleteSection as deleteSectionAction,
+    addSection
 } from '../redux/slices/sectionSlice';
 
 function Section({ section, sectionInfo, permission }) {
@@ -95,7 +96,7 @@ function Section({ section, sectionInfo, permission }) {
             toast.error('something went wrong', { id: tid, duration: 2000 });
         } else {
             toast.success('copied successfully', { id: tid, duration: 2000 })
-            dispatchLink({ type: "ADD_LINK", payload: data.msg })
+            dispatch(addSection(data.msg))
         }
 
     }

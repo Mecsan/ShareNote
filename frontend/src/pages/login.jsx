@@ -80,6 +80,7 @@ function Login() {
         return;
       }
 
+      navigate("/");
       dispatch(loginAction(data.msg));
       localStorage.setItem('noteAuth', data.msg);
       toast.success("Login successfully", {
@@ -90,7 +91,6 @@ function Login() {
           color: '#fff',
         }
       })
-      navigate("/");
     }
   }
 

@@ -2,13 +2,15 @@ import React, { useState } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast';
 import { signup } from '../services/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { status } from '../redux/slices/authSlice';
 
 function Signin() {
 
   let navigate = useNavigate();
   let { authStatus } = useSelector(state => state.auth);
   const dispatch = useDispatch();
-  
+
   let [name, setname] = useState({
     text: "",
     err: ""
@@ -129,7 +131,7 @@ function Signin() {
   }
   return (
     <div className="formcontainer">
-      {auth ? <Navigate to="/" /> :
+      {authStatus == status.AUTH ? <Navigate to="/" /> :
         <div className="loginform">
           <h2>Create an account</h2>
           <form autoComplete='off' id="myform" onSubmit={handleSignup}>
