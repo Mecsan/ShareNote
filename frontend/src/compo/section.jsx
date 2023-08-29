@@ -5,18 +5,19 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { LinkContex } from '../contex/LinkContex';
 import toast from 'react-hot-toast';
 import Owner from './Owner';
-import { AuthContex } from '../contex/AuthContex';
 import LinkIcon from '@mui/icons-material/Link';
 import {
     Tooltip,
 } from '@mui/material'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { copySection as copy, deleteSection, updateSection } from '../services/section';
+import { useSelector } from 'react-redux';
+import { status } from '../redux/slices/authSlice';
 
 function Section({ section, sectionInfo, permission }) {
 
     let { dispatchLink } = useContext(LinkContex);
-    let { auth } = useContext(AuthContex)
+    let { token, authStatus } = useSelector(state => state.auth)
     let navigate = useNavigate();
 
     let [desc, setdesc] = useState("");
@@ -24,7 +25,7 @@ function Section({ section, sectionInfo, permission }) {
 
     let updateSectionDb = async (ddata) => {
 
-        let data = await updateSection(auth, section, ddata);
+        let data = await updateSection(token, section, ddata);
         if (data.err) {
             toast.error("something went wrong", {
                 style: {
@@ -60,7 +61,7 @@ function Section({ section, sectionInfo, permission }) {
         let ok = confirm("are u sure want to delete section?");
         if (ok) {
             let tid = toast.loading("deleting");
-            let data = await deleteSection(auth, section);
+            let data = await deleteSection(token, section);
             if (data.err) return;
             dispatchLink({ type: "DLT_LINK", key: data.msg });
             navigate("/");
@@ -83,7 +84,7 @@ function Section({ section, sectionInfo, permission }) {
         const tid = toast.loading("copying", {
             duration: Infinity
         })
-        let data = await copy(auth, sectionInfo._id);
+        let data = await copy(token, sectionInfo._id);
         if (data.err) {
             toast.error('something went wrong', { id: tid, duration: 2000 });
         } else {
@@ -120,7 +121,7 @@ function Section({ section, sectionInfo, permission }) {
                                     </div> : null
                             }
                             {
-                                auth ? <div className="copy-btn" onClick={copySection}>
+                                authStatus == status.AUTH ? <div className="copy-btn" onClick={copySection}>
                                     <Tooltip title='copy section'>
                                         <ContentCopyIcon style={{ cursor: "pointer" }} />
                                     </Tooltip>

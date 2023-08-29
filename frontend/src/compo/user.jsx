@@ -1,23 +1,24 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import Switch from "react-switch";
-import { setting } from '../config/apis';
-import { AuthContex } from '../contex/AuthContex';
+import { setUser } from '../redux/slices/authSlice';
 import { changeSetting } from '../services/auth';
-
 
 function User() {
 
-    let { user, setuser, auth } = useContext(AuthContex)
+    const { user, token } = useSelector(state => state.auth);
+    let dispatch = useDispatch();
 
     let changeDate = async () => {
-        let data = await changeSetting(auth, { isDate: !user.isDate })
+        let data = await changeSetting(token, { isDate: !user.isDate })
         if (data.err) return;
-        setuser(data.msg);
+        dispatch(setUser(data.msg));
     }
+
     let changeTitle = async () => {
-        let data = await changeSetting(auth, { isDesc: !user.isDesc });
+        let data = await changeSetting(token, { isDesc: !user.isDesc });
         if (data.err) return;
-        setuser(data.msg);
+        dispatch(setUser(data.msg));
     }
 
     return (

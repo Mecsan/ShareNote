@@ -3,17 +3,19 @@ import { LinkContex } from '../contex/LinkContex';
 import DescriptionIcon from '@mui/icons-material/Description';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { AuthContex } from '../contex/AuthContex';
+import { useSelector } from 'react-redux';
+import { status } from '../redux/slices/authSlice';
 function Home() {
 
   const { links } = useContext(LinkContex);
-  const { auth } = useContext(AuthContex)
+  const { authStatus } = useSelector(state => state.auth);
+
 
   const navigate = useNavigate();
 
   return (
     <div className="right">
-      {auth ? null : <Navigate to="/login" />}
+      {authStatus == status.AUTH ? null : <Navigate to="/login" />}
       {
         links != null &&
         <>

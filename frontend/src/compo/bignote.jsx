@@ -15,7 +15,8 @@ import { MainContex } from '../contex/mainContex'
 import { useNavigate } from 'react-router-dom';
 import TextareaAutosize from 'react-textarea-autosize';
 import toast from 'react-hot-toast';
-import { AuthContex } from '../contex/AuthContex';
+import { useSelector } from 'react-redux';
+import { status } from '../redux/slices/authSlice';
 
 // same component for editing note(big note) and adding new note  
 
@@ -28,7 +29,8 @@ function Bignote({ addnote, section, isadd, permission }) {
 
   const { deletenote, updateNote, activenote, setactive, setcopy, closeBig } = useContext(MainContex);
 
-  const { auth } = useContext(AuthContex)
+  const { authStatus } = useSelector((state) => state.auth);
+
   let [desc, setdesc] = useState("");
   let [title, settitle] = useState("");
 
@@ -168,7 +170,7 @@ function Bignote({ addnote, section, isadd, permission }) {
                 {isadd ? null :
                   <>
                     {
-                      auth ? <div className="copy-btn" onClick={() => {
+                      authStatus == status.AUTH ? <div className="copy-btn" onClick={() => {
                         copyNote(activenote)
                       }}>
                         <Tooltip title='copy note'>

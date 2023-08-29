@@ -6,19 +6,19 @@ import Note from '../compo/note';
 import SectionIn from '../compo/section';
 import { MainContex } from '../contex/mainContex'
 import Bignote from '../compo/bignote'
-import { noteApi, sectionApi } from '../config/apis'
 import LoadingBar from 'react-top-loading-bar'
-import { AuthContex } from '../contex/AuthContex';
 import toast from 'react-hot-toast';
 import { createNote } from '../services/note';
 import { getSection } from '../services/section';
+import { useSelector } from 'react-redux';
 
 
 
 function Section() {
 
   const { notes, dispatch, openBig, setactive, copynote, setcopy, closeBig } = useContext(MainContex);
-  const { auth } = useContext(AuthContex)
+
+  let { token } = useSelector(state => state.auth);
 
   let { section } = useParams();
 
@@ -44,7 +44,7 @@ function Section() {
 
     let fetchsection = async () => {
       load.current.staticStart();
-      let data = await getSection(auth, section);
+      let data = await getSection(token, section);
       if (data.err) {
         navigate("/123/pagenotfound");
       } else {
@@ -66,7 +66,7 @@ function Section() {
 
   let addnote = async (note) => {
     let tid = toast.loading("adding note");
-    let data = await createNote(section, auth, note);
+    let data = await createNote(section, token, note);
     if (data.err) {
       toast.error("some error occured", { id: tid });
     } else {

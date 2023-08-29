@@ -1,15 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
-import { AuthContex } from '../contex/AuthContex';
 import toast from 'react-hot-toast';
 import { signup } from '../services/auth';
 
 function Signin() {
 
-  let { auth, setauth } = useContext(AuthContex);
-
   let navigate = useNavigate();
-
+  let { authStatus } = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+  
   let [name, setname] = useState({
     text: "",
     err: ""
@@ -115,9 +114,9 @@ function Signin() {
         })
         return;
       }
+      dispatch(loginAction(data.msg));
       localStorage.setItem('noteAuth', data.msg);
       navigate("/");
-      setauth(data.msg);
       toast.success("Signin successfully", {
         id,
         style: {

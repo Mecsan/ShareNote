@@ -1,19 +1,18 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { MainContex } from '../contex/mainContex';
-import { AuthContex } from '../contex/AuthContex';
+import { useSelector } from 'react-redux';
 
 function Note({ note, setisadd, permission }) {
 
     const { setactive, deletenote, openBig } = useContext(MainContex);
-    const { user } = useContext(AuthContex)
+    const { user } = useSelector(state => state.auth)
 
     let OpenBignote = (e) => {
         setisadd(false);
         setactive(note);
         openBig();
     }
-
 
     return (
         <div className='note' onClick={(e) => OpenBignote(e)}>

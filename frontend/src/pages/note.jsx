@@ -4,8 +4,6 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useEffect } from 'react'
 import { useContext } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { noteApi } from '../config/apis'
-import { AuthContex } from '../contex/AuthContex'
 import Owner from '../compo/Owner';
 import { MainContex } from '../contex/mainContex';
 import LinkIcon from '@mui/icons-material/Link';
@@ -15,6 +13,8 @@ import {
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import toast from 'react-hot-toast';
 import { getNote } from '../services/note';
+import { useSelector } from 'react-redux';
+import { status } from '../redux/slices/authSlice';
 
 function Note() {
 
@@ -22,7 +22,8 @@ function Note() {
 
     const debounceDelay = 2000;
 
-    const { auth } = useContext(AuthContex)
+    const { token, authStatus } = useSelector(state => state.auth);
+
     const { deletenote, updateNote, setcopy } = useContext(MainContex)
 
     const { noteId } = useParams();
@@ -32,7 +33,7 @@ function Note() {
     const [time, settime] = useState(null)
 
     const fetchNote = async (key) => {
-        let data = await getNote(key, auth);
+        let data = await getNote(key, token);
         if (data.err) {
             navigate("/123/pagenotefound");
         } else {
@@ -118,7 +119,7 @@ function Note() {
                                         </div> : null
                                 }
                                 {
-                                    auth ? <div className="copy-btn" onClick={() => copyNote(note)}>
+                                    authStatus == status.AUTH ? <div className="copy-btn" onClick={() => copyNote(note)}>
                                         <Tooltip title='copy note'>
                                             <ContentCopyIcon style={{ cursor: "pointer" }} />
                                         </Tooltip>

@@ -1,10 +1,8 @@
 import React, { useReducer } from 'react'
-import { useContext } from 'react';
-import { createContext, useState, useRef } from 'react'
+import { createContext, useState } from 'react'
 import toast from 'react-hot-toast';
-import { noteApi } from '../config/apis';
+import { useSelector } from 'react-redux';
 import { deleteNote, updateNote as updateNode } from '../services/note';
-import { AuthContex } from './AuthContex';
 export const MainContex = createContext();
 
 function MainContexProvider(props) {
@@ -54,12 +52,12 @@ function MainContexProvider(props) {
         document.querySelector(".bigNoteRef").classList.remove('back_active')
     }
 
-    const { auth } = useContext(AuthContex)
+    let { token } = useSelector(state => state.auth)
 
     async function updateNote(key, newnote) {
 
         let tid = toast.loading("updating note");
-        let data = await updateNode(key, auth, newnote);
+        let data = await updateNode(key, token, newnote);
         if (data.err) return data;
         dispatch({
             type: "UP_NOTE",
@@ -81,7 +79,7 @@ function MainContexProvider(props) {
         let ok = confirm('are you sure want to delete note?');
         if (ok) {
             let tid = toast.loading("deleting note");
-            let data = await deleteNote(key, auth);
+            let data = await deleteNote(key, token);
             if (data.err) return data;
             dispatch({
                 type: "DLT_NOTE",

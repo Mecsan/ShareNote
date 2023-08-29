@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Signin from './pages/signin'
 import Login from './pages/login'
 import Section from './pages/Section'
@@ -8,16 +8,39 @@ import Notfound from './pages/notfound'
 import Home from './pages/Home'
 import { Toaster } from 'react-hot-toast'
 import Auth from './compo/Auth'
-import { AuthContex } from './contex/AuthContex'
 import Note from './pages/note'
 import Loading from './compo/loading'
+import { useDispatch, useSelector } from 'react-redux'
+import { verify } from './services/auth'
+import { logout, setStatus, setUser, status } from './redux/slices/authSlice'
 
 function App() {
-  const { loading } = useContext(AuthContex)
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  let fetchUserinfo = async () => {
+    let data = await verify(auth.token);
+    if (data.err) {
+      dispatch(logout());
+      localStorage.removeItem('noteAuth');
+    } else {
+      dispatch(setStatus(status.AUTH));
+      dispatch(setUser(data.msg));
+    }
+  }
+
+  useEffect(() => {
+    if (auth.token) {
+      fetchUserinfo();
+    } else {
+      dispatch(setStatus(status.NOAUTH));
+    }
+  }, [auth.token])
+
   return (
     <>
       {
-        loading ?  <Loading /> :
+        auth.authStatus==status.UNVERIFIED ? <Loading /> :
           <>
             <Toaster
               position="bottom-center"

@@ -1,14 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Link, Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { AuthContex } from '../contex/AuthContex';
 import toast from 'react-hot-toast';
 import { login } from '../services/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { login as loginAction, status } from '../redux/slices/authSlice';
 
 function Login() {
   let navigate = useNavigate();
-  const { auth, setauth } = useContext(AuthContex)
-
+  let { authStatus } = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+  
   let [mail, setmail] = useState({
     text: "",
     err: ""
@@ -78,7 +80,7 @@ function Login() {
         return;
       }
 
-      setauth(data.msg);
+      dispatch(loginAction(data.msg));
       localStorage.setItem('noteAuth', data.msg);
       toast.success("Login successfully", {
         id,
@@ -94,8 +96,7 @@ function Login() {
 
   return (
     <>
-      {auth ? <Navigate to="/" /> :
-
+      {authStatus == status.AUTH ? <Navigate to="/" /> :
         <div className="formcontainer">
 
           <div className="loginform">

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
-import { Navigate, NavLink, Outlet } from 'react-router-dom';
-import { AuthContex } from '../contex/AuthContex'
+import { useSelector } from 'react-redux';
+import { NavLink, Outlet } from 'react-router-dom';
+import { status } from '../redux/slices/authSlice';
 import Nav from './nav';
 
 const SignUpButton = () => {
@@ -12,12 +13,13 @@ const SignUpButton = () => {
 }
 
 function Auth() {
-    let { auth } = useContext(AuthContex);
+    let { authStatus } = useSelector(state => state.auth);
     return (
         <>
             {
-                auth ?
-                    <Nav /> : <SignUpButton />
+                authStatus == status.AUTH ?
+                    <Nav /> :
+                    <SignUpButton />
             }
             <Outlet />
         </>
