@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import DescriptionIcon from '@mui/icons-material/Description';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import { Navigate, useNavigate } from 'react-router-dom';
@@ -8,6 +8,12 @@ function Home() {
   const { authStatus } = useSelector(state => state.auth);
   let links = useSelector(state => state.sections);
   links = links.sections;
+
+  let [search, setsearch] = useState("");
+
+  let filtered = links.filter(link => {
+    return link.title.toLowerCase().includes(search.trim())
+  })
 
   const navigate = useNavigate();
 
@@ -20,9 +26,13 @@ function Home() {
             <div className='section-conta'>
               <h1>Sections : </h1>
 
+              <div className="search-container">
+                <input placeholder='Search...' className='search' type='text' value={search} onChange={(e) => setsearch(e.target.value)} />
+              </div>
+
               <div className="section-container">
                 {
-                  links.map((link) => (
+                  filtered.map((link) => (
                     <div onClick={() => {
                       navigate(link._id)
                     }} className="small-section" key={link._id}>

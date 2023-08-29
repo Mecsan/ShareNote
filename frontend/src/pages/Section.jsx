@@ -27,7 +27,12 @@ function Section() {
   let load = useRef(null);
 
   let [sectionInfo, setsectionInfo] = useState(null);
-  const [permission, setpermission] = useState(false)
+  const [permission, setpermission] = useState(false);
+  let [search, setsearch] = useState("");
+
+  let filteredNotes = notes.filter(note => {
+    return note.title.toLowerCase().includes(search.trim()) || note.desc.toLowerCase().includes(search.trim())
+  })
 
   let navigate = useNavigate();
 
@@ -125,9 +130,13 @@ function Section() {
             </div>
             : null}
 
+          <div className="search-container">
+            <input placeholder='Search...' className='search' type='text' value={search} onChange={(e) => setsearch(e.target.value)} />
+          </div>
+
           <div className="notes">
             {
-              notes.map((note) => {
+              filteredNotes.map((note) => {
                 return (
                   <Note
                     permission={permission}

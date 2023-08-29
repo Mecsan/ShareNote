@@ -718,10 +718,32 @@ input:focus {
     color: whitesmoke;
 }
 
-.loading{
+.loading {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100vw;
     height: 100vh;
+}
+
+
+
+/* Search input  */
+.search-container {
+    padding: 5px 20px;
+}
+
+.search {
+    border: 1px solid grey;
+    padding: 10px 15px;
+    border-radius: 10px;
+    max-width: 400px;
+    font-size: 1rem;
+    color: rgb(71, 71, 71);
+}
+
+.search:focus {
+    border: 2px solid gray;
+    background:rgba(220, 220, 220, 0.38) ;
+    color: black;
 }
