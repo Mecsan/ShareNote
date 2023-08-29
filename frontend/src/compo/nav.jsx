@@ -6,13 +6,13 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import LogoutIcon from '@mui/icons-material/Logout';
 import User from './user';
 import { MainContex } from '../contex/mainContex';
-import { LinkContex } from '../contex/LinkContex';
 import HouseIcon from '@mui/icons-material/House';
 import MenuIcon from '@mui/icons-material/Menu';
 import toast from 'react-hot-toast';
 import { createSection, getSections } from '../services/section';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/slices/authSlice';
+import { addSection, setSections } from '../redux/slices/sectionSlice';
 
 
 function Nav() {
@@ -21,8 +21,8 @@ function Nav() {
 
     const reduxDispatch = useDispatch();
     const auth = useSelector(state => state.auth);
-
-    const { links, dispatchLink } = useContext(LinkContex);
+    let links = useSelector(state => state.sections);
+    links = links.sections;
 
     let Navigate = useNavigate();
 
@@ -39,7 +39,7 @@ function Nav() {
                 },
             })
             dispatch({ type: "SET_NOTE", payload: [] });
-            dispatchLink({ type: "SET_LINK", payload: [] })
+            reduxDispatch(setSections([]));
             reduxDispatch(logout());
             setactive(null);
             Navigate("/login");
@@ -50,7 +50,7 @@ function Nav() {
     let getsections = async () => {
         let data = await getSections(auth.token);
         if (data.err) return;
-        dispatchLink({ type: "SET_LINK", payload: data.msg })
+        reduxDispatch(setSections(data.msg));
     }
 
     useEffect(() => {
@@ -81,7 +81,7 @@ function Nav() {
 
         let data = await createSection(auth.token, { title: add });
         if (data.msg) {
-            dispatchLink({ type: "ADD_LINK", payload: data.msg });
+            reduxDispatch(addSection(data.msg));
             Navigate("/" + data.msg._id);
 
             toast.success('section added', {

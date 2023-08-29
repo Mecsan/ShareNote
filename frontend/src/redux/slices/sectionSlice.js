@@ -20,7 +20,7 @@ let sectionSlice = createSlice({
         updateSection: (state, action) => {
             state.sections = state.sections.map(section => {
                 if (section._id == action.payload._id)
-                    return action.payload
+                    return { ...section, ...action.payload }
                 return section;
             })
         }

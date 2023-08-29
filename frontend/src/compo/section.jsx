@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useNavigate } from 'react-router-dom';
 import TextareaAutosize from 'react-textarea-autosize';
-import { LinkContex } from '../contex/LinkContex';
 import toast from 'react-hot-toast';
 import Owner from './Owner';
 import LinkIcon from '@mui/icons-material/Link';
@@ -11,14 +10,18 @@ import {
 } from '@mui/material'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { copySection as copy, deleteSection, updateSection } from '../services/section';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { status } from '../redux/slices/authSlice';
+import {
+    updateSection as updateSectionAction,
+    deleteSection as deleteSectionAction
+} from '../redux/slices/sectionSlice';
 
 function Section({ section, sectionInfo, permission }) {
 
-    let { dispatchLink } = useContext(LinkContex);
     let { token, authStatus } = useSelector(state => state.auth)
     let navigate = useNavigate();
+    const dispatch = useDispatch();
 
     let [desc, setdesc] = useState("");
     let [title, settitle] = useState("");
@@ -45,7 +48,10 @@ function Section({ section, sectionInfo, permission }) {
                 desc: desc
             }
 
-            dispatchLink({ type: "UP_LINK", key: sectionInfo._id, payload: newsection });
+            dispatch(updateSectionAction({
+                ...newsection,
+                _id: sectionInfo._id,
+            }));
 
             some = setTimeout(() => updateSectionDb(newsection), 1500);
         }
@@ -63,7 +69,7 @@ function Section({ section, sectionInfo, permission }) {
             let tid = toast.loading("deleting");
             let data = await deleteSection(token, section);
             if (data.err) return;
-            dispatchLink({ type: "DLT_LINK", key: data.msg });
+            dispatch(deleteSectionAction(section));
             navigate("/");
             toast.success("section deleted", {
                 id: tid,
