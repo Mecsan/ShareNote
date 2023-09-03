@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 let initialState = {
+    hasFetched: false,
     sections: []
 }
 
@@ -10,6 +11,7 @@ let sectionSlice = createSlice({
     reducers: {
         setSections: (state, action) => {
             state.sections = action.payload;
+            state.hasFetched = true
         },
         addSection: (state, action) => {
             state.sections.push(action.payload);
