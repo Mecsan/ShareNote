@@ -58,16 +58,13 @@ function App() {
                     <Route path='/login' element={<Login />} />
 
                     <Route path="/" element={
-                      <>
                         <Auth />
-                      </>
                     }>
                       <Route path='/' element={<Home />} />
                       <Route path='/:section' element={<Section />} />
                       <Route path='/note/:noteId' element={<Note />} />
+                      <Route path='*' element={<Notfound />} />
                     </Route>
-
-                    <Route path='*' element={<Notfound />} />
                   </Routes>
                 </Router>
               }

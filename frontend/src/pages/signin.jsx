@@ -120,9 +120,13 @@ function Signin() {
       })
     }
   }
+
+  if(authStatus == status.AUTH){
+    return (<Navigate to="/" />)
+  }
+
   return (
     <div className="formcontainer">
-      {authStatus == status.AUTH ? <Navigate to="/" /> :
         <div className="loginform">
           <h2>Create an account</h2>
           <form autoComplete='off' id="myform" onSubmit={handleSignup}>
@@ -157,10 +161,8 @@ function Signin() {
           <div className="link">
             Have an account?
             <Link to="/login"> Login</Link>
-
           </div>
         </div>
-      }
     </div>
   )
 }

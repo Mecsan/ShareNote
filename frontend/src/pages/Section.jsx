@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useContext } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Divider, Tooltip } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -12,6 +12,7 @@ import { getSection } from '../services/section';
 import { useDispatch, useSelector } from 'react-redux';
 import { addNote, removeCopy, setNotes } from '../redux/slices/noteSlice';
 import { closeBig, openBig } from '../util/constant';
+import Loading from '../compo/loading';
 
 function Section() {
 
@@ -19,6 +20,7 @@ function Section() {
 
   let { token } = useSelector(state => state.auth);
   let { notes, copyNote } = useSelector(state => state.notes);
+  let { loading} = useSelector(state=>state.sections);
 
   let { section } = useParams();
 
@@ -47,8 +49,8 @@ function Section() {
   useEffect(() => {
 
     let fetchsection = async () => {
-      load.current.staticStart();
-      let data = await getSection(token, section);
+      load?.current?.staticStart();
+      let data = await getSection(token, section,dispatch);
       if (data.err) {
         navigate("/123/pagenotfound");
       } else {
@@ -56,9 +58,7 @@ function Section() {
         setsectionInfo(data.msg.section)
         setpermission(data.msg.permission)
       }
-      if (load.current) {
-        load.current.complete();
-      }
+      load?.current?.complete();
     }
 
     fetchsection();
@@ -84,6 +84,10 @@ function Section() {
     let newNote = { title: copyNote.title, desc: copyNote.desc }
     addnote(newNote);
     dispatch(removeCopy());
+  }
+
+  if(sectionInfo===null && loading){
+    return(<Loading/>);
   }
 
   return (

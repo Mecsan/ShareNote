@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 let initialState = {
-    hasFetched: false,
+    loading: true,
     sections: []
 }
 
@@ -9,9 +9,14 @@ let sectionSlice = createSlice({
     name: "sections",
     initialState,
     reducers: {
+        startSectionLoad :(state,action)=>{
+            state.loading = true
+        },
+        stopSectionLoad :(state,action)=>{
+            state.loading = false
+        },
         setSections: (state, action) => {
             state.sections = action.payload;
-            state.hasFetched = true
         },
         addSection: (state, action) => {
             state.sections.push(action.payload);
@@ -33,7 +38,9 @@ export const {
     setSections,
     addSection,
     deleteSection,
-    updateSection
+    updateSection,
+    startSectionLoad,
+    stopSectionLoad
 } = sectionSlice.actions
 
 export default sectionSlice.reducer

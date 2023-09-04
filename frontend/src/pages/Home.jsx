@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { status } from '../redux/slices/authSlice';
 function Home() {
   const { authStatus } = useSelector(state => state.auth);
-  let { sections: links, hasFetched } = useSelector(state => state.sections);
+  let { sections: links, loading } = useSelector(state => state.sections);
 
   let [search, setsearch] = useState("");
 
@@ -24,7 +24,7 @@ function Home() {
 
   return (
     <div className="right">
-      {hasFetched == true ?
+      {loading === false ?
         <>
           {
             links.length ?

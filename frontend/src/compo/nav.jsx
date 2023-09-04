@@ -11,7 +11,7 @@ import toast from 'react-hot-toast';
 import { createSection, getSections } from '../services/section';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/slices/authSlice';
-import { addSection, setSections } from '../redux/slices/sectionSlice';
+import { addSection, setSections, stopSectionLoad } from '../redux/slices/sectionSlice';
 import { setNotes } from '../redux/slices/noteSlice';
 
 
@@ -41,6 +41,7 @@ function Nav() {
         let data = await getSections(auth.token);
         if (data.err) return;
         dispatch(setSections(data.msg));
+        dispatch(stopSectionLoad());
     }
 
     useEffect(() => {

@@ -1,4 +1,5 @@
 import { sectionApi } from "../config/apis";
+import { startSectionLoad, stopSectionLoad } from "../redux/slices/sectionSlice";
 import { handleError } from "./errorHandler";
 
 export const createSection = handleError(async (token, body) => {
@@ -25,13 +26,15 @@ export const getSections = handleError(async (token) => {
     return data;
 })
 
-export const getSection = handleError(async (token, sid) => {
+export const getSection = handleError(async (token, sid,dispatch) => {
     const option = {}
     if (token) {
         option["headers"] = { 'authorization': token }
     }
+    dispatch(startSectionLoad());
     let res = await fetch(sectionApi + sid, option);
     let data = await res.json();
+    dispatch(stopSectionLoad());
     return data;
 })
 

@@ -84,9 +84,11 @@ function Login() {
     }
   }
 
+  if(authStatus == status.AUTH){
+    return (<Navigate to="/" />)
+  }
+
   return (
-    <>
-      {authStatus == status.AUTH ? <Navigate to="/" /> :
         <div className="formcontainer">
 
           <div className="loginform">
@@ -114,13 +116,9 @@ function Login() {
             <div className="link">
               Don't have an account?
               <Link to="/signup"> Sign up</Link>
-
             </div>
           </div>
-
         </div>
-      }
-    </>
   )
 }
 
