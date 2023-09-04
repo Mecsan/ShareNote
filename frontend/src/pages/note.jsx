@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import TextareaAutosize from 'react-textarea-autosize';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useEffect } from 'react'
-import { useContext } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Owner from '../compo/Owner';
 import LinkIcon from '@mui/icons-material/Link';
@@ -16,14 +15,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { status } from '../redux/slices/authSlice';
 import { setCopy } from '../redux/slices/noteSlice';
 import { deletenote, updatenote } from '../util/common';
+import { debounceDelay } from '../util/constant';
+import Loading from '../compo/loading';
 
 function Note() {
 
     const navigate = useNavigate();
-
-    const debounceDelay = 2000;
-
     const { token, authStatus } = useSelector(state => state.auth);
+    const { loading } = useSelector(state => state.notes);
+
     const dispatch = useDispatch();
 
     const { noteId } = useParams();
@@ -33,7 +33,7 @@ function Note() {
     const [time, settime] = useState(null);
 
     const fetchNote = async (key) => {
-        let data = await getNote(key, token);
+        let data = await getNote(key, token, dispatch);
         if (data.err) {
             navigate("/123/pagenotefound");
         } else {
@@ -97,6 +97,8 @@ function Note() {
         fetchNote(noteId)
     }, [noteId])
 
+    let rows =Math.floor(innerHeight/35);
+
     return (
         <div className="right" >
             {
@@ -132,7 +134,9 @@ function Note() {
                         <div className="date">
                             {note?.updatedAt?.toString()?.substr(0, 10)}
                         </div>
-                        <TextareaAutosize name='desc' disabled={permission ? false : true} value={note.desc || ''} onChange={handleChange}
+                        <TextareaAutosize
+                            minRows={rows}
+                            name='desc' disabled={permission ? false : true} value={note.desc || ''} onChange={handleChange}
                             style={{ fontSize: "1.1rem", background: "transparent" }} />
                     </div> : null
             }

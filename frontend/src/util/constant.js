@@ -6,6 +6,8 @@ export const closeBig = () => {
     document.querySelector(".bigNoteRef").classList.remove('back_active')
 }
 
+export const debounceDelay = 2000;
+
 export let toastConfig = {
     position: "top-right",
     lightToast: {

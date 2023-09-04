@@ -1,4 +1,5 @@
 import { noteApi } from "../config/apis";
+import { startNoteLoad, stopNoteLoad } from "../redux/slices/noteSlice";
 import { handleError } from "./errorHandler";
 
 export const createNote = handleError(async (sid, token, body) => {
@@ -39,12 +40,14 @@ export const deleteNote = handleError(async (key, token) => {
     return data;
 })
 
-export const getNote = handleError(async (key, token) => {
+export const getNote = handleError(async (key, token,dispatch) => {
     let option = {};
     if (token) {
         option["headers"] = { 'authorization': token }
     }
+    dispatch(startNoteLoad());
     const res = await fetch(noteApi + key, option);
     const data = await res.json();
+    dispatch(stopNoteLoad());
     return data;
 })
