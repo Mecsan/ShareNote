@@ -99,6 +99,9 @@ function Note() {
 
     let rows =Math.floor(innerHeight/35);
 
+    if(loading){
+        return (<Loading/>)
+    }
     return (
         <div className="right" >
             {
