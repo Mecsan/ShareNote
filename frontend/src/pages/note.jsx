@@ -15,14 +15,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { status } from '../redux/slices/authSlice';
 import { setCopy } from '../redux/slices/noteSlice';
 import { deletenote, updatenote } from '../util/common';
-import { debounceDelay } from '../util/constant';
+import { debounceDelay, styles } from '../util/constant';
 import Loading from '../compo/loading';
+import { themes } from '../redux/slices/themSlice';
 
 function Note() {
 
     const navigate = useNavigate();
     const { token, authStatus } = useSelector(state => state.auth);
     const { loading } = useSelector(state => state.notes);
+    const { theme } = useSelector(state => state.theme)
 
     const dispatch = useDispatch();
 
@@ -97,10 +99,10 @@ function Note() {
         fetchNote(noteId)
     }, [noteId])
 
-    let rows =Math.floor(innerHeight/35);
+    let rows = Math.floor(innerHeight / 35);
 
-    if(loading){
-        return (<Loading/>)
+    if (loading) {
+        return (<Loading />)
     }
     return (
         <div className="right" >
@@ -137,10 +139,16 @@ function Note() {
                         <div className="date">
                             {note?.updatedAt?.toString()?.substr(0, 10)}
                         </div>
-                        <TextareaAutosize
-                            minRows={rows}
-                            name='desc' disabled={permission ? false : true} value={note.desc || ''} onChange={handleChange}
-                            style={{ fontSize: "1.1rem", background: "transparent" }} />
+                        <div className="wrapper">
+
+                            <TextareaAutosize
+                                minRows={rows}
+                                name='desc' disabled={permission ? false : true} value={note.desc || ''} onChange={handleChange}
+                                style={{
+                                    fontSize: "1.1rem", background: "transparent",
+                                    color: theme == themes.LIGHT ? styles.light.btn : styles.dark.btn
+                                }} />
+                        </div>
                     </div> : null
             }
         </div>

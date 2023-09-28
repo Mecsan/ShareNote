@@ -29,7 +29,7 @@ function Home() {
           {
             links.length ?
               <div className='section-conta'>
-                <h1>Sections : </h1>
+                <h1 className='home-title'>Sections : </h1>
 
                 <div className="search-container">
                   <input placeholder='Search...' className='search' type='text' value={search} onChange={(e) => setsearch(e.target.value)} />

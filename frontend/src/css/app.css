@@ -7,12 +7,36 @@
 
 :root {
     --primary-color: rgb(84, 105, 212);
-
+    --dark-bg-1000: #262626;
+    --dark-bg-800: #202020;
+    --dark-bg-600: #313131;
 }
 
 body {
     overflow-x: hidden;
 }
+
+:where(.right, .flex, .bignote textarea, .note-page textarea)::-webkit-scrollbar {
+    width: 8px;
+}
+
+:where(.right, .flex, .bignote textarea,.note-page textarea)::-webkit-scrollbar-track {
+    width: 30px;
+    border-radius: 10px;
+}
+
+:where(.right, .flex, .bignote textarea,.note-page textarea)::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+}
+
+:where(.bignote, .note-page) textarea::-webkit-scrollbar-thumb {
+    background: rgba(128, 128, 128, 0.669);
+}
+
+:where(.flex, .right):hover::-webkit-scrollbar-thumb {
+    background: rgba(128, 128, 128, 0.669);
+}
+
 
 .main {
     display: flex;
@@ -25,9 +49,13 @@ body {
     height: 100vh;
     width: 100%;
     background: whitesmoke;
+    transition: all 0.5s;
     overflow: auto;
 }
 
+.dark .right {
+    background: var(--dark-bg-1000);
+}
 
 /* ///////////////////////////////////////////////////////// */
 /*login & signup form styling  */
@@ -39,6 +67,11 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 400px;
+}
+
+.dark .formcontainer{
+    background: var(--dark-bg-600);
+    color: white;
 }
 
 .loginform {
@@ -57,6 +90,10 @@ form input {
     border-radius: 4px;
     color: rgba(0, 0, 0, 0.661);
     transition: all 0.2s;
+}
+
+.dark form input{
+    color: white;
 }
 
 .form_item {
@@ -189,6 +226,10 @@ a {
     transition: all 0.5s;
 }
 
+.dark .flex {
+    background: var(--dark-bg-1000);
+}
+
 .flex li {
     list-style: none;
 }
@@ -200,6 +241,7 @@ a {
 
 .nav .navbar {
     transition: left 0.5s;
+    border-right: gray 1px solid;
 }
 
 .overlay {
@@ -317,6 +359,11 @@ a {
     margin-bottom: 20px;
 }
 
+.dark .note {
+    background: var(--dark-bg-600);
+    color: white;
+}
+
 .note_title {
     margin-bottom: 2px;
 }
@@ -336,6 +383,10 @@ a {
     .note:hover {
         box-shadow: 0px 0px 10px black;
         transform: translateY(0px) scale(1.01);
+    }
+
+    .dark .note:hover {
+        box-shadow: 0px 0px 5px whitesmoke;
     }
 }
 
@@ -395,6 +446,11 @@ a {
     min-height: 66vh;
 }
 
+.dark .bignote {
+    background-color: var(--dark-bg-600);
+    color: white;
+}
+
 textarea {
     resize: vertical;
     width: 100%;
@@ -414,7 +470,7 @@ textarea:focus {
 }
 
 .back {
-    background-color: #2e2a2acc;
+    background-color: white;
     position: fixed;
     opacity: 0;
     z-index: -1;
@@ -426,6 +482,10 @@ textarea:focus {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.dark .back {
+    background-color: var(--dark-bg-600);
 }
 
 .back_active {
@@ -525,8 +585,11 @@ textarea:focus {
     padding: 20px 15px;
 }
 
+.dark .user {
+    color: white;
+}
+
 .name {
-    color: blue;
     display: flex;
     flex-direction: column;
     padding-bottom: 10px;
@@ -534,11 +597,16 @@ textarea:focus {
 
 .some {
     font-size: 1.2rem;
+    color: var(--primary-color);
 }
 
 .user .pre {
     color: black;
     font-size: 2rem;
+}
+
+.dark .user .pre {
+    color: white;
 }
 
 .setting {
@@ -601,6 +669,20 @@ textarea:focus {
     transition: all 0.4s;
 }
 
+.small-section:hover {
+    background: white;
+}
+
+
+.dark .small-section {
+    background-color: var(--dark-bg-600);
+    color: white;
+}
+
+.dark .small-section:hover {
+    background-color: var(--dark-bg-800);
+}
+
 @media screen and (max-width:500px) {
     .section-container {
         justify-content: center;
@@ -611,9 +693,7 @@ textarea:focus {
     }
 }
 
-.small-section:hover {
-    background: white;
-}
+
 
 .btn_grp {
     display: flex;
@@ -643,6 +723,10 @@ input:focus {
     font-weight: 500;
 }
 
+.dark :is(.f_title, .t_title) {
+    color: white;
+}
+
 .f_desc,
 .t_desc {
     font-size: 1rem;
@@ -661,8 +745,13 @@ input:focus {
     font-size: 2rem;
 }
 
+.dark .notfound {
+    background-color: var(--dark-bg-1000);
+    color: white;
+}
+
 .notfound h1 {
-    color: red;
+    color: rgb(210, 94, 94);
     font-size: 3rem;
 }
 
@@ -672,14 +761,47 @@ input:focus {
     margin: 0px 10px;
     background: white;
     border-radius: 5px;
+    max-height: 90vh;
+    overflow: hidden;
+}
+
+.note-page textarea {
+    max-height: 90vh;
+    overflow: auto;
+}
+
+
+.dark .note-page {
+    background: var(--dark-bg-600);
+    color: white;
 }
 
 .note-page .date {
     margin-bottom: 25px;
 }
 
+.dark .date {
+    color: white;
+}
+
+.section-area {
+    background: transparent;
+}
+
+.dark .section-area {
+    color: white;
+}
+
 .fw-400 {
     font-weight: 400;
+}
+
+h3 {
+    color: black;
+}
+
+.dark h3 {
+    color: white
 }
 
 .task-page textarea::-webkit-scrollbar {
@@ -744,6 +866,27 @@ input:focus {
 
 .search:focus {
     border: 2px solid gray;
-    background:rgba(220, 220, 220, 0.38) ;
+    background: rgba(220, 220, 220, 0.38);
     color: black;
+}
+
+.dark .search:focus {
+    color: white;
+    background-color: var(--dark-bg-600);
+}
+
+.home-title {
+    color: black;
+}
+
+.dark .home-title {
+    color: white;
+}
+
+.add-section {
+    color: black;
+}
+
+.dark .add-section {
+    color: white;
 }

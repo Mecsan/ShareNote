@@ -14,9 +14,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { verify } from './services/auth'
 import { logout, setStatus, setUser, status } from './redux/slices/authSlice'
 import { toastConfig } from './util/constant'
+import { themes } from './redux/slices/themSlice'
 
 function App() {
   const auth = useSelector((state) => state.auth);
+  const { theme } = useSelector(state => state.theme)
   const dispatch = useDispatch();
 
   let fetchUserinfo = async () => {
@@ -50,7 +52,7 @@ function App() {
                 { style: toastConfig.lightToast }
               }
             />
-            <div className='main'>
+            <div className={theme == themes.LIGHT ? "main" : "main dark"}>
               {
                 <Router>
                   <Routes>
@@ -58,7 +60,7 @@ function App() {
                     <Route path='/login' element={<Login />} />
 
                     <Route path="/" element={
-                        <Auth />
+                      <Auth />
                     }>
                       <Route path='/' element={<Home />} />
                       <Route path='/:section' element={<Section />} />

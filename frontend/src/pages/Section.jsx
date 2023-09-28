@@ -11,8 +11,9 @@ import { createNote } from '../services/note';
 import { getSection } from '../services/section';
 import { useDispatch, useSelector } from 'react-redux';
 import { addNote, removeCopy, setNotes } from '../redux/slices/noteSlice';
-import { closeBig, openBig } from '../util/constant';
+import { closeBig, openBig, styles } from '../util/constant';
 import Loading from '../compo/loading';
+import { themes } from '../redux/slices/themSlice';
 
 function Section() {
 
@@ -20,7 +21,8 @@ function Section() {
 
   let { token } = useSelector(state => state.auth);
   let { notes, copyNote } = useSelector(state => state.notes);
-  let { loading} = useSelector(state=>state.sections);
+  let { loading } = useSelector(state => state.sections);
+  let { theme } = useSelector(state => state.theme)
 
   let { section } = useParams();
 
@@ -50,7 +52,7 @@ function Section() {
 
     let fetchsection = async () => {
       load?.current?.staticStart();
-      let data = await getSection(token, section,dispatch);
+      let data = await getSection(token, section, dispatch);
       if (data.err) {
         navigate("/123/pagenotfound");
       } else {
@@ -86,8 +88,8 @@ function Section() {
     dispatch(removeCopy());
   }
 
-  if(sectionInfo===null && loading){
-    return(<Loading/>);
+  if (sectionInfo === null && loading) {
+    return (<Loading />);
   }
 
   return (
@@ -118,7 +120,11 @@ function Section() {
                 <div className="open_note">
                   <h3 style={{ marginRight: 10 }}>Add note</h3>
                   <div className="add_btn" onClick={openAddnote}>
-                    <AddCircleIcon style={{ fontSize: '3rem', color: '#5469d4', cursor: "pointer" }} />
+                    <AddCircleIcon style={{
+                      fontSize: '3rem',
+                      color: theme == themes.LIGHT ? styles.light['btn-primary'] : styles.dark['btn-primary'],
+                      cursor: "pointer"
+                    }} />
                   </div>
                 </div>
               </div>

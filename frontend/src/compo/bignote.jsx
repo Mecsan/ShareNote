@@ -202,7 +202,9 @@ function Bignote({ addnote, section, isadd, permission }) {
         <Divider />
 
 
-        <TextareaAutosize disabled={permission ? false : true} placeholder='your desc'
+        <TextareaAutosize
+          className='section-area'
+          disabled={permission ? false : true} placeholder='your desc'
           value={desc} onChange={(e) => setdesc(e.target.value)}
           minRows={3} />
       </div>

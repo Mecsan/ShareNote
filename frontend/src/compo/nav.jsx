@@ -13,12 +13,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/slices/authSlice';
 import { addSection, setSections, stopSectionLoad } from '../redux/slices/sectionSlice';
 import { setNotes } from '../redux/slices/noteSlice';
+import { themes } from '../redux/slices/themSlice';
+import { styles } from '../util/constant';
 
 
 function Nav() {
 
     const dispatch = useDispatch();
     const auth = useSelector(state => state.auth);
+    let { theme } = useSelector(state => state.theme)
     let links = useSelector(state => state.sections);
     links = links.sections;
 
@@ -78,6 +81,16 @@ function Nav() {
         setadd("");
     }
 
+    let getStyle = (link) => {
+        if (link._id == location.pathname.substring(1)) {
+            return { color: styles.light['btn-primary'] }
+        }
+        if (theme == themes.LIGHT) {
+            return { color: styles.light.btn }
+        }
+        return { color: styles.dark.btn }
+    }
+
 
     return (
         <div className="left" onClick={(e) => {
@@ -98,9 +111,13 @@ function Nav() {
 
                         <ListItem disablePadding>
                             <ListItemButton onClick={() => Navigate("/")}>
-                                <ListItemText primary="Home" style={{ color: location.pathname == "/" ? "#5469d4" : "black" }} />
+                                <ListItemText primary="Home" style={{
+                                    color: location.pathname == "/" ? styles.light['btn-primary'] : (
+                                        theme == themes.LIGHT ? styles.light.btn : styles.dark.btn
+                                    )
+                                }} />
                                 <ListItemIcon>
-                                    <HouseIcon style={{ color: location.pathname == "/" ? "#5469d4" : "grey" }} />
+                                    <HouseIcon style={{ color: location.pathname == "/" ? styles.light['btn-primary'] : "grey" }} />
                                 </ListItemIcon>
                             </ListItemButton>
                         </ListItem>
@@ -108,9 +125,11 @@ function Nav() {
 
                         <ListItem disablePadding >
                             <ListItemButton onClick={() => setIsAdd(!isAdd)}>
-                                <ListItemText primary="Add" style={{ color: "black" }} />
+                                <ListItemText primary="Add" style={{
+                                    color: theme == themes.LIGHT ? styles.light.btn : styles.dark.btn
+                                }} />
                                 <ListItemIcon>
-                                    <AddBoxIcon />
+                                    <AddBoxIcon style={{ color: "grey" }} />
                                 </ListItemIcon>
                             </ListItemButton>
                         </ListItem>
@@ -119,6 +138,7 @@ function Nav() {
                             <ListItem disablePadding >
                                 <ListItemButton >
                                     <TextField
+                                        className='add-section'
                                         placeholder='Name'
                                         size="small"
                                         variant="standard"
@@ -126,7 +146,7 @@ function Nav() {
                                         onChange={(e) => setadd(e.target.value)}
                                     />
                                     <ListItemIcon onClick={addsection}>
-                                        <CheckBoxIcon />
+                                        <CheckBoxIcon style={{ color: "grey" }} />
                                     </ListItemIcon>
                                 </ListItemButton>
                             </ListItem>
@@ -141,7 +161,8 @@ function Nav() {
                                         Navigate('/' + link._id)
                                     }}>
                                         <ListItemButton>
-                                            <ListItemText primary={link.title} style={link._id == location.pathname.substring(1) ? { color: "rgb(84, 105, 212)" } : { color: "black" }} />
+                                            <ListItemText primary={link.title}
+                                                style={getStyle(link)} />
                                         </ListItemButton>
                                     </ListItem>
                                 )
@@ -150,9 +171,11 @@ function Nav() {
 
                         <ListItem disablePadding style={{ paddingTop: '30px' }}>
                             <ListItemButton onClick={handleLogout}>
-                                <ListItemText primary="Logout" style={{ color: "black" }} />
+                                <ListItemText primary="Logout" style={{
+                                    color: theme == themes.LIGHT ? styles.light.btn : styles.dark.btn
+                                }} />
                                 <ListItemIcon>
-                                    < LogoutIcon />
+                                    < LogoutIcon style={{ color: "grey" }} />
                                 </ListItemIcon>
                             </ListItemButton>
                         </ListItem>

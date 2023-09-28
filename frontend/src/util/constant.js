@@ -8,6 +8,18 @@ export const closeBig = () => {
 
 export const debounceDelay = 2000;
 
+export const styles = {
+    light: {
+        "btn": "black",
+        "btn-primary": '#5469d4',
+    },
+    dark: {
+        "btn-primary": "#5469d4",
+        "btn": "white",
+        "btn-danger": "red"
+    }
+}
+
 export let toastConfig = {
     position: "top-right",
     lightToast: {

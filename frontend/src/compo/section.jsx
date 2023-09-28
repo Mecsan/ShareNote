@@ -17,10 +17,13 @@ import {
     deleteSection as deleteSectionAction,
     addSection
 } from '../redux/slices/sectionSlice';
+import { styles } from '../util/constant';
+import { themes } from '../redux/slices/themSlice';
 
 function Section({ section, sectionInfo, permission }) {
 
     let { token, authStatus } = useSelector(state => state.auth)
+    let { theme } = useSelector(state => state.theme);
     let navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -119,13 +122,19 @@ function Section({ section, sectionInfo, permission }) {
                             {
                                 authStatus == status.AUTH ? <div className="copy-btn" onClick={copySection}>
                                     <Tooltip title='copy section'>
-                                        <ContentCopyIcon style={{ cursor: "pointer" }} />
+                                        <ContentCopyIcon style={{
+                                            cursor: "pointer",
+                                            color: theme == themes.LIGHT ? styles.light.btn : styles.dark.btn
+                                        }} />
                                     </Tooltip>
                                 </div> : null
                             }
                             <div className="share-btn" onClick={() => copyLink(location.href)}>
                                 <Tooltip title='copy link'>
-                                    <LinkIcon style={{ cursor: "pointer" }} />
+                                    <LinkIcon style={{
+                                        cursor: "pointer",
+                                        color: theme == themes.LIGHT ? styles.light.btn : styles.dark.btn
+                                    }} />
                                 </Tooltip>
                             </div>
                         </div>
@@ -133,7 +142,7 @@ function Section({ section, sectionInfo, permission }) {
                     <div className="date">
                         {sectionInfo?.updatedAt?.toString()?.substr(0, 10)}
                     </div>
-                    <TextareaAutosize disabled={permission ? false : true} value={desc || ''} onChange={(e) => setdesc(e.target.value)}
+                    <TextareaAutosize className='section-area' disabled={permission ? false : true} value={desc || ''} onChange={(e) => setdesc(e.target.value)}
                         maxRows={6} style={{ fontSize: "1.1rem", background: "transparent", maxWidth: "600px" }} />
 
                 </div> : null
