@@ -139,16 +139,13 @@ function Note() {
                         <div className="date">
                             {note?.updatedAt?.toString()?.substr(0, 10)}
                         </div>
-                        <div className="wrapper">
 
-                            <TextareaAutosize
-                                minRows={rows}
-                                name='desc' disabled={permission ? false : true} value={note.desc || ''} onChange={handleChange}
-                                style={{
-                                    fontSize: "1.1rem", background: "transparent",
-                                    color: theme == themes.LIGHT ? styles.light.btn : styles.dark.btn
-                                }} />
-                        </div>
+                        <TextareaAutosize
+                            name='desc' disabled={permission ? false : true} value={note.desc || ''} onChange={handleChange}
+                            style={{
+                                fontSize: "1.1rem", background: "transparent",
+                                color: theme == themes.LIGHT ? styles.light.btn : styles.dark.btn
+                            }} />
                     </div> : null
             }
         </div>

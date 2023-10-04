@@ -1,20 +1,31 @@
-import React, { useContext } from 'react'
+import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActive } from '../redux/slices/noteSlice';
-import { openBig } from '../util/constant';
+import { openBig, closeBig } from '../util/constant';
 import { deletenote } from '../util/common';
 
 function Note({ note, setisadd, permission }) {
 
     const { user, token } = useSelector(state => state.auth);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     let OpenBignote = (e) => {
+        navigate("#modal");
         setisadd(false);
-        dispatch(setActive(note))
+        dispatch(setActive(note));
         openBig();
     }
+
+    useEffect(() => {
+        window.addEventListener('popstate', closeBig);
+
+        return () => {
+            window.removeEventListener('popstate', closeBig);
+        }
+    }, [])
 
     return (
         <div className='note' onClick={(e) => OpenBignote(e)}>

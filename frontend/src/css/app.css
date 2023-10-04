@@ -41,7 +41,11 @@ body {
 .main {
     display: flex;
     width: 100%;
-    max-height: 100vh;
+    height: 100vh;
+}
+
+.dark{
+    background: var(--dark-bg-1000);
 }
 
 .right {
@@ -766,10 +770,9 @@ input:focus {
 }
 
 .note-page textarea {
-    max-height: 90vh;
+    max-height: 70vh;
     overflow: auto;
 }
-
 
 .dark .note-page {
     background: var(--dark-bg-600);
