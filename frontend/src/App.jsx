@@ -15,6 +15,7 @@ import { verify } from './services/auth'
 import { logout, setStatus, setUser, status } from './redux/slices/authSlice'
 import { toastConfig } from './util/constant'
 import { themes } from './redux/slices/themSlice'
+import ThemeBtn from './compo/themeBtn'
 
 function App() {
   const auth = useSelector((state) => state.auth);
@@ -55,6 +56,7 @@ function App() {
             <div className={theme == themes.LIGHT ? "main" : "main dark"}>
               {
                 <Router>
+                  <ThemeBtn />
                   <Routes>
                     <Route path='/signup' element={<Signin />} />
                     <Route path='/login' element={<Login />} />

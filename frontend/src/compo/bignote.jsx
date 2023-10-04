@@ -17,7 +17,7 @@ import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { status } from '../redux/slices/authSlice';
 import { setActive, setCopy } from '../redux/slices/noteSlice';
-import { closeBig } from '../util/constant';
+import { closeBig, styles } from '../util/constant';
 import { deletenote, updatenote } from '../util/common';
 
 // same component for editing note(big note) and adding new note  
@@ -135,7 +135,7 @@ function Bignote({ addnote, section, isadd, permission }) {
 
                     <div className="add_big" onClick={handleSubmit}>
                       <Tooltip title='save'>
-                        <LibraryAddCheckIcon style={{ cursor: "pointer", color: "blue" }} />
+                        <LibraryAddCheckIcon style={{ cursor: "pointer", color:styles.dark['btn-primary'] }} />
                       </Tooltip>
 
                     </div>
@@ -144,7 +144,7 @@ function Bignote({ addnote, section, isadd, permission }) {
                         <>
                           <div className="dlt_big" onClick={handleDelete}>
                             <Tooltip title='delete'>
-                              <DeleteForeverIcon style={{ cursor: "pointer", color: "red" }} />
+                              <DeleteForeverIcon style={{ cursor: "pointer", color:styles.dark['btn-danger'] }} />
                             </Tooltip>
                           </div>
                         </>

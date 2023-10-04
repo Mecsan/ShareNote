@@ -2,15 +2,11 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import Switch from "react-switch";
 import { setUser } from '../redux/slices/authSlice';
-import { changeTheme, themes } from '../redux/slices/themSlice';
 import { changeSetting } from '../services/auth';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
 
 function User() {
 
     const { user, token } = useSelector(state => state.auth);
-    const { theme } = useSelector(state => state.theme);
-    let isDark = theme == themes.DARK;
 
     let dispatch = useDispatch();
 
@@ -26,9 +22,7 @@ function User() {
         dispatch(setUser(data.msg));
     }
 
-    let changeDark = () => {
-        dispatch(changeTheme(isDark ? themes.LIGHT : themes.DARK));
-    }
+  
 
     return (
         <>
@@ -51,13 +45,6 @@ function User() {
                         <p>see date</p>
                         <div className="small">
                             <Switch checked={user.isDate} onColor='#5469d4' checkedIcon={false} uncheckedIcon={false} onChange={changeDate} />
-                        </div>
-                    </div>
-                    <div className="setting">
-                        <p>{isDark ? "Dark" : "Light"}</p>
-                        <div className="small">
-                            <Switch checked={isDark} onColor='#5469d4' uncheckedIcon={false}
-                                checkedIcon={false} onChange={changeDark} />
                         </div>
                     </div>
                 </div>
