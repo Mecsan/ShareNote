@@ -18,6 +18,7 @@ import { deletenote, updatenote } from '../util/common';
 import { debounceDelay, styles } from '../util/constant';
 import Loading from '../compo/loading';
 import { themes } from '../redux/slices/themSlice';
+import Editor from '../compo/editor';
 
 function Note() {
 
@@ -32,7 +33,6 @@ function Note() {
 
     const [note, setnote] = useState(null);
     const [permission, setpermission] = useState(false);
-    const [time, settime] = useState(null);
 
     const fetchNote = async (key) => {
         let data = await getNote(key, token, dispatch);
@@ -79,27 +79,27 @@ function Note() {
         navigate("/");
     }
 
-    const handleChange = async (e) => {
-        if (!permission) return;
-        let newnote = {
-            title: note.title,
-            desc: note.desc
-        }
-        newnote[e.target.name] = e.target.value;
-        setnote((pre) => ({ ...pre, ...newnote }));
-
-        //debouncing
-        clearTimeout(time);
-        const timeId = setTimeout(() => updatenote(note._id, newnote, token, dispatch), debounceDelay);
-        settime(timeId)
-    }
-
-
     useEffect(() => {
         fetchNote(noteId)
     }, [noteId])
 
-    let rows = Math.floor(innerHeight / 35);
+    useEffect(() => {
+        let timeId;
+
+        if (note && note.hasChanged) {
+            let newnote = {
+                title: note.title,
+                desc: note.desc
+            }
+
+            timeId = setTimeout(() => updatenote(note._id, newnote, token, dispatch), debounceDelay);
+        }
+
+        return () => {
+            clearTimeout(timeId)
+        }
+    }, [note])
+
 
     if (loading) {
         return (<Loading />)
@@ -110,42 +110,54 @@ function Note() {
                 note ?
                     <div className="note-page">
                         {permission ? null : <Owner name={note.section.user.name} />}
-                        <div className="title" >
-                            <input name='title' disabled={permission ? false : true} value={note.title || ''} onChange={handleChange} className='f_title' type="text" />
 
-                            <div className="big_btn_grp">
+                        <div className="note-header">
 
-                                {
-                                    permission ?
-                                        <div className="dlt_note" onClick={handledelet}>
-                                            <DeleteForeverIcon style={{ cursor: "pointer", color: "red" }} />
+                            <div className="title" >
+                                <input name='title' disabled={permission ? false : true} value={note.title || ''} onChange={(e) => {
+                                    setnote({
+                                        ...note,
+                                        title: e.target.value,
+                                        hasChanged: true
+                                    })
+                                }} className='f_title' type="text" />
+
+                                <div className="big_btn_grp">
+
+                                    {
+                                        permission ?
+                                            <div className="dlt_note" onClick={handledelet}>
+                                                <DeleteForeverIcon style={{ cursor: "pointer", color: "red" }} />
+                                            </div> : null
+                                    }
+                                    {
+                                        authStatus == status.AUTH ? <div className="copy-btn" onClick={() => copyNote(note)}>
+                                            <Tooltip title='copy note'>
+                                                <ContentCopyIcon style={{ cursor: "pointer" }} />
+                                            </Tooltip>
                                         </div> : null
-                                }
-                                {
-                                    authStatus == status.AUTH ? <div className="copy-btn" onClick={() => copyNote(note)}>
-                                        <Tooltip title='copy note'>
-                                            <ContentCopyIcon style={{ cursor: "pointer" }} />
+                                    }
+                                    <div className="share-btn" onClick={() => copyLink(location.href)}>
+                                        <Tooltip title='copy link'>
+                                            <LinkIcon style={{ cursor: "pointer" }} />
                                         </Tooltip>
-                                    </div> : null
-                                }
-                                <div className="share-btn" onClick={() => copyLink(location.href)}>
-                                    <Tooltip title='copy link'>
-                                        <LinkIcon style={{ cursor: "pointer" }} />
-                                    </Tooltip>
+                                    </div>
                                 </div>
+
                             </div>
-
+                            <div className="date">
+                                {note?.updatedAt?.toString()?.substr(0, 10)}
+                            </div>
                         </div>
-                        <div className="date">
-                            {note?.updatedAt?.toString()?.substr(0, 10)}
-                        </div>
 
-                        <TextareaAutosize
-                            name='desc' disabled={permission ? false : true} value={note.desc || ''} onChange={handleChange}
-                            style={{
-                                fontSize: "1.1rem", background: "transparent",
-                                color: theme == themes.LIGHT ? styles.light.btn : styles.dark.btn
-                            }} />
+
+
+                        <Editor
+                            text={note.desc}
+                            onChange={(e) => {
+                                setnote({ ...note, desc: JSON.stringify(e.document), hasChanged: true });
+                            }}
+                        />
                     </div> : null
             }
         </div>

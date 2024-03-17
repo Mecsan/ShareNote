@@ -20,12 +20,12 @@ body {
     width: 8px;
 }
 
-:where(.right, .flex, .bignote textarea,.note-page textarea)::-webkit-scrollbar-track {
+:where(.right, .flex, .bignote textarea, .note-page textarea)::-webkit-scrollbar-track {
     width: 30px;
     border-radius: 10px;
 }
 
-:where(.right, .flex, .bignote textarea,.note-page textarea)::-webkit-scrollbar-thumb {
+:where(.right, .flex, .bignote textarea, .note-page textarea)::-webkit-scrollbar-thumb {
     border-radius: 10px;
 }
 
@@ -44,7 +44,7 @@ body {
     height: 100vh;
 }
 
-.dark{
+.dark {
     background: var(--dark-bg-1000);
 }
 
@@ -73,7 +73,7 @@ body {
     min-height: 400px;
 }
 
-.dark .formcontainer{
+.dark .formcontainer {
     background: var(--dark-bg-600);
     color: white;
 }
@@ -96,7 +96,7 @@ form input {
     transition: all 0.2s;
 }
 
-.dark form input{
+.dark form input {
     color: white;
 }
 
@@ -250,9 +250,11 @@ a {
 
 .overlay {
     display: none;
+    z-index: 10;
 }
 
 .nav .navbar {
+    z-index: 20;
     width: 220px;
 }
 
@@ -474,7 +476,7 @@ textarea:focus {
 }
 
 .back {
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.486);
     position: fixed;
     opacity: 0;
     z-index: -1;
@@ -516,7 +518,12 @@ textarea:focus {
     display: flex;
     flex-direction: column;
     gap: 5px;
+    padding: 0px 50px;
     padding-bottom: 15px;
+}
+
+.big_title {
+    margin-bottom: 5px;
 }
 
 .big_close:hover {
@@ -703,10 +710,6 @@ textarea:focus {
     display: flex;
 }
 
-.right {
-    padding-top: 20px;
-}
-
 .right>h2 {
     padding: 30px;
 }
@@ -761,12 +764,14 @@ input:focus {
 
 /* note page css */
 .note-page {
-    padding: 35px;
-    margin: 0px 10px;
+    padding: 35px 0px;
     background: white;
     border-radius: 5px;
-    max-height: 90vh;
-    overflow: hidden;
+    height: 100vh;
+}
+
+.note-header {
+    margin-left: 40px;
 }
 
 .note-page textarea {
@@ -895,7 +900,7 @@ h3 {
 }
 
 
-.theme-btn{
+.theme-btn {
     position: fixed;
     cursor: pointer;
     right: 30px;
