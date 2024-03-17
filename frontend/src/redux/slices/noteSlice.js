@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 let initialState = {
     loading: true,
     notes: [],
-    activeNote: null,
     copyNote: null
 }
 
@@ -33,9 +32,6 @@ let noteSlice = createSlice({
                 return note;
             })
         },
-        setActive: (state, action) => {
-            state.activeNote = action.payload
-        },
         setCopy: (state, action) => {
             state.copyNote = action.payload
         },
@@ -50,7 +46,6 @@ export const {
     addNote,
     deleteNote,
     updateNote,
-    setActive,
     setCopy,
     removeCopy,
     startNoteLoad,

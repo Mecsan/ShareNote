@@ -4,16 +4,16 @@ import { Button, Divider, Tooltip } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Note from '../compo/note';
 import SectionIn from '../compo/section';
-import Bignote from '../compo/bignote'
 import LoadingBar from 'react-top-loading-bar'
 import toast from 'react-hot-toast';
 import { createNote } from '../services/note';
 import { getSection } from '../services/section';
 import { useDispatch, useSelector } from 'react-redux';
 import { addNote, removeCopy, setNotes } from '../redux/slices/noteSlice';
-import { closeBig, openBig, styles } from '../util/constant';
+import { closeModal, openModal, styles } from '../util/constant';
 import Loading from '../compo/loading';
 import { themes } from '../redux/slices/themSlice';
+import Modal from "../compo/Modal"
 
 function Section() {
 
@@ -25,8 +25,6 @@ function Section() {
   let { theme } = useSelector(state => state.theme)
 
   let { section } = useParams();
-
-  let [isadd, setisadd] = useState(true);
 
   let load = useRef(null);
 
@@ -40,12 +38,8 @@ function Section() {
 
   let navigate = useNavigate();
 
-  // i am using same component for adding new note and for updating or see (big note)
-  // so to differeciate between adding & updating i am using isadd
-
   let openAddnote = () => {
-    setisadd(true);
-    openBig();
+    openModal();
   }
 
   useEffect(() => {
@@ -79,9 +73,11 @@ function Section() {
       });
     }
 
-    closeBig();
+    closeModal();
   }
 
+
+  // has to be changed
   const handlePaste = () => {
     let newNote = { title: copyNote.title, desc: copyNote.desc }
     addnote(newNote);
@@ -99,12 +95,10 @@ function Section() {
       {
         sectionInfo &&
         <>
-          <Bignote
+          {permission && <Modal
             addnote={addnote}
-            permission={permission}
-            section={section}
-            isadd={isadd}
           />
+          }
 
           <SectionIn
             permission={permission}
@@ -152,7 +146,6 @@ function Section() {
                     permission={permission}
                     key={note._id}
                     note={note}
-                    setisadd={setisadd}
                   />
                 )
               })

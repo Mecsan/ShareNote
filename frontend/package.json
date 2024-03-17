@@ -9,6 +9,8 @@
     "preview": "vite preview --host"
   },
   "dependencies": {
+    "@blocknote/core": "^0.12.1",
+    "@blocknote/react": "^0.12.2",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
     "@mui/icons-material": "^5.8.4",

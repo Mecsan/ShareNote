@@ -1,12 +1,12 @@
-export const openBig = () => {
+export const openModal = () => {
     document.querySelector(".bigNoteRef").classList.add('back_active')
 }
 
-export const closeBig = () => {
+export const closeModal= () => {
     document.querySelector(".bigNoteRef").classList.remove('back_active')
 }
 
-export const debounceDelay = 2000;
+export const debounceDelay = 5000;
 
 export const styles = {
     light: {
