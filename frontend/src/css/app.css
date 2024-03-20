@@ -10,6 +10,7 @@
     --dark-bg-1000: #262626;
     --dark-bg-800: #202020;
     --dark-bg-600: #313131;
+    --dark-blocknote : #1f1f1f;
 }
 
 body {
@@ -453,7 +454,7 @@ a {
 }
 
 .dark .bignote {
-    background-color: var(--dark-bg-600);
+    background-color: var(--dark-blocknote);
     color: white;
 }
 
@@ -491,7 +492,7 @@ textarea:focus {
 }
 
 .dark .back {
-    background-color: var(--dark-bg-600);
+    background-color: var(--dark-blocknote);
 }
 
 .back_active {
@@ -780,7 +781,7 @@ input:focus {
 }
 
 .dark .note-page {
-    background: var(--dark-bg-600);
+    background: var(--dark-blocknote);
     color: white;
 }
 
