@@ -11,15 +11,7 @@ let userSchema = new mongo.Schema({
     password: {
         type: String,
         required: true
-    },
-    isDesc: {
-        type: Boolean,
-        default: true
-    },
-    isDate: {
-        type: Boolean,
-        default: true
-    } 
+    }
 })
 
 module.exports = new mongo.model('user', userSchema);

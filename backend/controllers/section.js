@@ -20,7 +20,7 @@ const getOnesection = handle(async (req, res) => {
         let decoded = jwt.verify(token, process.env.JWT_SECRET);
         if (data.user._id == decoded) permission = true;
     }
-    let notes = await noteModel.find({ section: sectionId }).sort({ createdAt: -1 });
+    let notes = await noteModel.find({ section: sectionId }).select("-desc").sort({ createdAt: -1 });
     res.json({ success: true, msg: { section: data, notes, permission } });
 })
 

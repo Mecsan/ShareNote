@@ -8,6 +8,4 @@ router.post("/login", Login);
 
 router.get("/", auth, Info);
 
-router.post("/setting", auth, userSetting);
-
 module.exports = router;
