@@ -47,6 +47,7 @@ function Section() {
   let navigate = useNavigate();
 
   let openAddnote = () => {
+    navigate("#add-note");
     openModal();
   };
 
@@ -79,8 +80,21 @@ function Section() {
       });
       toggleIsAdd();
       closeModal();
+      navigate("");
     }
   };
+
+  function hideModal() {
+    closeModal();
+  }
+
+  useEffect(() => {
+    window.addEventListener("popstate", hideModal);
+
+    return () => {
+      window.removeEventListener("popstate", hideModal);
+    };
+  }, []);
 
   // has to be changed
   const handlePaste = () => {

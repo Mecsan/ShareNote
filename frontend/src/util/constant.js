@@ -3,7 +3,7 @@ export const openModal = () => {
 }
 
 export const closeModal= () => {
-    document.querySelector(".bigNoteRef").classList.remove('back_active')
+    document.querySelector(".bigNoteRef").classList.remove('back_active');
 }
 
 export const debounceDelay = 5000;

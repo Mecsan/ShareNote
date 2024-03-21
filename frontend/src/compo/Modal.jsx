@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, {  useState } from "react";
 import { Divider, Tooltip } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 import LibraryAddCheckIcon from "@mui/icons-material/LibraryAddCheck";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
@@ -11,6 +12,7 @@ import Editor from "./editor";
 function Modal({ addnote }) {
   let [desc, setdesc] = useState("");
   let [title, settitle] = useState("");
+  const navigate = useNavigate();   
 
   const handleSubmit = async () => {
     let note = {
@@ -22,6 +24,7 @@ function Modal({ addnote }) {
   const handleBlur = (e) => {
     if (e.target.classList.contains("back")) {
       closeModal();
+      navigate("")
     }
   };
   return (
