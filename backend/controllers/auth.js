@@ -63,11 +63,5 @@ let Info = handle(async (req, res) => {
     res.json({ msg: user })
 })
 
-let userSetting = handle(async (req, res) => {
-    let user = await userModel.findOneAndUpdate({ _id: req.user }, req.body, {
-        new: true
-    });
-    res.json({ msg: user })
-})
 
-module.exports = { Login, Register, Info, userSetting }
+module.exports = { Login, Register, Info }

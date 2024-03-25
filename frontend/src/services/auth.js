@@ -41,15 +41,4 @@ export const verify = handleError(async (token) => {
     return data;
 })
 
-export const changeSetting = handleError( async (token, body) => {
-    let res = await fetch(setting, {
-        method: "POST",
-        headers: {
-            'authorization': token,
-            'content-type': "application/json"
-        },
-        body: JSON.stringify(body)
-    })
-    let data = await res.json();
-    return data;
-})
+

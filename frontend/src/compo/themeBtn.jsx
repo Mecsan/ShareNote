@@ -18,7 +18,7 @@ function ThemeBtn() {
             {
                 isDark ? <DarkModeIcon style={{
                     color: "white"
-                }} /> : <LightModeIcon />
+                }} /> : <LightModeIcon style={{color:"grey"}}  />
             }
         </div>
     )
