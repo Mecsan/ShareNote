@@ -14,6 +14,8 @@ import { closeModal, openModal, styles } from "../util/constant";
 import Loading from "../compo/loading";
 import { themes } from "../redux/slices/themSlice";
 import Modal from "../compo/Modal";
+import Header from "../compo/Header";
+import { changeHeader } from "../redux/slices/headerSlice";
 
 function Section() {
   const dispatch = useDispatch();
@@ -59,6 +61,7 @@ function Section() {
         navigate("/123/pagenotfound");
       } else {
         dispatch(setNotes(data.msg.notes));
+        dispatch(changeHeader(data.msg.section));
         setsectionInfo(data.msg.section);
         setpermission(data.msg.permission);
       }
@@ -107,8 +110,12 @@ function Section() {
     return <Loading />;
   }
 
+  var HeaderChange = (e) => {
+    settitle(e.target.value);
+  };
+
   return (
-    <div className="right">
+    <>
       <LoadingBar color="#5469d4" ref={load} />
       {sectionInfo && (
         <>
@@ -171,7 +178,7 @@ function Section() {
           </div>
         </>
       )}
-    </div>
+    </>
   );
 }
 
