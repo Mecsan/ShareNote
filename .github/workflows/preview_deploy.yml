@@ -1,0 +1,28 @@
+name: deploy
+on:
+  push:
+    branches-ignore:
+      - "master"
+jobs: 
+  CD:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch
+        uses: actions/checkout@v4
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4.0.0
+      - name: building backend
+        run: |
+          cd backend
+          npm install
+      - name: building frontend
+        run: |
+          cd backend
+          npm install
+          npm run build
+      - name: deploying project
+        env: 
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: | 
+          npm i -g vercel
+          vercel deploy client --yes --token=$VERCEL_TOKEN
