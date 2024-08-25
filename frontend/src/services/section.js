@@ -26,13 +26,13 @@ export const getSections = handleError(async (token) => {
     return data;
 })
 
-export const getSection = handleError(async (token, sid,dispatch) => {
+export const getSection = handleError(async (token, sid, query, dispatch) => {
     const option = {}
     if (token) {
         option["headers"] = { 'authorization': token }
     }
     dispatch(startSectionLoad());
-    let res = await fetch(sectionApi + sid, option);
+    let res = await fetch(sectionApi + sid + "?search=" + query, option);
     let data = await res.json();
     dispatch(stopSectionLoad());
     return data;

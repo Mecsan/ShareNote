@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Divider, Tooltip } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -14,8 +14,9 @@ import { closeModal, openModal, styles } from "../util/constant";
 import Loading from "../compo/loading";
 import { themes } from "../redux/slices/themSlice";
 import Modal from "../compo/Modal";
-import Header from "../compo/Header";
+import NoteIcon from '@mui/icons-material/Note';
 import { changeHeader } from "../redux/slices/headerSlice";
+import Debounce from 'lodash.debounce'
 
 function Section() {
   const dispatch = useDispatch();
@@ -39,12 +40,23 @@ function Section() {
 
   let [search, setsearch] = useState("");
 
-  let filteredNotes = notes.filter((note) => {
-    return (
-      note.title.toLowerCase().includes(search.trim()) ||
-      note.desc.toLowerCase().includes(search.trim())
-    );
-  });
+  var fetchSection = async (token, section, search) => {
+    load?.current?.staticStart();
+    let data = await getSection(token, section, search.trim(), dispatch);
+    if (data.err) {
+      navigate("/123/pagenotfound");
+    } else {
+      dispatch(setNotes(data.msg.notes));
+      dispatch(changeHeader(data.msg.section));
+      setsectionInfo(data.msg.section);
+      setpermission(data.msg.permission);
+    }
+    load?.current?.complete();
+  };
+
+  const debouncedFetchSection = useCallback(
+    Debounce(fetchSection, 1000),
+    []);
 
   let navigate = useNavigate();
 
@@ -54,21 +66,11 @@ function Section() {
   };
 
   useEffect(() => {
-    let fetchsection = async () => {
-      load?.current?.staticStart();
-      let data = await getSection(token, section, dispatch);
-      if (data.err) {
-        navigate("/123/pagenotfound");
-      } else {
-        dispatch(setNotes(data.msg.notes));
-        dispatch(changeHeader(data.msg.section));
-        setsectionInfo(data.msg.section);
-        setpermission(data.msg.permission);
-      }
-      load?.current?.complete();
-    };
+    if (sectionInfo) debouncedFetchSection(token, section, search);
+  }, [search]);
 
-    fetchsection();
+  useEffect(() => {
+    fetchSection(token, section, search);
   }, [section]);
 
   let addnote = async (note) => {
@@ -109,10 +111,6 @@ function Section() {
   if (sectionInfo === null && loading) {
     return <Loading />;
   }
-
-  var HeaderChange = (e) => {
-    settitle(e.target.value);
-  };
 
   return (
     <>
@@ -169,13 +167,17 @@ function Section() {
             />
           </div>
 
-          <div className="notes">
-            {filteredNotes.map((note) => {
+          {notes.length ? <div className="notes">
+            {notes.map((note) => {
               return (
                 <Note permission={permission} key={note._id} note={note} />
               );
             })}
+          </div> : <div className="no-notes">
+            <h2>No Notes Available</h2>
+            <NoteIcon style={{ fontSize: "max(10vw,5rem)", color: "grey" }} />
           </div>
+          }
         </>
       )}
     </>

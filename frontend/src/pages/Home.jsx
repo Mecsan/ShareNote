@@ -11,7 +11,7 @@ function Home() {
   let [search, setsearch] = useState("");
 
   let filtered = links.filter((link) => {
-    return link.title.toLowerCase().includes(search.trim());
+    return link.title.toLowerCase().includes(search.trim().toLowerCase());
   });
 
   const navigate = useNavigate();
