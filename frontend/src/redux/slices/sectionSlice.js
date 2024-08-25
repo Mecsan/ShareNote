@@ -19,7 +19,7 @@ let sectionSlice = createSlice({
             state.sections = action.payload;
         },
         addSection: (state, action) => {
-            state.sections.push(action.payload);
+            state.sections.unshift(action.payload);
         },
         deleteSection: (state, action) => {
             state.sections = state.sections.filter(e => e._id != action.payload);

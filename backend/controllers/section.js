@@ -11,18 +11,37 @@ const getsection = handle(async (req, res) => {
 const getOnesection = handle(async (req, res) => {
     let { sectionId } = req.params;
     let data = await sectionmodel.findOne({ _id: sectionId }).populate({ path: 'user', select: "name" });
-    if (!data) {
-        throw new Error("no such section with id: " + sectionId + " exist in your account");
-    }
+
     let permission = false;
     let token = req.headers['authorization'];
     if (token) {
         let decoded = jwt.verify(token, process.env.JWT_SECRET);
         if (data.user._id == decoded) permission = true;
     }
-    let notes = await noteModel.find({ section: sectionId }).select("-desc").sort({ createdAt: -1 });
+
+    let { search } = req.query;
+
+    var query = {
+        section: sectionId,
+        $or: [
+            {
+                title: { $regex: search, $options: 'i' }
+            },
+            {
+                desc: { $regex: search, $options: 'i' }
+            }]
+    }
+
+    if (!search) {
+        delete query['$or'];
+    }
+
+    let notes = await noteModel.find(query, {
+        section: 0
+    }).sort({ updatedAt: -1 });
+
     res.json({ success: true, msg: { section: data, notes, permission } });
-})
+});
 
 const addsection = handle(async (req, res) => {
     let newsection = new sectionmodel({ ...req.body, user: req.user });
