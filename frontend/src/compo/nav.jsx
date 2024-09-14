@@ -22,6 +22,7 @@ import {
   addSection,
   setSections,
   stopSectionLoad,
+  startSectionLoad
 } from "../redux/slices/sectionSlice";
 import { setNotes } from "../redux/slices/noteSlice";
 import { themes } from "../redux/slices/themSlice";
@@ -30,10 +31,6 @@ import { styles } from "../util/constant";
 function Nav() {
   const dispatch = useDispatch();
   const { authStatus,token } = useSelector((state) => state.auth);
-
-  if (authStatus == status.NOAUTH) {
-    return null;
-  }
 
   let { theme } = useSelector((state) => state.theme);
   let links = useSelector((state) => state.sections);
@@ -55,6 +52,7 @@ function Nav() {
   };
 
   let getsections = async () => {
+    dispatch(startSectionLoad());
     let data = await getSections(token);
     if (data.err) return;
     dispatch(setSections(data.msg));
