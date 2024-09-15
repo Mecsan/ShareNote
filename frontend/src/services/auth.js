@@ -4,10 +4,10 @@ import {
     signup as signupApi,
     userApi
 } from "../config/apis";
-import { handleError } from "./errorHandler";
+import { processRequest } from "./processRequest";
 
 
-export const signup = handleError( async (body) => {
+export const signup = processRequest( async (body) => {
     let res = await fetch(signupApi, {
         method: "POST",
         headers: {
@@ -19,7 +19,7 @@ export const signup = handleError( async (body) => {
     return data;
 })
 
-export const login = handleError( async (body) => {
+export const login = processRequest( async (body) => {
     let res = await fetch(loginApi, {
         method: "POST",
         headers: {
@@ -31,7 +31,7 @@ export const login = handleError( async (body) => {
     return data;
 })
 
-export const verify = handleError(async (token) => {
+export const verify = processRequest(async (token) => {
     let res = await fetch(userApi, {
         headers: {
             'authorization': token

@@ -1,8 +1,8 @@
 import { sectionApi } from "../config/apis";
 import { startSectionLoad, stopSectionLoad } from "../redux/slices/sectionSlice";
-import { handleError } from "./errorHandler";
+import { processRequest } from "./processRequest";
 
-export const createSection = handleError(async (token, body) => {
+export const createSection = processRequest(async (token, body) => {
     let res = await fetch(sectionApi, {
         method: "POST",
         headers: {
@@ -16,7 +16,7 @@ export const createSection = handleError(async (token, body) => {
     return data;
 })
 
-export const getSections = handleError(async (token) => {
+export const getSections = processRequest(async (token) => {
     let res = await fetch(sectionApi, {
         headers: {
             'Authorization': token
@@ -26,7 +26,7 @@ export const getSections = handleError(async (token) => {
     return data;
 })
 
-export const getSection = handleError(async (token, sid, query, dispatch) => {
+export const getSection = processRequest(async (token, sid, query, dispatch) => {
     const option = {}
     if (token) {
         option["headers"] = { 'authorization': token }
@@ -38,7 +38,7 @@ export const getSection = handleError(async (token, sid, query, dispatch) => {
     return data;
 })
 
-export const updateSection = handleError(async (token, sid, body) => {
+export const updateSection = processRequest(async (token, sid, body) => {
     let res = await fetch(sectionApi + sid, {
         method: "PUT",
         headers: {
@@ -52,7 +52,7 @@ export const updateSection = handleError(async (token, sid, body) => {
     return data;
 })
 
-export const deleteSection = handleError(async (token, sid) => {
+export const deleteSection = processRequest(async (token, sid) => {
     let res = await fetch(sectionApi + sid, {
         method: "DELETE",
         headers: {
@@ -63,7 +63,7 @@ export const deleteSection = handleError(async (token, sid) => {
     return data;
 })
 
-export const copySection = handleError(async (token, sid) => {
+export const copySection = processRequest(async (token, sid) => {
     let res = await fetch(sectionApi + "copy/" + sid, {
         headers: {
             "authorization": token

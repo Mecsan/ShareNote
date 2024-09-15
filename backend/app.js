@@ -20,6 +20,10 @@ app.use("/api/section", sectionRoute);
 
 app.use(errHandler);
 
+app.get("/unreachable",async (req,res)=>{
+    res.send('<h1>Requested Service unavailable</h1>')
+});
+
 if (process.env.NODE_ENV == "production") {
     const mypath = path.resolve(__dirname, '..', 'frontend', 'dist');
     app.use(express.static(mypath));
@@ -29,10 +33,8 @@ if (process.env.NODE_ENV == "production") {
     })
 }
 
-app.listen(process.env.PORT || 3000, () => console.log("server running on " + (process.env.PORT ? process.env.PORT : 3000)))
+const server = app.listen(process.env.PORT || 3000, () => {
+    console.log("server running on " + (process.env.PORT ? process.env.PORT : 3000))
+});
 
-
-
-
-
-
+server.timeout = 1000

@@ -1,8 +1,8 @@
 import { noteApi } from "../config/apis";
 import { startNoteLoad, stopNoteLoad } from "../redux/slices/noteSlice";
-import { handleError } from "./errorHandler";
+import { processRequest } from "./processRequest";
 
-export const createNote = handleError(async (sid, token, body) => {
+export const createNote = processRequest(async (sid, token, body) => {
     let res = await fetch(noteApi + sid, {
         method: 'POST',
         headers: {
@@ -16,7 +16,7 @@ export const createNote = handleError(async (sid, token, body) => {
     return data;
 })
 
-export const updateNote = handleError(async (key, token, body) => {
+export const updateNote = processRequest(async (key, token, body) => {
     let res = await fetch(noteApi + key, {
         method: "PUT",
         headers: {
@@ -29,7 +29,7 @@ export const updateNote = handleError(async (key, token, body) => {
     return data;
 })
 
-export const deleteNote = handleError(async (key, token) => {
+export const deleteNote = processRequest(async (key, token) => {
     let res = await fetch(noteApi + key, {
         method: "DELETE",
         headers: {
@@ -40,7 +40,7 @@ export const deleteNote = handleError(async (key, token) => {
     return data;
 })
 
-export const getNote = handleError(async (key, token,dispatch) => {
+export const getNote = processRequest(async (key, token,dispatch) => {
     let option = {};
     if (token) {
         option["headers"] = { 'authorization': token }
