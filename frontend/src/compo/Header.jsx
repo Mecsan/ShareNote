@@ -5,6 +5,8 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { status } from "../redux/slices/authSlice";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import { STATIC_TEXT_FOR_ROUTE } from "../config/header";
+
 import {
   deleteSection,
   copySection as copy,
@@ -162,7 +164,7 @@ function Header() {
     document.activeElement.blur();
   };
 
-  const handleShare = function () {};
+  const handleShare = function () { };
 
   const handleChange = function (e) {
     setHeaderProp((pre) => ({
@@ -171,27 +173,41 @@ function Header() {
     }));
   };
 
+  const isStatic = function (route) {
+    let staticTextRoutes = ['/', '/login', '/signup'];
+    return staticTextRoutes.includes(route);
+  };
+
+  if (location.pathname == "/" && authStatus == status.NOAUTH) {
+    return null;
+  }
+
   return (
     <header>
       <div className="header-left">
-        <div className="opennav" onClick={opennav}>
+
+        {authStatus == status.AUTH && <div className="opennav" onClick={opennav}>
           <MenuIcon
             style={{ color: "var(--primary-color)", fontSize: "2rem" }}
           />
-        </div>
+        </div>}
 
         <div className="title">
-          <input
-            disabled={
-              HeaderProp.isOwner && location.pathname != "/" ? false : true
-            }
-            value={
-              location.pathname == "/" ? "Home" : HeaderProp.body.title || ""
-            }
-            onChange={handleChange}
-            className="f_title"
-            type="text"
-          />
+          {
+            isStatic(location.pathname) ?
+              <h2>{STATIC_TEXT_FOR_ROUTE[location.pathname]}</h2> :
+              <input
+                disabled={
+                  HeaderProp.isOwner && location.pathname != "/" ? false : true
+                }
+                value={
+                  HeaderProp.body.title || ""
+                }
+                onChange={handleChange}
+                className="f_title"
+                type="text"
+              />
+          }
         </div>
       </div>
 
@@ -215,7 +231,7 @@ function Header() {
           </div>
         )}
 
-        {authStatus == status.NOAUTH ? (
+        {authStatus == status.NOAUTH && !isStatic(location.pathname) ? (
           <div className="sign-up-btn">
             <NavLink to="signup">Signup</NavLink>
           </div>

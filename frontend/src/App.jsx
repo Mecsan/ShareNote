@@ -28,6 +28,7 @@ function App() {
   const dispatch = useDispatch();
 
   let fetchUserinfo = async () => {
+    dispatch(setStatus(status.UNVERIFIED));
     let data = await verify(auth.token);
     if (data.err) {
       dispatch(logout());
@@ -61,14 +62,11 @@ function App() {
             {
               <Router>
                 <Routes>
-                  <Route path="/signup" element={<Signin />} />
-                  <Route path="/login" element={<Login />} />
-
                   <Route
                     path="/"
                     element={
                       <>
-                        <Nav />
+                        {auth.authStatus == status.AUTH && <Nav />}
                         <div className="right">
                           <Header />
                           <Outlet />
@@ -76,6 +74,8 @@ function App() {
                       </>
                     }
                   >
+                    <Route path="/signup" element={<Signin />} />
+                    <Route path="/login" element={<Login />} />
                     <Route path="/" element={<Home />} />
                     <Route path="/:section" element={<Section />} />
                     <Route path="/note/:noteId" element={<Note />} />
