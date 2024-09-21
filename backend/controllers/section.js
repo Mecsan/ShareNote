@@ -11,7 +11,10 @@ const getsection = handle(async (req, res) => {
 const getOnesection = handle(async (req, res) => {
     let { sectionId } = req.params;
     let data = await sectionmodel.findOne({ _id: sectionId }).populate({ path: 'user', select: "name" });
-
+    if(!data) {
+        res.status(404);
+        throw new Error("Section not found");
+    }
     let permission = false;
     let token = req.headers['authorization'];
     if (token) {
