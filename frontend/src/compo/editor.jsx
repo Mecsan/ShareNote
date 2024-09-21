@@ -4,7 +4,7 @@ import "@blocknote/react/style.css";
 import React from 'react'
 import { useSelector } from "react-redux";
 
-function Editor({ text, deps = [], onChange = () => { } }) {
+function Editor({ text, deps = [], onChange = () => { }, editable = false }) {
 
     let initContent;
     try {
@@ -19,10 +19,10 @@ function Editor({ text, deps = [], onChange = () => { } }) {
     const theme = useSelector(state => state.theme.theme)
     const editor = useCreateBlockNote({
         initialContent: initContent,
-
-    },deps);
+    }, deps);
 
     return <BlockNoteView
+        editable={editable}
         theme={theme}
         editor={editor}
         onChange={onChange} />;

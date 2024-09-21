@@ -10,7 +10,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { getNote } from "../services/note";
 import { useDispatch, useSelector } from "react-redux";
 import { status } from "../redux/slices/authSlice";
-import {   updatenote } from "../util/common";
+import { updatenote } from "../util/common";
 import { debounceDelay } from "../util/constant";
 import Loading from "../compo/loading";
 import Editor from "../compo/editor";
@@ -68,6 +68,7 @@ function Note() {
   if (loading) {
     return <Loading />;
   }
+
   return (
     <>
       {note ? (
@@ -76,7 +77,9 @@ function Note() {
 
           <Editor
             text={note.desc}
+            editable={permission}
             onChange={(e) => {
+              if(!e.isEditable) return
               setnote({
                 ...note,
                 desc: JSON.stringify(e.document),

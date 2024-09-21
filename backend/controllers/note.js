@@ -12,6 +12,10 @@ const getnote = handle(async (req, res) => {
             select: "name"
         }
     });
+    if(!data){
+        res.status(404);
+        throw new Error("Note not found");
+    }
     let permission = false;
     let token = req.headers['authorization'];
     if (token) {
