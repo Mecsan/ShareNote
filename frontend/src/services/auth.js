@@ -35,7 +35,8 @@ export const verify = processRequest(async (token) => {
     let res = await fetch(userApi, {
         headers: {
             'authorization': token
-        }
+        },
+        batchEnable : true
     })
     let data = await res.json();
     return data;

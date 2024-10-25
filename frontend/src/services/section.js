@@ -20,7 +20,8 @@ export const getSections = processRequest(async (token) => {
     let res = await fetch(sectionApi, {
         headers: {
             'Authorization': token
-        }
+        },
+        batchEnable : true
     });
     let data = await res.json();
     return data;

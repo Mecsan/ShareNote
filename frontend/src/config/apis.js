@@ -12,3 +12,4 @@ export const setting = baseApi + "user/setting/";
 export const userApi = baseApi + "user/"
 export const noteApi = baseApi + "note/";
 export const sectionApi = baseApi + "section/";
+export const batchAPi = baseApi + 'batch/'
