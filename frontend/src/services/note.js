@@ -41,7 +41,9 @@ export const deleteNote = processRequest(async (key, token) => {
 })
 
 export const getNote = processRequest(async (key, token,dispatch) => {
-    let option = {};
+    let option = {
+        batchEnable: true,
+    };
     if (token) {
         option["headers"] = { 'authorization': token }
     }

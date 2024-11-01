@@ -1,0 +1,19 @@
+{
+  "name": "batchpoint",
+  "version": "1.0.0",
+  "description": "Package that can be used to create batch endpoint for your express api",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "Sanket Mekwan",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}

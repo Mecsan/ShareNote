@@ -20,14 +20,17 @@ export const getSections = processRequest(async (token) => {
     let res = await fetch(sectionApi, {
         headers: {
             'Authorization': token
-        }
+        },
+        batchEnable: true
     });
     let data = await res.json();
     return data;
 })
 
 export const getSection = processRequest(async (token, sid, query, dispatch) => {
-    const option = {}
+    const option = {
+        batchEnable: true,
+    }
     if (token) {
         option["headers"] = { 'authorization': token }
     }
