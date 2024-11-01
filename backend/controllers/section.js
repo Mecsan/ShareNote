@@ -5,9 +5,6 @@ const handle = require('express-async-handler');
 
 const getsection = handle(async (req, res) => {
     let data = await sectionmodel.find({ user: req.user }).sort({ date: -1 });
-    // await new Promise((res,rej)=>{
-    //     setTimeout(res,500)
-    // })
     res.json({ success: true, msg: data });
 })
 

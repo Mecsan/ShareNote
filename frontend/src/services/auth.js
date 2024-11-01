@@ -1,6 +1,5 @@
 import {
     login as loginApi,
-    setting,
     signup as signupApi,
     userApi
 } from "../config/apis";

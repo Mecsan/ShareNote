@@ -1,12 +1,13 @@
-import { batchAPi } from "../config/apis";
+import { batchAPi, sectionApi, userApi } from "../config/apis";
 
-const fetch = window.fetch;
+const nativeFetch = window.fetch;
 
-const BATCH_WINDOW = 50000; // 10 ms
+const BATCH_WINDOW = 100; // 100 ms
 
-// const BATCH_SIZE = 5; // 5 requests
+const BATCH_SIZE = 5; // max 5 requests in a single batch
 
 let batch = [];
+let timerID = null;
 
 function parseMy(str, unique) {
     let parsed = [];
@@ -43,6 +44,14 @@ async function executeBatch() {
     let currentBatch = [...batch];
     batch = [];
 
+    if (currentBatch.length == 1) {
+        nativeFetch(currentBatch[0].url, currentBatch[0])
+            .then((data) => currentBatch[0].resolve(data))
+            .catch((e) => currentBatch[0].reject(e));
+
+        return;
+    }
+
     for (let batchItem of currentBatch) {
         response[`${batchItem.method} ${batchItem.url}`] = {
             resolve: batchItem.resolve,
@@ -56,69 +65,116 @@ async function executeBatch() {
         });
     };
 
-    let res = await fetch(batchAPi, {
-        method: "POST",
-        headers: {
-            "content-type": "application/json"
-        },
-        body: JSON.stringify(body)
-    });
+    try {
+        let res = await nativeFetch(batchAPi, {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify(body)
+        });
 
-    for await (const chunk of res.body) {
-        const json = new TextDecoder().decode(chunk);
-        const parsedData = parseUsingUrl(json);
-        for (let data of parsedData) {
-            let responseObject = response[`${data.method} ${data.url}`];
-            if (data.error) {
-                responseObject.resolve(promiseWithJson(data.error));
-            } else {
-                responseObject.resolve(promiseWithJson(data.data));
+        let completed = {};
+
+        for await (const chunk of res.body) {
+            const json = new TextDecoder().decode(chunk);
+            const parsedData = parseUsingUrl(json);
+            for (let data of parsedData) {
+                let responseObject = response[`${data.method} ${data.url}`];
+                if (data.error) {
+                    responseObject.resolve(promiseWithJson(data.error));
+                } else {
+                    responseObject.resolve(promiseWithJson(data.data));
+                }
+                completed[`${data.method} ${data.url}`] = true;
             }
-            delete response[`${data.method} ${data.url}`]
+        }
+
+        for (let key in response) {
+            if (!completed[key]) {
+                response[key].reject(new Error("Something went wrong"));
+            }
+        }
+    } catch (e) {
+        console.log("Error while making batch request ", e);
+        for (let key in response) {
+            response[key].reject(new Error("Something went wrong"));
         }
     }
-
-    for (let responseObject in response) {
-        responseObject.reject(new Error("Something went wrong"));
-    }
-
 }
 
-window.fetch = (function () {
+const defaultOptions = {
+    method: "GET",
+    headers: {
+        "content-type": "application/json"
+    },
+    batchEnable: false
+}
 
-    const defaultOptions = {
-        method: "GET",
-        headers: {
-            "content-type": "application/json"
-        },
-        batchEnable: false
+window.fetch = async function (url, optionsParam) {
+    let options = {
+        ...defaultOptions,
+        ...optionsParam
     }
 
-    return async function (url, optionsParam, cb) {
-        let options = {
-            ...defaultOptions,
-            ...optionsParam
-        }
-        console.log("yes ")
+    if (!options.batchEnable || (options.method !== "GET")) {
+        delete options.batchEnable;
+        return nativeFetch(url, options);
+    };
 
-        if (!options.batchEnable || (options.method && options.method !== "GET")) {
-            delete options.batchEnable;
-            return fetch(url, options);
-        };
+    return new Promise((resolve, reject) => {
 
-        return new Promise((resolve, reject) => {
-
-            batch.push({
-                url: url,
-                method: options.method,
-                headers: options.headers,
-                resolve: resolve,
-                reject: reject
-            });
-
-            if (batch.length == 1) {
-                setTimeout(executeBatch, 10000);
-            }
+        batch.push({
+            url: url,
+            method: options.method,
+            headers: options.headers,
+            resolve: resolve,
+            reject: reject
         });
+
+        if (batch.length === BATCH_SIZE) {
+            clearTimeout(timerID);
+            executeBatch();
+        }
+
+        if (batch.length == 1) {
+            timerID = setTimeout(() => {
+                executeBatch()
+            }, BATCH_WINDOW);
+        }
+    });
+};
+
+
+// test();
+
+async function test() {
+    async function user() {
+        const res = await fetch(userApi, {
+            headers: {
+                'authorization': localStorage.getItem('noteAuth'),
+                'content-type': "application/json"
+            },
+            batchEnable: true
+        })
+        const data = await res.json();
+        console.log(data)
     }
-})();
+
+    async function section() {
+        const res = await fetch(sectionApi, {
+            headers: {
+                'authorization': localStorage.getItem('noteAuth'),
+                'content-type': "application/json"
+            },
+            batchEnable: true
+        });
+        const data = await res.json();
+        console.log(data)
+    }
+    user();
+    section();
+}
+
+
+

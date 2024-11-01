@@ -11,14 +11,14 @@ const userRoute = require("./routes/user");
 const noteRoute = require("./routes/note");
 const sectionRoute = require("./routes/section");
 const errHandler = require('./middleware/err');
-const batcher = require('./controllers/batch');
+const batchMiddleware  = require("../batchPoint");
 
 app.use(cors());
 
 app.use("/api/user", userRoute);
 app.use("/api/note", noteRoute);
 app.use("/api/section", sectionRoute);
-app.post("/api/batch", (...parms) => batcher(app, ...parms));
+app.post("/api/batch", batchMiddleware);
 
 app.use(errHandler);
 
