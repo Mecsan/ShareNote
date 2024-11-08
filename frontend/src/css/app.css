@@ -9,6 +9,7 @@
     --primary-color: rgb(84, 105, 212);
     --dark-bg-1000: #262626;
     --dark-bg-800: #202020;
+    --dark-bg-800--transparent: #202020b3;
     --dark-bg-600: #313131;
     --dark-blocknote: #1f1f1f;
 }
@@ -77,8 +78,17 @@ body {
     min-height: 400px;
 }
 
+.formcontainer input:-webkit-autofill {
+    -webkit-box-shadow:0 0 0 50px white inset; 
+    -webkit-text-fill-color: #333;
+}
+
+.dark .formcontainer input:-webkit-autofill {
+    -webkit-box-shadow:0 0 0 50px var(--dark-bg-600) inset; 
+    -webkit-text-fill-color: whitesmoke;
+}
+
 .dark .formcontainer {
-    background: var(--dark-bg-600);
     color: white;
 }
 
@@ -210,7 +220,7 @@ header {
     justify-content: space-between;
 }
 
-.dark h2{
+.dark h2 {
     color: whitesmoke;
 }
 
@@ -583,7 +593,7 @@ textarea:focus {
 }
 
 .dark .back {
-    background-color: var(--dark-blocknote);
+    background-color: var(--dark-bg-800--transparent);
 }
 
 .back_active {

@@ -71,6 +71,7 @@ function Modal({ addnote }) {
 
         <Editor
           text={desc}
+          editable={true}
           onChange={(e) => {
             setdesc(JSON.stringify(e.document));
           }}
