@@ -9,6 +9,7 @@
     --primary-color: rgb(84, 105, 212);
     --dark-bg-1000: #262626;
     --dark-bg-800: #202020;
+    --dark-bg-800--transparent: #202020b3;
     --dark-bg-600: #313131;
     --dark-blocknote: #1f1f1f;
 }
@@ -77,8 +78,17 @@ body {
     min-height: 400px;
 }
 
+.formcontainer input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 50px white inset;
+    -webkit-text-fill-color: #333;
+}
+
+.dark .formcontainer input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 50px var(--dark-bg-600) inset;
+    -webkit-text-fill-color: whitesmoke;
+}
+
 .dark .formcontainer {
-    background: var(--dark-bg-600);
     color: white;
 }
 
@@ -93,15 +103,22 @@ body {
 
 form input {
     padding: 10px;
-    border: 1px solid rgba(159, 149, 149, 0.746);
+    /* border: 1px solid rgba(159, 149, 149, 0.746); */
     font-size: 1rem;
     border-radius: 4px;
     color: rgba(0, 0, 0, 0.661);
     transition: all 0.2s;
+    background: white;
+}
+
+form input:focus {
+    box-shadow: none;
+    outline: 1px solid var(--primary-color);
 }
 
 .dark form input {
     color: white;
+    background: var(--dark-bg-600);
 }
 
 .form_item {
@@ -127,10 +144,6 @@ input[type='submit']:hover {
     box-shadow: 0px 0px 40px black inset;
 }
 
-form input:focus {
-    outline-color: var(--primary-color);
-}
-
 .form_item label {
     padding-bottom: 5px;
 }
@@ -150,13 +163,15 @@ form input:focus {
 }
 
 .err {
-    border-color: red;
-    border-width: 1px;
+    /* border-color: red; */
+    border: none;
+    box-shadow: 0px 0px 2px #D32F2F inset;
+    /* border-width: 1px; */
     background: transparent;
 }
 
 .err_msg {
-    color: red;
+    color: #D32F2F;
     font-size: 0.8rem;
     margin-bottom: -3px;
 }
@@ -210,7 +225,7 @@ header {
     justify-content: space-between;
 }
 
-.dark h2{
+.dark h2 {
     color: whitesmoke;
 }
 
@@ -583,7 +598,7 @@ textarea:focus {
 }
 
 .dark .back {
-    background-color: var(--dark-blocknote);
+    background-color: var(--dark-bg-800--transparent);
 }
 
 .back_active {
