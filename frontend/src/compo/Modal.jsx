@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { Divider, Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -12,7 +12,7 @@ import Editor from "./editor";
 function Modal({ addnote }) {
   let [desc, setdesc] = useState("");
   let [title, settitle] = useState("");
-  const navigate = useNavigate();   
+  const navigate = useNavigate();
 
   const handleSubmit = async () => {
     let note = {
@@ -69,13 +69,15 @@ function Modal({ addnote }) {
           <Divider />
         </div>
 
-        <Editor
-          text={desc}
-          editable={true}
-          onChange={(e) => {
-            setdesc(JSON.stringify(e.document));
-          }}
-        />
+        <div className="editor-container">
+          <Editor
+            text={desc}
+            editable={true}
+            onChange={(e) => {
+              setdesc(JSON.stringify(e.document));
+            }}
+          />
+        </div>
       </div>
     </div>
   );
