@@ -77,7 +77,7 @@ function Section() {
     let tid = toast.loading("adding note");
     let data = await createNote(section, token, note);
     if (data.err) {
-      toast.error("some error occured", { id: tid });
+      toast.error(data.err, { id: tid });
     } else {
       dispatch(addNote(data.msg));
       toast.success("note added", {

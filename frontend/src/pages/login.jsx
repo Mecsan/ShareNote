@@ -42,12 +42,6 @@ function Login() {
 
     if (passwordval == '')
       passworderr = 'password is required!'
-    else if (passwordval.length < 8)
-      passworderr = 'password too short!'
-    else if (passwordval.length > 15) 
-      passworderr = 'password too long!'
-    else if(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,15}$/.test(passwordval) == false)
-      passworderr = 'password too weak!'
     else
       passworderr = ''
     setpassword((pre) => { return { ...pre, err: passworderr } });
