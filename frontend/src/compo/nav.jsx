@@ -66,8 +66,8 @@ function Nav() {
   let [isAdd, setIsAdd] = useState(false);
   let [add, setadd] = useState("");
 
-  let opennav = () => {
-    if(window.innerWidth > 700) return;
+  let opennav = (byPass = false) => {
+    if (!byPass && window.innerWidth > 700) return;
     document.querySelector(".nav").classList.toggle("open-nav-bar");
   };
 
@@ -128,8 +128,8 @@ function Nav() {
                       location.pathname == "/"
                         ? styles.light["btn-primary"]
                         : theme == themes.LIGHT
-                        ? styles.light.btn
-                        : styles.dark.btn,
+                          ? styles.light.btn
+                          : styles.dark.btn,
                   }}
                 />
                 <ListItemIcon>
@@ -182,24 +182,24 @@ function Nav() {
             <Divider />
             {links
               ? links.map((link) => {
-                  return (
-                    <ListItem
-                      key={link._id}
-                      disablePadding
-                      onClick={() => {
-                        opennav();
-                        Navigate("/" + link._id);
-                      }}
-                    >
-                      <ListItemButton>
-                        <ListItemText
-                          primary={link.title}
-                          style={getStyle(link)}
-                        />
-                      </ListItemButton>
-                    </ListItem>
-                  );
-                })
+                return (
+                  <ListItem
+                    key={link._id}
+                    disablePadding
+                    onClick={() => {
+                      opennav();
+                      Navigate("/" + link._id);
+                    }}
+                  >
+                    <ListItemButton>
+                      <ListItemText
+                        primary={link.title}
+                        style={getStyle(link)}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                );
+              })
               : null}
 
             <ListItem disablePadding style={{ paddingTop: "30px" }}>
@@ -216,6 +216,26 @@ function Nav() {
                 <ListItemIcon>
                   <LogoutIcon style={{ color: "grey" }} />
                 </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+
+            <ListItem
+              disablePadding
+              onClick={() => {
+                opennav(true);
+                Navigate("/reset-password");
+              }}
+            >
+              <ListItemButton>
+                <ListItemText
+                  primary="Reset Password"
+                  style={{
+                    color:
+                      theme == themes.LIGHT
+                        ? styles.light.btn
+                        : styles.dark.btn,
+                  }}
+                />
               </ListItemButton>
             </ListItem>
           </ul>

@@ -72,7 +72,7 @@ function Signin() {
     else if (cpasswordval != password.text) {
       cpassworderr = 'confirm password not matching!';
     } else {
-      if (password.err) cpassworderr = password.err;
+      if (password.err) cpassworderr = passworderr;
       else cpassworderr = '';
     }
     setcpassword((pre) => { return { ...pre, err: cpassworderr } });

@@ -1,5 +1,6 @@
 export const STATIC_TEXT_FOR_ROUTE = {
     '/' : "Home",
     '/signup' : "Create an account",
-    "/login" : "Login to your account"
+    "/login" : "Login to your account",
+    "/reset-password" : "Reset your password"
 }
