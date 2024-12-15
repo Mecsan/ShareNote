@@ -21,6 +21,7 @@ import { toastConfig } from "./util/constant";
 import { themes } from "./redux/slices/themSlice";
 import Nav from "./compo/nav";
 import Header from "./compo/Header";
+import ResetPassword from "./pages/Reset-password";
 
 function App() {
   const auth = useSelector((state) => state.auth);
@@ -79,6 +80,7 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/:section" element={<Section />} />
                     <Route path="/note/:noteId" element={<Note />} />
+                    <Route path="/reset-password" element={<ResetPassword />} />
                     <Route path="*" element={<Notfound />} />
                   </Route>
                 </Routes>

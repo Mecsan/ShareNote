@@ -41,4 +41,17 @@ export const verify = processRequest(async (token) => {
     return data;
 })
 
+export const resetPassword = processRequest(async (body, token) => {
+    let res = await fetch(userApi + "/reset-password", {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+            'authorization': token
+        },
+        body: JSON.stringify(body)
+    });
+    let data = await res.json();
+    return data;
+})
+
 

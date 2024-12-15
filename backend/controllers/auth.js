@@ -63,5 +63,28 @@ let Info = handle(async (req, res) => {
     res.json({ msg: user })
 })
 
+let resetPassword = handle(async (req, res) => {
+    let { oldPassword, password } = req.body;
+    let user = await userModel.findOne({ _id: req.user });
+    if (!user) {
+        res.status(404);
+        throw new Error("no user found");
+    }
 
-module.exports = { Login, Register, Info }
+    let pass = await bcrypt.compare(oldPassword, user.password);
+    if (!pass) {
+        res.status(401);
+        throw new Error("Incorrect password");
+    }
+
+    let salt = await bcrypt.genSalt();
+    let hash = await bcrypt.hash(password, salt);
+
+    user.password = hash;
+    await user.save();
+
+    res.json({ msg: "password updated" });
+})
+
+
+module.exports = { Login, Register, Info, resetPassword }

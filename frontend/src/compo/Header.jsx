@@ -174,7 +174,7 @@ function Header() {
   };
 
   const isStatic = function (route) {
-    let staticTextRoutes = ['/', '/login', '/signup'];
+    let staticTextRoutes = ['/', '/login', '/signup','/reset-password'];
     return staticTextRoutes.includes(route);
   };
 
